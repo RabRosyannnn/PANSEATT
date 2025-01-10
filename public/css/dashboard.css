@@ -1,0 +1,52 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #FFD166; /* Cream background for the main body */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #4A7C59; /* Header background color */
+    color: #FFD166;
+    position:sticky;
+}
+
+aside {
+    min-width: 200px;
+    background-color: #f5f5dc; /* Sidebar background color */
+    height: calc(100vh - 60px); /* Adjust height to account for header */
+    padding: 20px;
+    position: fixed; /* Make sidebar fixed */
+    top: 60px; /* Position it below the header */
+    left: 0;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    font-size: 30px;
+}
+
+.content {
+    margin-left: 100px; /* Add margin to the left to avoid overlap with sidebar */
+    padding: 20px;
+    flex-grow: 1; /* Allow content to grow */
+}
+
+.section {
+    background-color: #E07A5F; /* Green background for sections */
+    color: white; /* Text color for sections */
+    padding: 20px;
+    margin-bottom: 20px; /* Space between sections */
+    border-radius: 5px; /* Rounded corners */
+}
+.card-text{
+    color: black;
+}
+.card-title{
+    color: black;
+}
+.card-img-top{
+    width: 416px;
+    height: 400px;
+}

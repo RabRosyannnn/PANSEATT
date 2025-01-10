@@ -11,9 +11,11 @@ class DashboardController extends Controller
 {
     public function index()
 {
-    $users = User::all();
-    $bundles = Bundle::all();
-    return view('dashboard', compact('bundles', 'users')); // Corrected compact usage
+    $activeStaff = User::where('is_archived', false)->get();
+    $archivedStaff = User::where('is_archived', true)->get();
+    $activeBundles = Bundle::where('is_archived', false)->get();
+    $archivedBundles = Bundle::where('is_archived', true)->get();
+    return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 'archivedStaff')); // Corrected compact usage
 }
 
 }

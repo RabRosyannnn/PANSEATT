@@ -51,35 +51,51 @@
         </div>
 
         <div class="section" id="bundles-section">
-            <h4>Bundles</h4>
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addBundleModal">+ Add Bundle</button>
+        <h4>Bundles</h4>
+    <button class="btn btn-secondary mb-3" id="toggleArchivedBtn">Show Archived Bundles</button>
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addBundleModal">+ Add Bundle</button>
 
-            @if($bundles->isEmpty())
-                <p>No bundles available.</p>
-            @else
-                <div class="row">
-                    @foreach($bundles as $bundle)
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                @if($bundle->image)
-                                    <img src="{{ asset('storage/' . $bundle->image) }}" class="card-img-top" alt="{{ $bundle->name }}">
-                                @endif
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $bundle->name }}</h5>
-                                    <p class="card-text">{{ $bundle->desc }}</p>
-                                    <a href="{{ route('bundles.edit', $bundle) }}" class="btn btn-primary">Edit</a>
-                                    <form action="{{ route('bundles.destroy', $bundle) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+    <div id="activeBundles" class="row">
+    @foreach($activeBundles as $bundle)
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                @if($bundle->image)
+                    <img src="{{ asset('storage/' . $bundle->image) }}" class="card-img-top" alt="{{ $bundle->name }}">
+                @endif
+                <div class="card-body">
+                    <h5 class="card-title">{{ $bundle->name }}</h5>
+                    <p class="card-text">{{ $bundle->desc }}</p>
+                    <a href="{{ route('bundles.edit', $bundle) }}" class="btn btn-primary">Edit</a>
+                    <form action="{{ route('bundles.archive', $bundle) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-warning">Archive</button>
+                    </form>
                 </div>
-            @endif
+            </div>
         </div>
+    @endforeach
+</div>
+
+<div id="archivedBundles" class="row" style="display:none;">
+    @foreach($archivedBundles as $bundle)
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                @if($bundle->image)
+                    <img src="{{ asset('storage/' . $bundle->image) }}" class="card-img-top" alt="{{ $bundle->name }}">
+                @endif
+                <div class="card-body">
+                    <h5 class="card-title">{{ $bundle->name }}</h5>
+                    <p class="card-text">{{ $bundle->desc }}</p>
+                    <form action="{{ route('bundles.restore', $bundle) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-success">Restore</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+
 
         <div class="section" id="request-section">
             <h4>Request</h4>
@@ -89,42 +105,70 @@
         @if(Auth::user()->position === 'admin') <!-- Show staff section only for admin -->
         <div class="section" id="staff-section">
     <h4>Staff</h4>
-    <p>Details about staff management.</p>
+    <button class="btn btn-secondary mb-3" id="toggleArchivedStaffBtn">Show Archived Staff</button>
     <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addStaffModal">+ Add Staff</button>
 
-    @if($users->isEmpty())
-        <p>No staff members available.</p>
-    @else
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Position</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($users as $user)
-                        <tr>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->position }}</td>
-                            <td>
-                                <a href="{{ route('staff.edit', $user->id) }}" class="btn btn-primary">Edit</a>
-                                <form action="{{ route('staff.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    @endif
+
+
+    
+    <div id="activeStaff" class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($activeStaff as $staff)
+                <tr>
+                    <td>{{ $staff->name }}</td>
+                    <td>{{ $staff->email }}</td>
+                    <td>{{ $staff->position }}</td>
+                    <td>
+                        <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route('staff.archive', $staff->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-warning">Archive</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+<div id="archivedStaff" class="table-responsive" style="display:none;">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($archivedStaff as $staff)
+                <tr>
+                    <td>{{ $staff->name }}</td>
+                    <td>{{ $staff->email }}</td>
+                    <td>{{ $staff->position }}</td>
+                    <td>
+                        <form action="{{ route('staff.restore', $staff->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-success">Restore</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+    
 </div>
 
         @endif
@@ -219,5 +263,40 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('toggleArchivedBtn').addEventListener('click', function() {
+        const activeBundles = document.getElementById('activeBundles');
+        const archivedBundles = document.getElementById('archivedBundles');
+        const toggleBtn = this;
+
+        if (archivedBundles.style.display === 'none') {
+            archivedBundles.style.display = 'block';
+            activeBundles.style.display = 'none';
+            toggleBtn.textContent = 'Show Active Bundles';
+        } else {
+            archivedBundles.style.display = 'none';
+            activeBundles.style.display = 'block';
+            toggleBtn.textContent = 'Show Archived Bundles';
+        }
+    });
+</script>
+<script>
+    document.getElementById('toggleArchivedStaffBtn').addEventListener('click', function() {
+        const activeStaff = document.getElementById('activeStaff');
+        const archivedStaff = document.getElementById('archivedStaff');
+        const toggleBtn = this;
+
+        if (archivedStaff.style.display === 'none') {
+            archivedStaff.style.display = 'block';
+            activeStaff.style.display = 'none';
+            toggleBtn.textContent = 'Show Active Staff';
+        } else {
+            archivedStaff.style.display = 'none';
+            activeStaff.style.display = 'block';
+            toggleBtn.textContent = 'Show Archived Staff';
+        }
+    });
+</script>
+
 </body>
 </html>

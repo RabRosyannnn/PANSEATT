@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('position')->nullable(); // Add position field
             $table->rememberToken();
+            $table->boolean('is_archived')->default(false);
             $table->timestamps();
         });
 

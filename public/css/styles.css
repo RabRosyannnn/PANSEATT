@@ -147,3 +147,75 @@ flex-shrink: 0;
       transform: translateY(0);
     }
   }
+  /* General styles for form labels */
+form label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFD166; /* Matches the title color */
+    margin-bottom: 8px; /* Space between label and input/select */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+form label:hover {
+    color: #ffc107; /* Slightly lighter color on hover */
+}
+
+/* Styles for input fields */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+/* Input focus effect */
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form select:focus {
+    border-color: #4A7C59;
+    outline: none;
+}
+
+/* Styles for select dropdown */
+form select {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+/* Button styling */
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FFD166;
+    color: #4A7C59;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #ffc107;
+}
+
+/* Link styling in form */
+form p a {
+    color: #4A7C59;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+form p a:hover {
+    text-decoration: underline;
+}

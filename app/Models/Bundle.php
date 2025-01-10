@@ -10,7 +10,7 @@ class Bundle extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'desc', 'image'
+        'name', 'desc', 'image','is_archived',
     ];
 }
 

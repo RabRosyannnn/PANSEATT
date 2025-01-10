@@ -17,6 +17,22 @@
         </div>
         <div class="login-form-container">
             <h1 class="login-title">Admin Log in</h1>
+              <!-- Error Messages -->
+              @if ($errors->any())
+                <div class="error-messages">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="error-message">
+                    <p>{{ session('error') }}</p>
+                </div>
+            @endif
             <form method="POST" action="{{ route('login.authenticate') }}">
                 @csrf
                 <div class="form-group">

@@ -35,6 +35,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bundles/{bundle}/edit', [BundleController::class, 'edit'])->name('bundles.edit');
     Route::put('/bundles/{bundle}', [BundleController::class, 'update'])->name('bundles.update');
     Route::post('/bundles', [BundleController::class, 'store'])->name('bundles.store');
+    Route::post('/bundles/{bundle}/archive', [BundleController::class, 'archive'])->name('bundles.archive');
+    Route::post('/bundles/{bundle}/restore', [BundleController::class, 'restore'])->name('bundles.restore');
+
+    Route::post('/staff/{user}/archive', [StaffController::class, 'archive'])->name('staff.archive');
+
 
 });
 

@@ -43,21 +43,19 @@ class StaffController extends Controller
 
     // Authenticate user
     public function authenticate(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // Redirect to the dashboard after successful login
-            return redirect()->route('dashboard')->with('success', 'Login successful!');
-        }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+    if (Auth::attempt($request->only('email', 'password'))) {
+        return redirect()->route('dashboard')->with('success', 'Welcome back!');
     }
+
+    return back()->with('error', 'Invalid email or password.')->withInput();
+}
+
 
     // Logout user
     public function logout()
@@ -100,4 +98,20 @@ class StaffController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Staff member deleted successfully!');
     }
+    public function archive(User $staff)
+{
+    $staff->is_archived = true;
+    $staff->save();
+
+    return redirect()->route('dashboard')->with('success', 'Staff member archived successfully.');
+}
+
+public function restore(User $staff)
+{
+    $staff->is_archived = false;
+    $staff->save();
+
+    return redirect()->route('dashboard')->with('success', 'Staff member restored successfully.');
+}
+
 }

@@ -16,6 +16,7 @@ return new class extends Migration
         $table->string('name');
         $table->text('desc');
         $table->string('image')->nullable();
+        $table->boolean('is_archived')->default(false);
         $table->timestamps();
     });
 }

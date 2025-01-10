@@ -80,4 +80,21 @@ class BundleController extends Controller
 
         return redirect()->route('dashboard');
     }
+    public function archive(Bundle $bundle)
+{
+    $bundle->is_archived = true;
+    $bundle->save();
+
+    return redirect()->route('dashboard')->with('success', 'Bundle archived successfully.');
+}
+
+public function restore(Bundle $bundle)
+{
+    $bundle->is_archived = false;
+    $bundle->save();
+
+    return redirect()->route('dashboard')->with('success', 'Bundle restored successfully.');
+}
+
+
 }

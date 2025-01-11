@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BundleController;
+use App\Http\Controllers\ReservationController;
+
 
 
 // Staff routes
@@ -40,6 +42,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/staff/{user}/archive', [StaffController::class, 'archive'])->name('staff.archive');
     Route::post('/staff/{user}/restore', [StaffController::class, 'restore'])->name('staff.restore');
+
+    Route::resource('reservations', ReservationController::class);
+    Route::get('/events', [DashboardController::class, 'getEvents']);
+    Route::get('/reservations/data', [ReservationController::class, 'getReservations'])->name('reservations.data');
+
+    Route::get('/events', [ReservationController::class, 'getEvents']);
+
 
 });
 

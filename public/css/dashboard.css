@@ -5,7 +5,9 @@ body {
     background-color: #FFD166; /* Cream background for the main body */
     font-family: 'Poppins', sans-serif;
 }
-
+label {
+    color: #39201A; /* Change this to your desired color */
+}
 .header {
     display: flex;
     justify-content: space-between;
@@ -52,3 +54,93 @@ aside {
     width: 416px;
     height: 400px;
 }
+.modal-dialog {
+    position: absolute; /* Use absolute positioning */
+    top: 15%; /* Position it 50% from the top */
+    left: 30%; /* Position it 50% from the left */
+    transform: translate(-50%, -50%); /* Center it */
+    justify-content: center; /* Center horizontally */
+    
+     
+}
+.modal-content {
+    border: none; /* Remove border */
+    border-radius: 28px; /* Remove rounded corners */
+    background-color: #FAF3DD;
+    width: 1000px; /* Set width */
+}
+
+.modal-header {
+    background-color: #E07A5F; /* Light background for header */
+    border-bottom: 1px solid #dee2e6; /* Light border */
+    border-radius: 28px 28px 0 0; /* Remove rounded corners */
+    color: #FFFFFF;
+}
+
+.modal-title {
+    font-weight: bold; /* Bold title */
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6; /* Light border */
+}
+
+.modal-body {
+    padding: 20px; /* Add padding */
+}
+
+.form-control {
+    border: 1px solid #ced4da; /* Light border for inputs */
+    border-radius: 30; /* Remove rounded corners */
+    background-color: #EAE4D0;
+}
+
+.btn-primary {
+    background-color: #4A7C59; /* Bootstrap primary color */
+    border: none; /* Remove border */
+    color: #FFD166;
+}
+
+.btn-secondary {
+    background-color: #FFD166; /* Bootstrap secondary color */
+    border: none; /* Remove border */
+    color: #4A7C59;
+}   
+#reservationCalendar {
+    width: 1500px;
+    height: 750px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #FAF3DD;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+.fc-toolbar {
+    background-color: #E07A5F;
+    color: #FFFFFF;
+    padding: 30px;
+    border-radius: 8px;
+}
+
+/* Hide all default buttons on the toolbar */
+.fc-toolbar button {
+    display: none;
+}
+
+/* Style for custom Add Reservation button */
+.fc-toolbar .add-reservation-btn {
+    background-color: #28a745; /* Green background */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.fc-toolbar .add-reservation-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+

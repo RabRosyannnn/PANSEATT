@@ -6,6 +6,11 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> <!-- Link to the external CSS file -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+    
 </head>
 <body>
 <aside>
@@ -47,7 +52,78 @@
 
         <div class="section" id="calendar-section">
             <h4>Calendar</h4>
-            <p>Details about the calendar.</p>
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addReservationModal">+ Add Reservation</button>
+            <div id="reservationCalendar"></div>
+
+            
+    
+<!-- Modal for Adding Reservation -->
+<div class="modal fade" id="addReservationModal" tabindex="-1" role="dialog" aria-labelledby="addReservationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addReservationModalLabel">Add New Reservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('reservations.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="customer_name">Customer Name</label>
+                                <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_information">Contact Information</label>
+                                <input type="text" class="form-control" id="contact_information" name="contact_information" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input type="date" class="form-control" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="number_of_guests">Number of Guests</label>
+                                <input type="number" class="form-control" id="number_of_guests" name="number_of_guests" required min="1">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="time">Time</label>
+                                <input type="time" class="form-control" id="time" name="time" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="booking_confirmation">Booking Confirmation</label>
+                                <select class="form-control" id="booking_confirmation" name="booking_confirmation">
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="deposit">Deposit</label>
+                                <input type="number" class="form-control" id="deposit" name="deposit" step="0.01" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="occasion">Occasion</label>
+                                <input type="text" class="form-control" id="occasion" name="occasion">
+                            </div>
+                            <div class="form-group">
+                                <label for="bundle">Bundle</label>
+                                <input type="text" class="form-control" id="bundle" name="bundle">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Reservation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
         </div>
 
         <div class="section" id="bundles-section">
@@ -297,6 +373,34 @@
         }
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('reservationCalendar');
+        
+        if (!calendarEl) {
+            console.error('Element with id "reservationCalendar" not found.');
+            return;
+        }
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: '/events', // Change or mock if backend is not yet set up
+            selectable: true,
+            select: function (info) {
+                alert('Selected: ' + info.startStr + ' to ' + info.endStr);
+            },
+        });
+
+        calendar.render();
+    });
+</script>
+
+
 
 </body>
 </html>

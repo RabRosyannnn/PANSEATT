@@ -7,13 +7,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> <!-- Link to the external CSS file -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 
 
-    
+
+  
 </head>
 <body>
 <aside>
@@ -39,7 +41,7 @@
 <div class="content">
     <div class="header">
         <div>
-            <h2>Panseat Tagapo</h2>
+            <h2 class="header-title">PansEat Tagapo</h2> 
         </div>
         <div>
             <span>{{ Auth::user()->name }}</span>
@@ -130,51 +132,58 @@
         </div>
 
         <div class="section" id="bundles-section">
-        <h4>Bundles</h4>
+    <h4>Bundles</h4>
     <button class="btn btn-secondary mb-3" id="toggleArchivedBtn">Show Archived Bundles</button>
     <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addBundleModal">+ Add Bundle</button>
 
     <div id="activeBundles" class="row">
-    @foreach($activeBundles as $bundle)
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                @if($bundle->image)
-                    <img src="{{ asset('storage/' . $bundle->image) }}" class="card-img-top" alt="{{ $bundle->name }}">
-                @endif
-                <div class="card-body">
-                    <h5 class="card-title">{{ $bundle->name }}</h5>
-                    <p class="card-text">{{ $bundle->desc }}</p>
-                    <a href="{{ route('bundles.edit', $bundle) }}" class="btn btn-primary">Edit</a>
-                    <form action="{{ route('bundles.archive', $bundle) }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-warning">Archive</button>
-                    </form>
+        @foreach ($activeBundles as $bundle)
+            <div class="col-md-4 mb-3 d-flex justify-content-center">
+                <div class="card text-center bundle-card">
+                    @if ($bundle->image)
+                        <img src="{{ asset('storage/' . $bundle->image) }}" 
+                             class="card-img-top mx-auto d-block bundle-img" 
+                             alt="{{ $bundle->name }}">
+                    @endif
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $bundle->name }}</h5>
+                        <p class="card-text">{{ $bundle->desc }}</p>
+                        <div class="card-buttons">
+                            <a href="{{ route('bundles.edit', $bundle) }}" class="btn btn-primary">Edit</a>
+                            <form action="{{ route('bundles.archive', $bundle) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-warning">Archive</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    @endforeach
+        @endforeach
+    </div>
+
+    <div id="archivedBundles" class="row" style="display:none;">
+        @foreach($archivedBundles as $bundle)
+            <div class="col-md-4 mb-3 d-flex justify-content-center">
+                <div class="card bundle-card">
+                    @if($bundle->image)
+                        <img src="{{ asset('storage/' . $bundle->image) }}" class="card-img-top mx-auto d-block bundle-img" alt="{{ $bundle->name }}">
+                    @endif
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $bundle->name }}</h5>
+                        <p class="card-text">{{ $bundle->desc }}</p>
+                        <div class="card-buttons">
+                            <form action="{{ route('bundles.restore', $bundle) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-success">Restore</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
 </div>
 
-<div id="archivedBundles" class="row" style="display:none;">
-    @foreach($archivedBundles as $bundle)
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                @if($bundle->image)
-                    <img src="{{ asset('storage/' . $bundle->image) }}" class="card-img-top" alt="{{ $bundle->name }}">
-                @endif
-                <div class="card-body">
-                    <h5 class="card-title">{{ $bundle->name }}</h5>
-                    <p class="card-text">{{ $bundle->desc }}</p>
-                    <form action="{{ route('bundles.restore', $bundle) }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-success">Restore</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endforeach
-</div>
-</div>
 
         <div class="section" id="request-section">
             <h4>Request</h4>
@@ -182,75 +191,20 @@
         </div>
 
         @if(Auth::user()->position === 'admin') <!-- Show staff section only for admin -->
-<div class="section" id="staff-section">
-    <h4>Staff</h4>
-    <button class="btn btn-secondary mb-3" id="toggleArchivedStaffBtn">Show Archived Staff</button>
-    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addStaffModal">+ Add Staff</button>
+        <div class="section" id="staff-section">
+    <div class="staff-log">
+        <div class="log-header">
+            <h4>Staff Logs</h4>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search">
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
 
-    <div id="activeStaff" class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Position</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($activeStaff as $staff)
-                    <tr>
-                        <td>{{ $staff->id }}</td>
-                        <td>{{ $staff->name }}</td>
-                        <td>{{ $staff->email }}</td>
-                        <td>{{ $staff->position }}</td>
-                        <td>
-                            <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-primary">Edit</a>
-                            <form action="{{ route('staff.archive', $staff->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-warning">Archive</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    <div id="archivedStaff" class="table-responsive" style="display:none;">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Position</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($archivedStaff as $staff)
-                    <tr>
-                        <td>{{ $staff->name }}</td>
-                        <td>{{ $staff->email }}</td>
-                        <td>{{ $staff->position }}</td>
-                        <td>
-                            <form action="{{ route('staff.restore', $staff->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-success">Restore</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Staff Logs Section -->
-    <div class="mt-4">
-        <h5>Staff Logs</h5>
-        <div class="table-responsive">
-            <table class="table table-bordered">
+        <div class="log-table">
+            <table>
                 <thead>
                     <tr>
                         <th>Log ID</th>
@@ -261,17 +215,49 @@
                 </thead>
                 <tbody>
                     @foreach($staffLogs as $log)
-                        <tr>
+                    <tr>
                             <td>{{ $log->id }}</td>
                             <td>{{ $log->action }}</td>
                             <td>{{ $log->user_id }}</td>
                             <td>{{ $log->created_at }}</td>
-                        </tr>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+
+    <div class="staff-list">
+        <div class="list-header">
+            <h4>Staff List</h4>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search">
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="add-staff-btn" data-toggle="modal" data-target="#addStaffModal">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="staff-cards">
+            @foreach($activeStaff as $staff)
+            <div class="staff-card">
+                <div class="staff-icon"></div>
+                <h5>{{ $staff->name }}</h5>
+                <div class="staff-actions">
+                    <button class="btn btn-view">VIEW</button>
+                    <button class="btn btn-edit">EDIT</button>
+                    <button class="btn btn-remove">REMOVE</button>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+    
 </div>
 @endif
 
@@ -319,6 +305,21 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                @if ($errors->any())
+                <div class="error-messages">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="error-message">
+                    <p>{{ session('error') }}</p>
+                </div>
+            @endif
             </div>
             <form action="{{ route('staff.store') }}" method="POST">
                 @csrf
@@ -401,7 +402,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('reservationCalendar');
-        
+
         if (!calendarEl) {
             console.error('Element with id "reservationCalendar" not found.');
             return;
@@ -414,16 +415,20 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            events: '/events', // Change or mock if backend is not yet set up
-            selectable: false,
-            select: function (info) {
-                alert('Selected: ' + info.startStr + ' to ' + info.endStr);
-            },
-        });
+            // This URL points to the method in the ReservationController
+            events: '/events',  // Use the correct route for fetching events
+            
+            eventClick: function(info) {
+    const eventId = info.event.id;  // Get the ID of the clicked event
+    console.log('Event ID:', eventId); // Log the event ID for debugging purposes
+    window.location.href = '/reservations/' + eventId;  // Redirect to the event's show page
+}
 
+        });
         calendar.render();
     });
 </script>
+
 
 
 

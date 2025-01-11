@@ -42,6 +42,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/staff/{user}/archive', [StaffController::class, 'archive'])->name('staff.archive');
     Route::post('/staff/{user}/restore', [StaffController::class, 'restore'])->name('staff.restore');
+    Route::get('/staff/{id}', 'StaffController@show')->name('staff.show');
+    Route::get('/staff/{id}/edit', 'StaffController@edit')->name('staff.edit');
+    Route::delete('/staff/{id}', 'StaffController@destroy')->name('staff.destroy');
 
     Route::resource('reservations', ReservationController::class);
     Route::get('/events', [DashboardController::class, 'getEvents']);

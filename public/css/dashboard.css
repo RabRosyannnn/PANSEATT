@@ -112,15 +112,17 @@ aside {
     margin: 0 auto;
     padding: 20px;
     background-color: #FAF3DD;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
     border: 1px solid #ddd;
+
 }
 .fc-toolbar {
     background-color: #E07A5F;
     color: #FFFFFF;
     padding: 30px;
     border-radius: 8px;
+    font-size: 30px;
 }
 
 /* Hide all default buttons on the toolbar */
@@ -139,8 +141,21 @@ aside {
     font-size: 16px;
 }
 
-.fc-toolbar .add-reservation-btn:hover {
-    background-color: #218838; /* Darker green on hover */
+/* Change font color of the dates in the calendar */
+.fc-daygrid-day-number {
+    color: #A1A1A1 !important; /* Set the font color to tomato red */
 }
 
-
+/* Customize font color for weekends (Saturday and Sunday) */
+.fc-daygrid-day-sat .fc-daygrid-day-number,
+.fc-daygrid-day-sun .fc-daygrid-day-number {
+    color: #A1A1A1 !important; /* Set the font color of weekends to orange red */
+}
+/* Change the color of the day headers (Sun, Mon, etc.) */
+.fc-col-header-cell-cushion {
+    color: #39201A !important; /* Tomato red for the day headers */
+    font-weight: bold; /* Make the text bold */
+}
+.fc {
+    font-family: 'Inter', sans-serif !important;
+}

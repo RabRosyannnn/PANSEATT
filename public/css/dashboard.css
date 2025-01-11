@@ -3,6 +3,7 @@ body {
     flex-direction: column;
     height: 100vh;
     background-color: #FFD166; /* Cream background for the main body */
+    font-family: 'Poppins', sans-serif;
 }
 
 .header {

@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/bundles/{bundle}/restore', [BundleController::class, 'restore'])->name('bundles.restore');
 
     Route::post('/staff/{user}/archive', [StaffController::class, 'archive'])->name('staff.archive');
-
+    Route::post('/staff/{user}/restore', [StaffController::class, 'restore'])->name('staff.restore');
 
 });
 

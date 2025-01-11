@@ -1,15 +1,35 @@
+body {
+    margin: 0; /* Remove default margin */
+    height: 100vh; /* Full height of the viewport */
+    display: flex; /* Use Flexbox */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    background-color: #FAF3DD; /* Optional: Set a background color */
+    font-family: 'Poppins', sans-serif;
+}
+
+.title {
+    position: absolute; /* Use absolute positioning */
+    top: 20px; /* Distance from the top of the viewport */
+    left: 20px; /* Distance from the left of the viewport */
+    color: #4A7C59; /* Optional: Set the text color */
+    font-size: 48px; /* Optional: Set the font size */
+    font-weight: bold; /* Optional: Set the font weight */
+    z-index: 10; /* Optional: Ensure it appears above other elements */
+}
 .login-container {
-    min-height: 100vh;
+    
     display: flex;
     align-items: center;
     justify-content: center;
-    width: auto;
-    height: auto;
+    width: 1000px;
+    height: 500px;
 flex-shrink: 0;
     border-radius: var(--Corner-Extra-large, 28px);
     background: #4A7C59;
     box-shadow: 0px 4px 22.3px 3px rgba(0, 0, 0, 0.25);
     align-items: center;
+    box-shadow: 0px 35px 20px rgba(0, 0, 0, 0.3);
   }
   
   .login-card {
@@ -33,32 +53,47 @@ flex-shrink: 0;
   }
   
   .logo-outer {
-    width: 120px;
-    padding: 100px;
-    height: 120px;
+    width: 120px; /* Outer logo width */
+    height: 120px; /* Outer logo height */
     position: relative;
-    background-color: #e17055;
-    border-radius: 8px;
-  }
-  
-  .logo-inner {
-    position: absolute;
-    inset: 8px;
-    padding: 60px;
-    background-color: #ffd32a;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .logo-center {
-    width: 32px;
-    padding: 50px;
-    height: 32px;
-    background-color: #4A7C59;
-    border-radius: 4px;
-  }
+    background-color: #e17055; /* Background color */
+    border-radius: 10px; /* Rounded corners */
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    padding-left: 140px; /* Adjust padding for inner logo */
+    padding-right: 140px; /* Adjust padding for inner logo */
+    padding-top: 140px; /* Adjust padding for inner logo */
+    padding-bottom: 140px; /* Adjust padding for inner logo */
+    box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
+}
+
+.logo-inner {
+    width: 100px; /* Set a specific width for the inner logo */
+    height: 100px; /* Set a specific height for the inner logo */
+    background-color: #ffd32a; /* Background color */
+    border-radius: 10px; /* Rounded corners */
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    padding-left: 100px; /* Adjust padding for inner logo */
+    padding-right: 100px; /* Adjust padding for inner logo */
+    padding-top: 100px; /* Adjust padding for inner logo */
+    padding-bottom: 100px; /* Adjust padding for inner logo */
+    box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
+}
+
+.logo-center {
+    width: 32px; /* Adjust width to be smaller */
+    height: 32px; /* Adjust height to be smaller */
+    background-color: #4A7C59; /* Background color */
+    border-radius: 10px; /* Rounded corners */
+    padding-left: 70px; /* Adjust padding for inner logo */
+    padding-right: 70px; /* Adjust padding for inner logo */
+    padding-top: 60px; /* Adjust padding for inner logo */
+    padding-bottom: 60px; /* Adjust padding for inner logo */
+    box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
+}
   
   .login-form-container {
     padding: 2rem;
@@ -71,7 +106,9 @@ flex-shrink: 0;
     margin-bottom: 1.5rem;
     color: #FFD166;
   }
-  
+  .input-icon {
+    position: relative; /* Position relative for absolute positioning of the icon */
+}
   .login-input {
     width: 100%;
     padding: 1rem;
@@ -81,7 +118,15 @@ flex-shrink: 0;
     font-size: 14px;
     transition: all 0.3s ease;
   }
-  
+  .icon {
+    position: absolute; /* Position the icon absolutely */
+    right: 10px; /* Position it on the right */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    pointer-events: none; /* Prevent mouse events on the icon */
+    font-size: 16px; /* Adjust icon size */
+    color: #FFD166; /* Optional: Change icon color */
+}
   .login-input:focus {
     border-color: #4A7C59;
     outline: none;
@@ -147,33 +192,38 @@ flex-shrink: 0;
       transform: translateY(0);
     }
   }
-  /* General styles for form labels */
+ /* General styles for form labels */
 form label {
-    display: block;
-    font-size: 16px;
-    font-weight: bold;
-    color: #FFD166; /* Matches the title color */
-    margin-bottom: 8px; /* Space between label and input/select */
-    transition: color 0.3s ease; /* Smooth transition for hover effect */
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #FFD166; /* Matches the title color */
+  margin-bottom: 8px; /* Space between label and input/select */
+  transition: color 0.3s ease; /* Smooth transition for hover effect */
 }
 
 form label:hover {
-    color: #ffc107; /* Slightly lighter color on hover */
+  color: #ffc107; /* Slightly lighter color on hover */
 }
+
 
 /* Styles for input fields */
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
 form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
+  width: 100%;
+  max-width: 400px; /* Set a maximum width */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  overflow: hidden; /* Hide overflow content */
+  white-space: nowrap; /* Prevent text from wrapping */
+  text-overflow: ellipsis; /* Show ellipsis (...) for overflow text */
 }
 
 /* Input focus effect */
@@ -181,41 +231,63 @@ form input[type="text"]:focus,
 form input[type="email"]:focus,
 form input[type="password"]:focus,
 form select:focus {
-    border-color: #4A7C59;
-    outline: none;
+  border-color: #4A7C59;
+  outline: none;
 }
 
 /* Styles for select dropdown */
 form select {
-    background-color: #fff;
-    cursor: pointer;
+  background-color: #fff;
+  cursor: pointer;
 }
 
 /* Button styling */
 form button {
-    width: 100%;
-    padding: 10px;
-    background-color: #FFD166;
-    color: #4A7C59;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  width: 100%;
+  padding: 10px;
+  background-color: #FFD166;
+  color: #4A7C59;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 form button:hover {
-    background-color: #ffc107;
+  background-color: #ffc107;
 }
 
 /* Link styling in form */
 form p a {
-    color: #4A7C59;
-    text-decoration: none;
-    font-weight: bold;
+  color: #4A7C59;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 form p a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
+}
+
+/* Error messages styling */
+/* Error messages styling */
+.error-messages, .error-message {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Light red border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px; /* Padding inside the box */
+  margin-top: 10px; /* Space above the error message */
+  margin-bottom: 10px; /* Space below the error message */
+  width: 100%; /* Full width of the parent container */
+  max-width: 400px; /* Match the maximum width of the input fields */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Error messages list */
+.error-messages ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
 }

@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}"> <!-- Link to the external CSS file -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 </head>
 <body>
+<h1 class="title">PansEat Tagapo</h1>
     <div class="login-container">
         <div class="login-logo">
             <div class="logo-outer">
@@ -17,6 +19,22 @@
         </div>
         <div class="login-form-container">
             <h1 class="login-title">Register</h1>
+            <!-- Error Messages -->
+            @if ($errors->any())
+                <div class="error-messages">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="error-message">
+                    <p>{{ session('error') }}</p>
+                </div>
+            @endif
             <form method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="form-group">

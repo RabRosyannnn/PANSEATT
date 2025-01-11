@@ -42,7 +42,8 @@ aside {
     color: white; /* Text color for sections */
     padding: 20px;
     margin-bottom: 20px; /* Space between sections */
-    border-radius: 5px; /* Rounded corners */
+    border-radius: 30   px; /* Rounded corners */
+
 }
 .card-text{
     color: black;
@@ -158,4 +159,13 @@ aside {
 }
 .fc {
     font-family: 'Inter', sans-serif !important;
+}
+.fc-event {
+    background-color: #E07A5F;
+    color: white;
+    border-radius: 5px;
+    font-family: 'poppins', sans-serif;
+}
+.fc-event:hover {
+    background-color: #E07A5F;
 }

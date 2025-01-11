@@ -95,7 +95,7 @@ public function getEvents()
 {
     $events = Reservation::all()->map(function ($reservation) {
         return [
-            'title' => $reservation->customer_name . ' (' . $reservation->number_of_guests . ' guests)',
+            'title' => $reservation->occasion . ' (' . $reservation->number_of_guests . ' guests)',
             'start' => $reservation->date . 'T' . $reservation->time,
             'allDay' => false,
         ];

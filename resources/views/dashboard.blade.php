@@ -10,6 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 
 
     
@@ -173,7 +174,7 @@
         </div>
     @endforeach
 </div>
-
+</div>
 
         <div class="section" id="request-section">
             <h4>Request</h4>
@@ -392,7 +393,7 @@
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
             events: '/events', // Change or mock if backend is not yet set up
-            selectable: true,
+            selectable: false,
             select: function (info) {
                 alert('Selected: ' + info.startStr + ' to ' + info.endStr);
             },

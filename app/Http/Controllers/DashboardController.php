@@ -15,9 +15,9 @@ class DashboardController extends Controller
         $archivedStaff = User::where('is_archived', true)->get();
         $activeBundles = Bundle::where('is_archived', false)->get();
         $archivedBundles = Bundle::where('is_archived', true)->get();
-        $reservations = Reservation::all(); // Fetch all reservations
+        
 
-        return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 'archivedStaff', 'reservations'));
+        return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 'archivedStaff', ));
     }
 
     public function getEvents()

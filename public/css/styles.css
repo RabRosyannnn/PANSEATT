@@ -22,7 +22,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%; /* Use percentage to make it responsive */
-  max-width: 1500px; /* Restrict the maximum width */
+  max-width: 1300px; /* Restrict the maximum width */
   height: auto; /* Adjust height dynamically */
   padding: 2rem; /* Add some padding for spacing */
   background: #4A7C59; /* Maintain your desired background color */

@@ -9,7 +9,7 @@ class StaffLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'action', 'details'];
+    protected $fillable = ['user_id', 'action', 'description'];
 
     // Define a relationship with the User model
     public function user()

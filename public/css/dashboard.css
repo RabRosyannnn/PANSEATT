@@ -80,7 +80,7 @@ aside ul li a {
 }
 
 .section {
-    background-color: #E07A5F;
+    
     color: white;
     padding: 20px;
     margin-bottom: 20px;
@@ -277,16 +277,18 @@ aside ul li a {
 .staff-log {
     background-color: #FAF3DD;
     border-radius: 30px;
-    padding: 20px;
-    margin-bottom: 20px;
+    margin: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensures the child elements respect the border radius */
 }
 
+/* Header styles */
 .log-header {
+    background-color: #E07A5F;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
     color: #39201A;
 }
 
@@ -319,41 +321,54 @@ aside ul li a {
 
 .staff-list {
     margin-top: 20px;
+    align-items: center;
 }
 
 .list-header {
+    border-radius: 28px;
+    background-color: #E07A5F;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
     color: #39201A;
 }
 
 .staff-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
+    display: flex; /* Use Flexbox */
+    flex-wrap: wrap; /* Allow cards to wrap to the next line */
+    justify-content: center; /* Center cards horizontally */
+    align-items: center; /* Center cards vertically (if needed) */
 }
 
 .staff-card {
-    background: #E07A5F;
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px; /* Add some space between cards */
+    
+    height: 400px; /* Make cards fill the container */
+    max-width: 350px; /* Set a fixed width for the cards */
+    width: 100%; /* Make cards fill the container */
+    text-align: center; /* Center text inside the card */
+    /* Add any additional styling for the card */
+    background-color: #fff; /* Example background color */
+    border: 1px solid #ccc; /* Example border */
+    border-radius: 10px; /* Example border radius */
+    padding: 20px; /* Example padding */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Example shadow */
 }
 
 .staff-icon {
-    width: 60px;
-    height: 60px;
+    width: 150px;
+    height: 150px;
     background-color: #4A7C59;
     border-radius: 10px;
     margin: 0 auto 15px;
 }
+.staff-id{
+    color: #000000;
+}
 
 .staff-card h5 {
-    color: #FFD166;
+    color: #4A7C59;
     margin: 10px 0;
     font-size: 1.1rem;
     font-weight: 700;
@@ -361,20 +376,24 @@ aside ul li a {
 
 .staff-actions {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: row;
+    gap: 12px; /* Increased gap for better spacing */
     margin-top: 15px;
+    justify-content: center;
 }
 
 .staff-actions .btn {
     background-color: #FFD166;
     color: #4A7C59;
     border: none;
-    padding: 8px 0;
+    padding: 8px 16px; /* Added horizontal padding */
+    width: 100px; /* Fixed width for all buttons */
     border-radius: 5px;
     font-weight: 700;
     font-size: 0.9rem;
     transition: opacity 0.3s ease;
+    text-align: center; /* Ensure text is centered */
+    text-transform: uppercase; /* Make text consistent */
 }
 
 .staff-actions .btn:hover {
@@ -388,4 +407,43 @@ aside ul li a {
     border-radius: 5px;
     padding: 8px 12px;
     cursor: pointer;
+}
+/* Style for the button itself */
+.logout-icon-btn {
+    background: none; /* Remove background */
+    border: none;     /* Remove border */
+    padding: 0;       /* Remove padding */
+    cursor: pointer;  /* Change cursor to pointer */
+    outline: none;    /* Remove outline on focus */
+}
+
+/* Style for the icon */
+.logout-icon {
+    font-size: 30px; /* Adjust icon size */
+    color: #FFD166;  /* Default color */
+    transition: color 0.3s ease; /* Smooth hover transition */
+    margin-left: 30px;
+    margin-right:30px;
+
+}
+
+/* Hover effect for the icon */
+.logout-icon-btn:hover .logout-icon {
+    color: #ff0000; /* Change color on hover */
+}
+
+/* Optional focus effect */
+.logout-icon-btn:focus .logout-icon {
+    color: #00ff00; /* Change color when focused */
+}
+.username{
+    font-size: 20px;
+    font-weight: 700;
+    margin-right: 50px;
+}
+/* Add this to your CSS file or within a <style> tag */
+.nav-link.active {
+    color: #E07A5F; /* Change to your desired color */
+    text-shadow: 0 0 5px #E07A5F; /* Glowing effect */
+    font-weight: bold; /* Optional: make it bold */
 }

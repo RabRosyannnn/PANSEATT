@@ -15,6 +15,7 @@
 
 
 
+
   
 </head>
 <body>
@@ -44,18 +45,20 @@
             <h2 class="header-title">PansEat Tagapo</h2> 
         </div>
         <div>
-            <span>{{ Auth::user()->name }}</span>
+            <span class ="username">{{ Auth::user()->name }}</span>
             <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" class="btn btn-link text-white">Logout</button>
-            </form>
+    @csrf
+    <button type="submit" class="logout-icon-btn">
+        <i class="fas fa-sign-out-alt logout-icon"></i>
+    </button>
+</form>
         </div>
     </div>
 
     <div class="content">
     
 
-        <div class="section" id="calendar-section">
+    <div class="section" id="calendar-section">
             
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addReservationModal">+ Add Reservation</button>
             <div id="reservationCalendar"></div>
@@ -185,7 +188,7 @@
 </div>
 
 
-        <div class="section" id="request-section">
+<div class="section" id="request-section">
             <h4>Request</h4>
             <p>Details about requests.</p>
         </div>
@@ -207,18 +210,18 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Log ID</th>
+                    <th>Staff ID</th>
                         <th>Action</th>
-                        <th>Staff ID</th>
+                        <th>Details</th>
                         <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($staffLogs as $log)
                     <tr>
-                            <td>{{ $log->id }}</td>
+                    <td>{{ $log->user_id }}</td>
                             <td>{{ $log->action }}</td>
-                            <td>{{ $log->user_id }}</td>
+                            <td>{{ $log->description}}</td>
                             <td>{{ $log->created_at }}</td>
                     </tr>
                     @endforeach
@@ -244,13 +247,19 @@
         <div class="staff-cards">
             @foreach($activeStaff as $staff)
             <div class="staff-card">
+            <h5 class="staff-id">ID: {{ $staff->id }}</h5>
                 <div class="staff-icon"></div>
+                
                 <h5>{{ $staff->name }}</h5>
                 <div class="staff-actions">
-                    <button class="btn btn-view">VIEW</button>
-                    <button class="btn btn-edit">EDIT</button>
-                    <button class="btn btn-remove">REMOVE</button>
-                </div>
+            
+            <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-edit">EDIT</a>
+            <form action="{{ route('staff.archive', $staff->id) }}" method="POST" style="display: inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-remove">Archive</button>
+            </form>
+        </div>
             </div>
             @endforeach
         </div>
@@ -415,20 +424,38 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            // This URL points to the method in the ReservationController
-            events: '/events',  // Use the correct route for fetching events
-            
-            eventClick: function(info) {
-    const eventId = info.event.id;  // Get the ID of the clicked event
-    console.log('Event ID:', eventId); // Log the event ID for debugging purposes
-    window.location.href = '/reservations/' + eventId;  // Redirect to the event's show page
-}
+            events: '{{ route('reservations.index') }}', // URL to fetch events (JSON endpoint)
+            eventClick: function (info) {
+                // Prevent default browser behavior
+                info.jsEvent.preventDefault();
+
+                // Redirect to the reservation details page
+                const reservationId = info.event.id;
+                window.location.href = `/reservations/${reservationId}`;
+            }
 
         });
         calendar.render();
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section');
 
+        function changeActiveLink() {
+            let index = sections.length;
+
+            while (--index && window.scrollY + 150 < sections[index].offsetTop) {}
+
+            navLinks.forEach((link) => link.classList.remove('active'));
+            navLinks[index].classList.add('active');
+        }
+
+        changeActiveLink();
+        window.addEventListener('scroll', changeActiveLink);
+    });
+</script>
 
 
 

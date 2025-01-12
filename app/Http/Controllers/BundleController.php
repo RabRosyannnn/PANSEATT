@@ -23,28 +23,39 @@ class BundleController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'desc' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for the image
-        ]);
+        try {
+            // Validate the request
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'desc' => 'required|string',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for the image
+            ]);
     
-        // Handle the file upload and store it in the public directory
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            // Save to the public folder (e.g., public/images/bundles)
-            $imagePath = $request->file('image')->storeAs('images/bundles', $request->file('image')->getClientOriginalName(), 'public');
+            // Handle the file upload and store it in the public directory
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                // Save to the public folder (e.g., public/images/bundles)
+                $imagePath = $request->file('image')->storeAs('images/bundles', $request->file('image')->getClientOriginalName(), 'public');
+            }
+    
+            // Create new bundle
+            $bundle = new Bundle();
+            $bundle->name = $request->name;
+            $bundle->desc = $request->desc;
+            $bundle->image = $imagePath;
+            $bundle->save();
+    
+            // Log the action
+            $this->logAction('create', "Created a new bundle: {$bundle->name}");
+    
+            return redirect()->route('dashboard')->with('success', 'Bundle created successfully.');
+        } catch (\Exception $e) {
+            // Log the error message
+            \Log::error('Error creating bundle: ' . $e->getMessage());
+    
+            // Redirect back with an error message
+            return redirect()->back()->withErrors(['error' => 'An error occurred while creating the bundle. Please try again.']);
         }
-    
-        // Create new bundle
-        $bundle = new Bundle();
-        $bundle->name = $request->name;
-        $bundle->desc = $request->desc;
-        $bundle->image = $imagePath;
-        $bundle->save();
-         // Log the action
-         $this->logAction('create', "Created a new bundle: {$bundle->name}");
-        return redirect()->route('dashboard')->with('success', 'Bundle created successfully.');
     }
     
 

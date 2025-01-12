@@ -97,7 +97,7 @@ class StaffController extends Controller
         StaffLog::create([
             'user_id' => Auth::id(),
             'action' => 'update',
-            'details' => "Updated staff member: {$user->name}",
+            'description' => "Updated staff member: {$user->name}",
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Staff member updated successfully!');
@@ -114,7 +114,7 @@ class StaffController extends Controller
         StaffLog::create([
             'user_id' => Auth::id(),
             'action' => 'archive',
-            'details' => "Archived staff member: {$user->name}",
+            'description' => "Archived staff member: {$user->name}",
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Staff member archived successfully.');
@@ -131,7 +131,7 @@ class StaffController extends Controller
         StaffLog::create([
             'user_id' => Auth::id(),
             'action' => 'restore',
-            'details' => "Restored staff member: {$user->name}",
+            'description' => "Restored staff member: {$user->name}",
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Staff member restored successfully.');
@@ -148,7 +148,7 @@ class StaffController extends Controller
         StaffLog::create([
             'user_id' => Auth::id(),
             'action' => 'delete',
-            'details' => "Deleted staff member: {$userName}",
+            'description' => "Deleted staff member: {$userName}",
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Staff member deleted successfully!');
@@ -172,7 +172,7 @@ class StaffController extends Controller
             StaffLog::create([
                 'user_id' => Auth::id(),
                 'action' => 'login',
-                'details' => Auth::user()->name . ' logged in',
+                'description' => Auth::user()->name . ' logged in',
             ]);
             
             return redirect()->route('dashboard')->with('success', 'Welcome back!');
@@ -188,7 +188,7 @@ class StaffController extends Controller
             StaffLog::create([
                 'user_id' => Auth::id(),
                 'action' => 'logout',
-                'details' => Auth::user()->name . ' logged out',
+                'description' => Auth::user()->name . ' logged out',
             ]);
         }
 

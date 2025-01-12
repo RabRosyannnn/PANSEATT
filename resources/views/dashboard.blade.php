@@ -135,9 +135,10 @@
         </div>
 
         <div class="section" id="bundles-section">
+            <div class ="bundle-header">
     <h4>Bundles</h4>
     <button class="btn btn-secondary mb-3" id="toggleArchivedBtn">Show Archived Bundles</button>
-    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addBundleModal">+ Add Bundle</button>
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addBundleModal">+ Add Bundle</button></div>
 
     <div id="activeBundles" class="row">
         @foreach ($activeBundles as $bundle)
@@ -189,8 +190,16 @@
 
 
 <div class="section" id="request-section">
-            <h4>Request</h4>
-            <p>Details about requests.</p>
+            <div class="bundle-header">
+                <h4>Requests</h4>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search">
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            
+            </div>
         </div>
 
         @if(Auth::user()->position === 'admin') <!-- Show staff section only for admin -->

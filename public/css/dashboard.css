@@ -245,12 +245,12 @@ aside ul li a {
 }
 
 .fc-daygrid-day-number {
-    color: #A1A1A1 !important;
+    color: #39201A !important;
 }
 
 .fc-daygrid-day-sat .fc-daygrid-day-number,
 .fc-daygrid-day-sun .fc-daygrid-day-number {
-    color: #A1A1A1 !important;
+    color: #39201A !important;
 }
 
 .fc-col-header-cell-cushion {
@@ -290,6 +290,16 @@ aside ul li a {
     justify-content: space-between;
     align-items: center;
     color: #39201A;
+}
+.bundle-header {
+    background-color: #E07A5F;
+    padding: 15px 20px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #39201A;
+    margin: 20px;
 }
 
 .search-container {

@@ -182,77 +182,99 @@
         </div>
 
         @if(Auth::user()->position === 'admin') <!-- Show staff section only for admin -->
-        <div class="section" id="staff-section">
+<div class="section" id="staff-section">
     <h4>Staff</h4>
     <button class="btn btn-secondary mb-3" id="toggleArchivedStaffBtn">Show Archived Staff</button>
     <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addStaffModal">+ Add Staff</button>
 
-
-
-    
     <div id="activeStaff" class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Position</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($activeStaff as $staff)
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>{{ $staff->name }}</td>
-                    <td>{{ $staff->email }}</td>
-                    <td>{{ $staff->position }}</td>
-                    <td>
-                        <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('staff.archive', $staff->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-warning">Archive</button>
-                        </form>
-                    </td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Position</th>
+                    <th>Actions</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach($activeStaff as $staff)
+                    <tr>
+                        <td>{{ $staff->id }}</td>
+                        <td>{{ $staff->name }}</td>
+                        <td>{{ $staff->email }}</td>
+                        <td>{{ $staff->position }}</td>
+                        <td>
+                            <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-primary">Edit</a>
+                            <form action="{{ route('staff.archive', $staff->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-warning">Archive</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
-<div id="archivedStaff" class="table-responsive" style="display:none;">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Position</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($archivedStaff as $staff)
+    <div id="archivedStaff" class="table-responsive" style="display:none;">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>{{ $staff->name }}</td>
-                    <td>{{ $staff->email }}</td>
-                    <td>{{ $staff->position }}</td>
-                    <td>
-                        <form action="{{ route('staff.restore', $staff->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-success">Restore</button>
-                        </form>
-                    </td>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Position</th>
+                    <th>Actions</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach($archivedStaff as $staff)
+                    <tr>
+                        <td>{{ $staff->name }}</td>
+                        <td>{{ $staff->email }}</td>
+                        <td>{{ $staff->position }}</td>
+                        <td>
+                            <form action="{{ route('staff.restore', $staff->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-success">Restore</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
-    
-</div>
-
-        @endif
+    <!-- Staff Logs Section -->
+    <div class="mt-4">
+        <h5>Staff Logs</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Log ID</th>
+                        <th>Action</th>
+                        <th>Staff ID</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($staffLogs as $log)
+                        <tr>
+                            <td>{{ $log->id }}</td>
+                            <td>{{ $log->action }}</td>
+                            <td>{{ $log->user_id }}</td>
+                            <td>{{ $log->created_at }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+@endif
+
 
 <!-- Modal for Adding Bundle -->
 <div class="modal fade" id="addBundleModal" tabindex="-1" role="dialog" aria-labelledby="addBundleModalLabel" aria-hidden="true">

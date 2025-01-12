@@ -47,13 +47,14 @@ class ReservationController extends Controller
     }
 
     // Show the form for editing the specified reservation
-    public function edit(Reservation $reservation)
+    public function edit($id)
     {
+        $reservation = Reservation::findOrFail($id); // Retrieve the reservation by ID
         return view('reservations.edit', compact('reservation'));
     }
 
     // Update the specified reservation in storage
-    public function update(Request $request, Reservation $reservation)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'customer_name' => 'required|string|max:255',
@@ -67,41 +68,44 @@ class ReservationController extends Controller
             'bundle' => 'nullable|string|max:255',
         ]);
 
+        $reservation = Reservation::findOrFail($id); // Retrieve the reservation by ID
         $reservation->update($request->all());
 
         return redirect()->route('dashboard')->with('success', 'Reservation updated successfully.');
     }
 
     // Remove the specified reservation from storage
-    public function destroy(Reservation $reservation)
+    public function destroy($id)
     {
+        $reservation = Reservation::findOrFail($id); // Retrieve the reservation by ID
         $reservation->delete();
 
         return redirect()->route('dashboard')->with('success', 'Reservation deleted successfully.');
     }
+
     public function getReservations()
-{
-    $reservations = Reservation::all()->map(function ($reservation) {
-        return [
-            'title' => $reservation->customer_name,
-            'start' => $reservation->date . 'T' . $reservation->time,
-            'description' => $reservation->occasion,
-        ];
-    });
+    {
+        $reservations = Reservation::all()->map(function ($reservation) {
+            return [
+                'title' => $reservation->customer_name,
+                'start' => $reservation->date . 'T' . $reservation->time,
+                'description' => $reservation->occasion,
+            ];
+        });
 
-    return response()->json($reservations);
-}
-public function getEvents()
-{
-    $events = Reservation::all()->map(function ($reservation) {
-        return [
-            'title' => $reservation->occasion . ' (' . $reservation->number_of_guests . ' guests)',
-            'start' => $reservation->date . 'T' . $reservation->time,
-            'allDay' => false,
-        ];
-    });
+        return response()->json($reservations);
+    }
 
-    return response()->json($events);
-}
+    public function getEvents()
+    {
+        $events = Reservation::all()->map(function ($reservation) {
+            return [
+                'title' => $reservation->occasion . ' (' . $reservation->number_of_guests . ' guests)',
+                'start' => $reservation->date . 'T' . $reservation->time,
+                'allDay' => false,
+            ];
+        });
 
+        return response()->json($events);
+    }
 }

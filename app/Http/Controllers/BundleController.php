@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Bundle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\StaffLog;
+use Illuminate\Support\Facades\Auth;
 
 class BundleController extends Controller
 {
@@ -40,7 +42,8 @@ class BundleController extends Controller
         $bundle->desc = $request->desc;
         $bundle->image = $imagePath;
         $bundle->save();
-    
+         // Log the action
+         $this->logAction('create', "Created a new bundle: {$bundle->name}");
         return redirect()->route('dashboard')->with('success', 'Bundle created successfully.');
     }
     
@@ -65,7 +68,8 @@ class BundleController extends Controller
             'desc' => $request->desc,
             'image' => $imagePath
         ]);
-
+         // Log the action
+         $this->logAction('update', "Updated the bundle: {$bundle->name}");
         return redirect()->route('dashboard');
     }
 
@@ -77,14 +81,16 @@ class BundleController extends Controller
         }
 
         $bundle->delete();
-
+         // Log the action
+         $this->logAction('delete', "Deleted the bundle: {$bundleName}");
         return redirect()->route('dashboard');
     }
     public function archive(Bundle $bundle)
 {
     $bundle->is_archived = true;
     $bundle->save();
-
+    // Log the action
+    $this->logAction('archive', "Archived the bundle: {$bundle->name}");
     return redirect()->route('dashboard')->with('success', 'Bundle archived successfully.');
 }
 
@@ -92,9 +98,17 @@ public function restore(Bundle $bundle)
 {
     $bundle->is_archived = false;
     $bundle->save();
-
+ // Log the action
+     $this->logAction('restore', "Restored the bundle: {$bundle->name}");
     return redirect()->route('dashboard')->with('success', 'Bundle restored successfully.');
 }
-
+private function logAction($action, $description)
+{
+    StaffLog::create([
+        'user_id' => Auth::id(), // Assuming you are using Laravel's Auth system
+        'action' => $action,
+        'description' => $description,
+    ]);
+}
 
 }

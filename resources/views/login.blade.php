@@ -47,9 +47,9 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" class ="login-button">Login</button>
             </form>
-            <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
+            <p class = "transfer">Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
         </div>
     </div>
 </body>

@@ -18,24 +18,22 @@ body {
     z-index: 10; /* Optional: Ensure it appears above other elements */
 }
 .login-container {
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 1000px;
-    height: 500px;
-flex-shrink: 0;
-    border-radius: var(--Corner-Extra-large, 28px);
-    background: #4A7C59;
-    box-shadow: 0px 4px 22.3px 3px rgba(0, 0, 0, 0.25);
-    align-items: center;
-    box-shadow: 0px 35px 20px rgba(0, 0, 0, 0.3);
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Use percentage to make it responsive */
+  max-width: 1500px; /* Restrict the maximum width */
+  height: auto; /* Adjust height dynamically */
+  padding: 2rem; /* Add some padding for spacing */
+  background: #4A7C59; /* Maintain your desired background color */
+  border-radius: 28px;
+  box-shadow: 0px 35px 20px rgba(0, 0, 0, 0.3);
+}
   
   .login-card {
-    width: 100%;
-    max-width: 400px;
-    background:#4A7C59;
+    width: 40%;
+    max-width: 500px;
+    background:#432083;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
@@ -53,8 +51,8 @@ flex-shrink: 0;
   }
   
   .logo-outer {
-    width: 120px; /* Outer logo width */
-    height: 120px; /* Outer logo height */
+    width: 320px; /* Outer logo width */
+    height: 320px; /* Outer logo height */
     position: relative;
     background-color: #e17055; /* Background color */
     border-radius: 10px; /* Rounded corners */
@@ -69,8 +67,8 @@ flex-shrink: 0;
 }
 
 .logo-inner {
-    width: 100px; /* Set a specific width for the inner logo */
-    height: 100px; /* Set a specific height for the inner logo */
+    width: 300px; /* Set a specific width for the inner logo */
+    height: 300px; /* Set a specific height for the inner logo */
     background-color: #ffd32a; /* Background color */
     border-radius: 10px; /* Rounded corners */
     display: flex; /* Use flexbox for centering */
@@ -84,8 +82,8 @@ flex-shrink: 0;
 }
 
 .logo-center {
-    width: 32px; /* Adjust width to be smaller */
-    height: 32px; /* Adjust height to be smaller */
+    width: 232px; /* Adjust width to be smaller */
+    height: 232px; /* Adjust height to be smaller */
     background-color: #4A7C59; /* Background color */
     border-radius: 10px; /* Rounded corners */
     padding-left: 70px; /* Adjust padding for inner logo */
@@ -97,10 +95,11 @@ flex-shrink: 0;
   
   .login-form-container {
     padding: 2rem;
+    width: 700px;
   }
   
   .login-title {
-    font-size: 24px;
+    font-size: 40px;
     font-weight: 600;
     text-align: center;
     margin-bottom: 1.5rem;
@@ -195,7 +194,7 @@ flex-shrink: 0;
  /* General styles for form labels */
 form label {
   display: block;
-  font-size: 16px;
+  font-size: 25px;
   font-weight: bold;
   color: #FFD166; /* Matches the title color */
   margin-bottom: 8px; /* Space between label and input/select */
@@ -213,12 +212,12 @@ form input[type="email"],
 form input[type="password"],
 form select {
   width: 100%;
-  max-width: 400px; /* Set a maximum width */
+  max-width: 600px; /* Set a maximum width */
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 25px;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
   overflow: hidden; /* Hide overflow content */
@@ -290,4 +289,8 @@ form p a:hover {
   list-style-type: none; /* Remove bullet points */
   padding: 0; /* Remove padding */
   margin: 0; /* Remove margin */
+}
+.login-button{
+  border-radius: 20px;
+  width: auto;
 }

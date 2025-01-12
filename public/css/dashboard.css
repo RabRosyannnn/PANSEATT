@@ -42,8 +42,15 @@ aside {
     color: white; /* Text color for sections */
     padding: 20px;
     margin-bottom: 20px; /* Space between sections */
-    border-radius: 30   px; /* Rounded corners */
+    border-radius: 30px; /* Rounded corners */
 
+}
+.card{
+    background-color: #FAF3DD;
+    border-radius: 30px;
+    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid #ddd;
+    align-items: center;
 }
 .card-text{
     color: black;
@@ -54,6 +61,8 @@ aside {
 .card-img-top{
     width: 416px;
     height: 400px;
+    border-radius: 30px;
+    margin-top: 10px;
 }
 .modal-dialog {
     position: absolute; /* Use absolute positioning */

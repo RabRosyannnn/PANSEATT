@@ -263,11 +263,49 @@
                 <div class="staff-actions">
             
             <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-edit">EDIT</a>
-            <form action="{{ route('staff.archive', $staff->id) }}" method="POST" style="display: inline;">
+            @section('content')
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Edit Staff Member</h2>
+            <form action="{{ route('staff.update', $staff->id) }}" method="POST">
                 @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-remove">Archive</button>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input 
+                        type="text" 
+                        name="name" 
+                        id="name" 
+                        value="{{ old('name', $staff->name) }}" 
+                        class="form-control" 
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        value="{{ old('email', $staff->email) }}" 
+                        class="form-control" 
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{{ route('staff.index') }}" class="btn btn-secondary">Cancel</a>
+                </div>
             </form>
+        </div>
+    </div>
+</div>
+@endsection
+            <form action="{{ route('staff.archive', $staff->id) }}" method="POST" style="display:inline;">
+    @csrf
+    <button type="submit" class="btn btn-archive">ARCHIVE</button>
+</form>
+
         </div>
             </div>
             @endforeach

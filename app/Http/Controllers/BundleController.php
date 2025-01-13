@@ -74,11 +74,22 @@ class BundleController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'desc' => 'required|string',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Make image nullable
         ]);
 
-        // Handle the image upload or use the existing one
-        $imagePath = $request->file('image') ? $request->file('image')->store('images') : $bundle->image;
+        // Handle the image upload
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($bundle->image) {
+                Storage::delete($bundle->image);
+            }
+
+            // Store the new image
+            $imagePath = $request->file('image')->store('images');
+        } else {
+            // Keep the existing image if no new image is uploaded
+            $imagePath = $bundle->image;
+        }
 
         // Update the bundle
         $bundle->update([
@@ -103,7 +114,6 @@ class BundleController extends Controller
                          ->withInput();  // Retain the old input in the form
     }
 }
-
 
     public function destroy(Bundle $bundle)
     {

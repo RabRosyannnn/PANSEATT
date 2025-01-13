@@ -14,7 +14,7 @@ Route::prefix('staff')->middleware('auth')->group(function () {
     Route::get('create', [StaffController::class, 'create'])->name('staff.create');  // Show create form
     Route::post('store', [StaffController::class, 'store'])->name('staff.store');  // Store new staff
     Route::get('edit/{id}', [StaffController::class, 'edit'])->name('staff.edit');  // Edit staff form
-    Route::put('update/{id}', [StaffController::class, 'update'])->name('staff.update');  // Update staff
+    Route::put('update/{user}', [StaffController::class, 'update'])->name('staff.update');  // Update staff
     Route::delete('destroy/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');  // Delete staff
 });
 

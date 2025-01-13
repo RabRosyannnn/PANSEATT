@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\StaffLog;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class StaffController extends Controller
 {
@@ -77,37 +78,56 @@ class StaffController extends Controller
 
     // Update staff member
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255|regex:/^[A-Za-z]+$/',
-            'email' => 'required|string|email|max:255|unique:users|regex:/\S/',
-            'password' => 'required|string|min:8|regex:/\S/',
-            'position' => 'required|string|max:255',
-        ], [
-            'name.regex' => 'The name must only contain letters (no spaces, numbers, or special characters).',
-            'name.required' => 'The name field is required.',
-            'email.regex' => 'The email must not contain only spaces.',
-            'password.regex' => 'The password must not contain only spaces.',
-        ]);
+{
+    // Log the incoming request data for debugging
+    \Log::info('Update request data:', $request->all());
 
-        $user = User::findOrFail($id);
-        $oldData = $user->toArray();
-        
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'position' => $request->position,
-        ]);
+    // Validate the incoming request
+    $request->validate([
+        'name' => 'required|string|max:255|regex:/^[A-Za-z]+$/',
+        'email' => [
+            'required',
+            'string',
+            'email',
+            'max:255',
+            'regex:/\S/', // Check for any whitespaces in the email
+            Rule::unique('users')->ignore($id), // Allow current email to be skipped
+        ],
+        'password' => 'nullable|string|min:8|regex:/\S/', // Optional for password update
+        'position' => 'required|string|max:255',
+    ], [
+        'name.regex' => 'The name must only contain letters (no spaces, numbers, or special characters).',
+        'name.required' => 'The name field is required.',
+        'email.regex' => 'The email must not contain only spaces.',
+        'password.regex' => 'The password must not contain only spaces.',
+    ]);
 
-        // Create staff log entry for the update
-        StaffLog::create([
-            'user_id' => Auth::id(),
-            'action' => 'update',
-            'description' => "Updated staff member: {$user->name}",
-        ]);
+    // Find the user by ID
+    $user = User::findOrFail($id);
 
-        return redirect()->route('dashboard')->with('success', 'Staff member updated successfully!');
-    }
+    // Check if password is provided and hash it if so
+    $password = $request->password ? bcrypt($request->password) : $user->password;
+
+    // Update the user
+    $user->update([
+        'name' => $request->name,
+        'email' => $request->email,
+        'position' => $request->position,
+        'password' => $password,
+    ]);
+
+    // Create staff log entry for the update
+    StaffLog::create([
+        'user_id' => Auth::id(),
+        'action' => 'update',
+        'description' => "Updated staff member: {$user->name}",
+    ]);
+
+    // Log success message for debugging
+    \Log::info('Staff member updated successfully: ', ['user_id' => $user->id]);
+
+    return redirect()->route('dashboard')->with('success', 'Staff member updated successfully!');
+}
 
     // Archive staff member
     public function archive($id)

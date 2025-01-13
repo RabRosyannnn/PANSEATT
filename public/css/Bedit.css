@@ -1,51 +1,151 @@
+/* General styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fce5b1;
+    color: #4f4f4f;
+}
+
+/* Page container */
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Card styles */
+.card {
+    width: 90%;
+    max-width: 900px;
+    background-color: #fdf5e6;
+    border-radius: 16px;
+    box-shadow: 0 30px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Header styles */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f27c4c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px 10px 0 0;
+    
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 1.5; /* Align with button height */
+}
+
+.btn-back {
+    background-color: #628e60;
+    border: none;
+    color: white;
+    padding: 5px 15px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Form container */
 .form-container {
     display: flex;
-    gap: 20px; /* Space between the two sections */
-}
-
-.form-container .form-left {
-    flex: 2; /* Take up more space */
-}
-
-.form-container .form-right {
-    flex: 1; /* Take up less space */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.form-container img {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-top: 10px;
-    max-width: 100%; /* Ensure the image doesn't overflow */
-}
-.card-container {
-    display: flex;
-    flex-direction: row;
     gap: 20px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    background-color: #fff;
+    margin-top: 20px;
 }
 
-.card-container .form-left {
-    flex: 2;
-}
-
-.card-container .form-right {
+/* Image container */
+.image-container {
     flex: 1;
     text-align: center;
 }
 
-.card-container .form-right img {
-    max-width: 100%;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+.image-label {
+    display: block;
+    cursor: pointer;
 }
 
-.card-container .form-right label {
+.image-box {
+    width: 300px;
+    height: 300px;
+    background-color: #f3f3f3;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.image-box img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+}
+
+.placeholder-icon {
+    font-size: 3rem;
+    color: #ccc;
+}
+
+.hidden-input {
+    display: none;
+}
+
+/* Form section */
+.form-section {
+    flex: 2;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
     font-weight: bold;
-    margin-bottom: 10px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* Button group */
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-save {
+    background-color: #628e60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-clear {
+    background-color: #e4a837;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
 }

@@ -56,8 +56,27 @@
     </div>
 
     <div class="content">
-    
+    <!-- Error Messages -->
+    @if ($errors->any())
+                <div class="error-messages">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
+            @if (session('error'))
+                <div class="error-message">
+                    <p>{{ session('error') }}</p>
+                </div>
+            @endif
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
     <div class="section" id="calendar-section">
             
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addReservationModal">+ Add Reservation</button>

@@ -53,7 +53,7 @@ class StaffController extends Controller
         StaffLog::create([
             'user_id' => Auth::id(),
             'action' => 'create',
-            'details' => "Created new staff member: {$user->name}",
+            'description' => "Created new staff member: {$user->name}",
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Staff member created successfully!');
@@ -79,9 +79,15 @@ class StaffController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'name' => 'required|string|max:255|regex:/^[A-Za-z]+$/',
+            'email' => 'required|string|email|max:255|unique:users|regex:/\S/',
+            'password' => 'required|string|min:8|regex:/\S/',
             'position' => 'required|string|max:255',
+        ], [
+            'name.regex' => 'The name must only contain letters (no spaces, numbers, or special characters).',
+            'name.required' => 'The name field is required.',
+            'email.regex' => 'The email must not contain only spaces.',
+            'password.regex' => 'The password must not contain only spaces.',
         ]);
 
         $user = User::findOrFail($id);

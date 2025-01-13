@@ -1,0 +1,56 @@
+/* Center the card on the page */
+.container {
+    margin-top: 50px; /* Adjust the vertical spacing */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style for the card */
+.card {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #fff; /* Ensure a clean white background */
+    border: none; /* Remove default borders */
+}
+
+/* Card title styling */
+.card-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Form group spacing */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* Adjust input fields */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    font-size: 16px;
+}
+
+/* Error message styling */
+.alert-danger {
+    font-size: 14px;
+    margin-top: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+}

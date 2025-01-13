@@ -22,41 +22,44 @@ class BundleController extends Controller
     }
 
     public function store(Request $request)
-    {
-        try {
-            // Validate the request
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'desc' => 'required|string',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for the image
-            ]);
-    
-            // Handle the file upload and store it in the public directory
-            $imagePath = null;
-            if ($request->hasFile('image')) {
-                // Save to the public folder (e.g., public/images/bundles)
-                $imagePath = $request->file('image')->storeAs('images/bundles', $request->file('image')->getClientOriginalName(), 'public');
-            }
-    
-            // Create new bundle
-            $bundle = new Bundle();
-            $bundle->name = $request->name;
-            $bundle->desc = $request->desc;
-            $bundle->image = $imagePath;
-            $bundle->save();
-    
-            // Log the action
-            $this->logAction('create', "Created a new bundle: {$bundle->name}");
-    
-            return redirect()->route('dashboard')->with('success', 'Bundle created successfully.');
-        } catch (\Exception $e) {
-            // Log the error message
-            \Log::error('Error creating bundle: ' . $e->getMessage());
-    
-            // Redirect back with an error message
-            return redirect()->back()->withErrors(['error' => 'An error occurred while creating the bundle. Please try again.']);
+{
+    try {
+        // Validate the request
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'desc' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for the image
+        ]);
+
+        // Handle the file upload and store it in the public directory
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            // Save to the public folder (e.g., public/images/bundles)
+            $imagePath = $request->file('image')->storeAs('images/bundles', $request->file('image')->getClientOriginalName(), 'public');
         }
+
+        // Create new bundle
+        $bundle = new Bundle();
+        $bundle->name = $validated['name'];
+        $bundle->desc = $validated['desc'];
+        $bundle->image = $imagePath;
+        $bundle->save();
+
+        // Log the action
+        $this->logAction('create', "Created a new bundle: {$bundle->name}");
+
+        return redirect()->route('dashboard')->with('success', 'Bundle created successfully.');
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Catch validation errors and return them to the view
+        return redirect()->back()->withErrors($e->errors())->withInput();
+    } catch (\Exception $e) {
+        // Catch general errors
+        \Log::error('Error creating bundle: ' . $e->getMessage());
+
+        return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
     }
+}
+
     
 
     public function edit(Bundle $bundle)
@@ -65,24 +68,42 @@ class BundleController extends Controller
     }
 
     public function update(Request $request, Bundle $bundle)
-    {
+{
+    try {
+        // Validate the incoming request
         $request->validate([
             'name' => 'required|string|max:255',
             'desc' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Handle the image upload or use the existing one
         $imagePath = $request->file('image') ? $request->file('image')->store('images') : $bundle->image;
 
+        // Update the bundle
         $bundle->update([
             'name' => $request->name,
             'desc' => $request->desc,
             'image' => $imagePath
         ]);
-         // Log the action
-         $this->logAction('update', "Updated the bundle: {$bundle->name}");
-        return redirect()->route('dashboard');
+
+        // Log the action
+        $this->logAction('update', "Updated the bundle: {$bundle->name}");
+
+        // Redirect back to the dashboard with a success message
+        return redirect()->route('dashboard')->with('success', 'Bundle updated successfully.');
+
+    } catch (\Exception $e) {
+        // Log the exact error message
+        \Log::error('Error updating bundle: ' . $e->getMessage());
+
+        // Redirect back to the edit form with the error message and old input
+        return redirect()->route('bundle.edit', $bundle->id)
+                         ->with('error', 'An error occurred while updating the bundle: ' . $e->getMessage())
+                         ->withInput();  // Retain the old input in the form
     }
+}
+
 
     public function destroy(Bundle $bundle)
     {

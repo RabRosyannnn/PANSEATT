@@ -1,0 +1,51 @@
+.form-container {
+    display: flex;
+    gap: 20px; /* Space between the two sections */
+}
+
+.form-container .form-left {
+    flex: 2; /* Take up more space */
+}
+
+.form-container .form-right {
+    flex: 1; /* Take up less space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-container img {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    max-width: 100%; /* Ensure the image doesn't overflow */
+}
+.card-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.card-container .form-left {
+    flex: 2;
+}
+
+.card-container .form-right {
+    flex: 1;
+    text-align: center;
+}
+
+.card-container .form-right img {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.card-container .form-right label {
+    font-weight: bold;
+    margin-bottom: 10px;
+}

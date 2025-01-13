@@ -1,0 +1,45 @@
+/* General form styling */
+.container {
+    max-width: 800px;
+}
+
+/* Flexbox layout for form columns */
+.form-section {
+    display: flex;
+    gap: 20px; /* Space between columns */
+}
+
+/* Equal width for each column */
+.form-column {
+    flex: 1;
+}
+
+/* Margin for form fields */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Button spacing */
+button {
+    min-width: 120px;
+}
+
+/* Card customization */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Card title styling */
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .form-section {
+        flex-direction: column; /* Stack columns */
+    }
+}

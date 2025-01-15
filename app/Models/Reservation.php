@@ -19,5 +19,8 @@ class Reservation extends Model
         'deposit',
         'occasion',
         'bundle',
+        'note',
+        'tracking_id',
+        'price',
     ];
 }

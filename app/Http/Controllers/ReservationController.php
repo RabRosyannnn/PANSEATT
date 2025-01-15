@@ -43,9 +43,10 @@ class ReservationController extends Controller
             'time' => 'required|date_format:H:i',
             'number_of_guests' => 'required|integer|min:1',
             'booking_confirmation' => 'boolean',
-            'deposit' => 'nullable|numeric',
-            'occasion' => 'nullable|string|max:255',
-            'bundle' => 'nullable|string|max:255',
+            'deposit' => 'required|numeric',
+            'occasion' => 'required|string|max:255',
+            'bundle' => 'required|string|max:255',
+            'note' => 'nullable|string|max:255',
         ]);
 
         // Create a new reservation
@@ -88,9 +89,10 @@ class ReservationController extends Controller
         'time' => 'required',
         'number_of_guests' => 'required|integer|min:1',
         'booking_confirmation' => 'required|boolean',
-        'deposit' => 'nullable|numeric|min:0',
-        'occasion' => 'nullable|string|max:255',
-        'bundle' => 'nullable|string|max:255',
+        'deposit' => 'required|numeric|min:0',
+        'occasion' => 'required|string|max:255',
+        'bundle' => 'required|string|max:255',
+        'note' => 'nullable|string|max:255',
     ]);
 
     $reservation = Reservation::findOrFail($id);

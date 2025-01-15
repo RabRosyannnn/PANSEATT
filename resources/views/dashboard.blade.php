@@ -11,12 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
-
-
-
-
-  
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">  
 </head>
 <body>
 <aside>
@@ -123,22 +118,22 @@
                             </div>
                             <div class="form-group">
                                 <label for="booking_confirmation">Booking Confirmation</label>
-                                <select class="form-control" id="booking_confirmation" name="booking_confirmation">
+                                <select class="form-control" id="booking_confirmation" name="booking_confirmation" required>
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="deposit">Deposit</label>
-                                <input type="number" class="form-control" id="deposit" name="deposit" step="0.01" min="0">
+                                <input type="number" class="form-control" id="deposit" name="deposit" step="0.01" min="0" required>
                             </div>
                             <div class="form-group">
                                 <label for="occasion">Occasion</label>
-                                <input type="text" class="form-control" id="occasion" name="occasion">
+                                <input type="text" class="form-control" id="occasion" name="occasion" required>
                             </div>
                             <div class="form-group">
                                 <label for="bundle">Bundle</label>
-                                <input type="text" class="form-control" id="bundle" name="bundle">
+                                <input type="text" class="form-control" id="bundle" name="bundle" required>
                             </div>
                         </div>
                     </div>

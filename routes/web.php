@@ -5,7 +5,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BundleController;
 use App\Http\Controllers\ReservationController;
-
+use App\Http\Controllers\StorefrontController;
 
 
 // Staff routes
@@ -21,9 +21,7 @@ Route::prefix('staff')->middleware('auth')->group(function () {
 Route::resource('bundles', BundleController::class);
 
 // Home Route
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/panseat-tagapo', [StorefrontController::class, 'index'])->name('home'); 
 
 // Grouping routes with 'auth' middleware
 Route::middleware(['auth'])->group(function () {

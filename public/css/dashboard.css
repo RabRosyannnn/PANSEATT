@@ -159,25 +159,26 @@ aside ul li a {
 
 /* Modal Styling */
 .modal-dialog {
-    position: absolute;
-    top: 15%;
-    left: 30%;
-    transform: translate(-50%, -50%);
-    justify-content: center;
+    position: relative;
+    margin: auto;
+    transform: none; /* Remove fixed positioning */
+    width: 90%; /* Make modal width flexible */
+    max-width: 600px; /* Set a maximum width for larger screens */
 }
 
 .modal-content {
     border: none;
-    border-radius: 28px;
+    border-radius: 20px;
     background-color: #FAF3DD;
-    width: 1000px;
+    width: 100%; /* Ensure content adapts to modal width */
 }
 
+/* Header Styling */
 .modal-header {
     background-color: #E07A5F;
-    border-bottom: 1px solid #dee2e6;
-    border-radius: 28px 28px 0 0;
     color: #FFFFFF;
+    border-radius: 20px 20px 0 0;
+    padding: 15px;
 }
 
 .modal-title {
@@ -186,6 +187,10 @@ aside ul li a {
 
 .modal-footer {
     border-top: 1px solid #dee2e6;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 .modal-body {
@@ -194,8 +199,55 @@ aside ul li a {
 
 .form-control {
     border: 1px solid #ced4da;
-    border-radius: 30px;
+    border-radius: 20px;
     background-color: #EAE4D0;
+    padding: 10px;
+    font-size: 1rem;
+}
+.modal-footer .btn {
+    margin: 5px;
+    font-size: 0.9rem; /* Reduce font size for smaller screens */
+    padding: 8px 12px;
+}
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .modal-dialog {
+        width: 100%; /* Full width on smaller screens */
+        margin: 10px; /* Add margin to avoid screen edges */
+    }
+
+    .modal-header, .modal-footer {
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    .modal-title {
+        font-size: 1.2rem; /* Adjust font size for smaller screens */
+    }
+
+    .modal-footer .btn {
+        padding: 8px 10px; /* Adjust button size */
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .modal-content {
+        border-radius: 15px;
+    }
+
+    .modal-header {
+        font-size: 1rem;
+    }
+
+    .modal-footer {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: stretch;
+    }
+
+    .modal-footer .btn {
+        width: 100%; /* Full width buttons */
+        margin: 5px 0; /* Add spacing between buttons */
+    }
 }
 
 .btn-primary {

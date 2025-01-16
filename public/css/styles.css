@@ -294,3 +294,135 @@ form p a:hover {
   border-radius: 20px;
   width: auto;
 }
+/* Base styles (already defined above) */
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .login-container {
+    flex-direction: column; /* Stack elements vertically */
+    padding: 1.5rem;
+  }
+
+  .login-card {
+    width: 60%;
+    max-width: 450px;
+  }
+
+  .login-form-container {
+    width: 90%; /* Adjust form width */
+  }
+
+  .login-title {
+    font-size: 32px; /* Smaller font size for titles */
+  }
+}
+
+@media (max-width: 992px) {
+  .logo-outer {
+    width: 280px;
+    height: 280px;
+  }
+
+  .logo-inner {
+    width: 250px;
+    height: 250px;
+  }
+
+  .logo-center {
+    width: 200px;
+    height: 200px;
+  }
+
+  .login-card {
+    width: 80%;
+    max-width: 400px;
+  }
+
+  .login-title {
+    font-size: 28px;
+  }
+
+  .login-input,
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"],
+  form select {
+    max-width: 100%; /* Adjust input width */
+    font-size: 14px; /* Smaller text size */
+  }
+
+  .login-button {
+    padding: 0.8rem; /* Adjust padding */
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 24px; /* Smaller font size for title */
+    top: 10px;
+    left: 10px;
+  }
+
+  .login-card {
+    width: 90%;
+    max-width: 350px;
+  }
+
+  .logo-outer {
+    width: 240px;
+    height: 240px;
+  }
+
+  .logo-inner {
+    width: 220px;
+    height: 220px;
+  }
+
+  .logo-center {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 20px;
+  }
+
+  .login-card {
+    width: 95%;
+    max-width: 300px;
+  }
+
+  .login-title {
+    font-size: 24px;
+  }
+
+  .logo-outer {
+    width: 200px;
+    height: 200px;
+  }
+
+  .logo-inner {
+    width: 180px;
+    height: 180px;
+  }
+
+  .logo-center {
+    width: 150px;
+    height: 150px;
+  }
+
+  .login-input,
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"],
+  form select {
+    font-size: 12px;
+    padding: 0.8rem;
+  }
+
+  .login-button {
+    font-size: 14px;
+  }
+}

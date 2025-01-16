@@ -93,6 +93,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
+                        <!-- Left Column -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="customer_name">Customer Name</label>
@@ -110,18 +111,18 @@
                                 <label for="number_of_guests">Number of Guests</label>
                                 <input type="number" class="form-control" id="number_of_guests" name="number_of_guests" required min="1">
                             </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group">
-    <label for="start_time">Start Time</label>
-    <input type="time" name="start_time" id="start_time" class="form-control" value="{{ old('start_time', $reservation->start_time ?? '') }}" required>
-</div>
+                                <label for="start_time">Start Time</label>
+                                <input type="time" name="start_time" id="start_time" class="form-control" value="{{ old('start_time', $reservation->start_time ?? '') }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_time">End Time</label>
+                                <input type="time" name="end_time" id="end_time" class="form-control" value="{{ old('end_time', $reservation->end_time ?? '') }}" required>
+                            </div>
+                        </div>
 
-<div class="form-group">
-    <label for="end_time">End Time</label>
-    <input type="time" name="end_time" id="end_time" class="form-control" value="{{ old('end_time', $reservation->end_time ?? '') }}" required>
-</div>
-
+                        <!-- Right Column -->
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="booking_confirmation">Booking Confirmation</label>
                                 <select class="form-control" id="booking_confirmation" name="booking_confirmation" required>
@@ -140,10 +141,10 @@
                             <div class="form-group">
                                 <label for="bundle">Bundle</label>
                                 <select class="form-control" id="bundle" name="bundle" required>
-                                <option value="">Select a Bundle</option>
-                                @foreach($activeBundles as $bundle)
-                                <option value="{{ $bundle->id }}">{{ $bundle->name }}</option>
-                                @endforeach
+                                    <option value="">Select a Bundle</option>
+                                    @foreach($activeBundles as $bundle)
+                                        <option value="{{ $bundle->id }}">{{ $bundle->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <!-- Note Input -->
@@ -162,6 +163,7 @@
         </div>
     </div>
 </div>
+
 
         </div>
 

@@ -33,6 +33,21 @@ main{
     color: #FFD166;
     font-size: 1.5rem;
 }
+.quote {
+    font-family: 'Dancing Script', cursive; /* Example calligraphy font */
+    font-size: 2.5em; /* Adjust the size as needed */
+    color: #4A4A4A; /* Set the desired text color */
+    text-align: center; /* Center-align the text */
+    margin: 20px 0; /* Add some vertical spacing */
+}
+.Reservation-title {
+    font-family: 'Poppins', sans-serif; /* Use Poppins font */
+    font-size: 2em; /* Adjust the size to your preference */
+    font-weight: 600; /* Set a bold weight for emphasis */
+    color: #333; /* Choose a color for the text */
+    text-align: left; /* Align text to the left */
+    margin: 20px 0; /* Add spacing around the heading */
+}
 
 .nav-item {
     display: flex;
@@ -216,6 +231,10 @@ footer {
 .modal-body {
     max-height: 400px; /* Set a maximum height for the modal body */
     overflow-y: auto; /* Enable vertical scrolling */
+}
+.carousel-inner img {
+    height: 400px; /* Set a fixed height */
+    object-fit: cover; /* Ensure images are cropped nicely */
 }
 
 

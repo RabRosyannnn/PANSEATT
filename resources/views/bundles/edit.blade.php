@@ -43,6 +43,10 @@
                                 <label for="desc">Description</label>
                                 <textarea id="desc" name="desc" rows="4" placeholder="Enter bundle description" required>{{ old('desc', $bundle->desc) }}</textarea>
                             </div>
+                            <div class="form-group">
+                                <label for="price">Price</label>
+                                <input type="text" id="price" name="price" value="{{ old('price', $bundle->price) }}" placeholder="Enter price" required>
+                            </div>
 
                             <div class="button-group">
                                 <button type="submit" class="btn-save">SAVE</button>

@@ -15,6 +15,7 @@ return new class extends Migration
         $table->id();
         $table->string('name');
         $table->text('desc');
+        $table->decimal('price', 8, 2);
         $table->string('image')->nullable();
         $table->boolean('is_archived')->default(false);
         $table->timestamps();

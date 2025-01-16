@@ -24,4 +24,8 @@ class Reservation extends Model
         'tracking_id',
         'price',
     ];
+    public function bundles()
+    {
+        return $this->belongsToMany(Bundle::class);
+    }
 }

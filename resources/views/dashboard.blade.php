@@ -80,6 +80,7 @@
     
 <!-- Modal for Adding Reservation -->
 <!-- Modal for Adding Reservation -->
+<!-- Modal for Adding Reservation -->
 <div class="modal fade" id="addReservationModal" tabindex="-1" role="dialog" aria-labelledby="addReservationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -113,11 +114,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="start_time">Start Time</label>
-                                <input type="time" name="start_time" id="start_time" class="form-control" value="{{ old('start_time', $reservation->start_time ?? '') }}" required>
+                                <input type="time" name="start_time" id="start_time" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="end_time">End Time</label>
-                                <input type="time" name="end_time" id="end_time" class="form-control" value="{{ old('end_time', $reservation->end_time ?? '') }}" required>
+                                <input type="time" name="end_time" id="end_time" class="form-control" required>
                             </div>
                         </div>
 
@@ -139,13 +140,17 @@
                                 <input type="text" class="form-control" id="occasion" name="occasion" required>
                             </div>
                             <div class="form-group">
-                                <label for="bundle">Bundle</label>
-                                <select class="form-control" id="bundle" name="bundle" required>
-                                    <option value="">Select a Bundle</option>
+                                <label for="bundles">Select Bundles</label>
+                                <div>
                                     @foreach($activeBundles as $bundle)
-                                        <option value="{{ $bundle->id }}">{{ $bundle->name }}</option>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="bundle_{{ $bundle->id }}" name="bundles[]" value="{{ $bundle->id }}">
+                                            <label class="form-check-label" for="bundle_{{ $bundle->id }}">
+                                                {{ $bundle->name }} - ${{ number_format($bundle->price, 2) }}
+                                            </label>
+                                        </div>
                                     @endforeach
-                                </select>
+                                </div>
                             </div>
                             <!-- Note Input -->
                             <div class="form-group">

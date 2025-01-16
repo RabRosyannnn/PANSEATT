@@ -33,47 +33,49 @@ class ReservationController extends Controller
 
     // Store a newly created reservation in storage
     // Store a newly created reservation in storage
-public function store(Request $request)
-{
-    try {
-        // Validate the request
-        $request->validate([
-    'customer_name' => 'required|string|max:255',
-    'contact_information' => 'required|string|max:255',
-    'date' => 'required|date',
-    'start_time' => 'required|date_format:H:i',
-    'end_time' => 'required|date_format:H:i|after:start_time', // Ensure end time is after start time
-    'number_of_guests' => 'required|integer|min:1',
-    'booking_confirmation' => 'boolean',
-    'deposit' => 'required|numeric',
-    'occasion' => 'required|string|max:255',
-    'bundle' => 'required|string|max:255',
-    'note' => 'nullable|string|max:255',
-]);
-
-
-        // Generate a 5-digit random tracking ID
-        $trackingId = random_int(10000, 99999);
-
-        // Create a new reservation with the tracking ID
-        $reservation = Reservation::create(array_merge(
-            $request->all(),
-            ['tracking_id' => $trackingId]
-        ));
-
-        // Log the action
-        $this->logAction('create', "Created a new reservation for {$reservation->customer_name} with Tracking ID: {$trackingId}");
-
-        return redirect()->route('dashboard')->with('success', "Reservation created successfully.");
-    } catch (\Exception $e) {
-        // Log the error message
-        \Log::error('Error creating reservation: ' . $e->getMessage());
-
-        // Redirect back with an error message
-        return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+    public function store(Request $request)
+    {
+        try {
+            // Validate the request
+            $request->validate([
+                'customer_name' => 'required|string|max:255',
+                'contact_information' => 'required|string|max:255',
+                'date' => 'required|date',
+                'start_time' => 'required|date_format:H:i',
+                'end_time' => 'required|date_format:H:i|after:start_time', // Ensure end time is after start time
+                'number_of_guests' => 'required|integer|min:1',
+                'booking_confirmation' => 'boolean',
+                'deposit' => 'required|numeric',
+                'occasion' => 'required|string|max:255',
+                'bundles' => 'required|array', // Change 'bundle' to 'bundles'
+                'bundles.*' => 'required|integer|exists:bundles,id', // Ensure each selected bundle ID exists in the bundles table
+                'note' => 'nullable|string|max:255',
+            ]);
+    
+            // Generate a 5-digit random tracking ID
+            $trackingId = random_int(10000, 99999);
+    
+            // Create a new reservation with the tracking ID
+            $reservation = Reservation::create(array_merge(
+                $request->all(),
+                ['tracking_id' => $trackingId]
+            ));
+    
+            // Attach the selected bundles to the reservation
+            $reservation->bundles()->attach($request->bundles); // Assuming you have a many-to-many relationship
+    
+            // Log the action
+            $this->logAction('create', "Created a new reservation for {$reservation->customer_name} with Tracking ID: {$trackingId}");
+    
+            return redirect()->route('dashboard')->with('success', "Reservation created successfully.");
+        } catch (\Exception $e) {
+            // Log the error message
+            \Log::error('Error creating reservation: ' . $e->getMessage());
+    
+            // Redirect back with an error message
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
-}
-
 
     // Display the specified reservation
     public function show($id)
@@ -96,7 +98,8 @@ public function store(Request $request)
         'customer_name' => 'required|string|max:255',
         'contact_information' => 'required|string|max:255',
         'date' => 'required|date',
-        'time' => 'required',
+        'start_time' => 'required|date_format:H:i',
+        'end_time' => 'required|date_format:H:i|after:start_time',
         'number_of_guests' => 'required|integer|min:1',
         'booking_confirmation' => 'required|boolean',
         'deposit' => 'required|numeric|min:0',

@@ -28,7 +28,7 @@ class BundleController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'desc' => 'required|string',
-            'deposit' => 'required|numeric',
+            'price' => 'required|numeric',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for the image
         ]);
 
@@ -43,6 +43,7 @@ class BundleController extends Controller
         $bundle = new Bundle();
         $bundle->name = $validated['name'];
         $bundle->desc = $validated['desc'];
+        $bundle->price = $validated['price'];
         $bundle->image = $imagePath;
         $bundle->save();
 
@@ -75,7 +76,7 @@ class BundleController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'desc' => 'required|string',
-            'deposit' => 'required|numeric',
+            'price' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Make image nullable
         ]);
 
@@ -97,6 +98,7 @@ class BundleController extends Controller
         $bundle->update([
             'name' => $request->name,
             'desc' => $request->desc,
+            'price' => $request->price,
             'image' => $imagePath
         ]);
 

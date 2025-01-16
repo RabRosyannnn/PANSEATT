@@ -59,7 +59,31 @@ class StaffController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Staff member created successfully!');
     }
+    public function store2(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|regex:/^[A-Za-z]+$/',
+            'email' => 'required|string|email|max:255|unique:users|regex:/\S/',
+            'password' => 'required|string|min:8|regex:/\S/',
+            'position' => 'required|string|max:255',
+        ], [
+            'name.regex' => 'The name must only contain letters (no spaces, numbers, or special characters).',
+            'name.required' => 'The name field is required.',
+            'email.regex' => 'The email must not contain only spaces.',
+            'password.regex' => 'The password must not contain only spaces.',
+        ]);
 
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'position' => $request->position,
+            'is_archived' => false,
+        ]);
+
+
+        return redirect()->route('dashboard')->with('success', 'Staff member created successfully!');
+    }
     // Show staff member details
     public function show($id)
     {

@@ -11,15 +11,25 @@
         <h2>Reservation Details</h2>
         <div class="card">
             <div class="card-body">
+                <!-- Tracking ID -->
+                <p class="card-text text-muted"><strong>Tracking ID:</strong> {{ $reservation->tracking_id ?? 'N/A' }}</p>
+                
+                <!-- Customer Name -->
                 <h5 class="card-title">Customer Name: {{ $reservation->customer_name }}</h5>
+                
+                <!-- Other Reservation Details -->
                 <p class="card-text"><strong>Contact Information:</strong> {{ $reservation->contact_information }}</p>
                 <p class="card-text"><strong>Date:</strong> {{ \Carbon\Carbon::parse($reservation->date)->format('F j, Y') }}</p>
-                <p class="card-text"><strong>Time:</strong> {{ \Carbon\Carbon::parse($reservation->time)->format('g:i A') }}</p>
+                <p class="card-text"><strong>Start Time:</strong> {{ \Carbon\Carbon::parse($reservation->start_time)->format('g:i A') }}</p>
+                <p class="card-text"><strong>End Time:</strong> {{ \Carbon\Carbon::parse($reservation->end_time)->format('g:i A') }}</p>
                 <p class="card-text"><strong>Number of Guests:</strong> {{ $reservation->number_of_guests }}</p>
                 <p class="card-text"><strong>Booking Confirmation:</strong> {{ $reservation->booking_confirmation ? 'Yes' : 'No' }}</p>
                 <p class="card-text"><strong>Deposit:</strong> {{ $reservation->deposit ? '$' . number_format($reservation->deposit, 2) : 'N/A' }}</p>
                 <p class="card-text"><strong>Occasion:</strong> {{ $reservation->occasion ?? 'N/A' }}</p>
                 <p class="card-text"><strong>Bundle:</strong> {{ $reservation->bundle ?? 'N/A' }}</p>
+                
+                <!-- Note -->
+                <p class="card-text"><strong>Note:</strong> {{ $reservation->note ?? 'No additional notes provided.' }}</p>
             </div>
         </div>
         <div class="mt-4">

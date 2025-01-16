@@ -13,7 +13,8 @@ class CreateReservationsTable extends Migration
             $table->string('customer_name');
             $table->string('contact_information');
             $table->date('date');
-            $table->time('time');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->integer('number_of_guests');
             $table->boolean('booking_confirmation')->default(false);
             $table->decimal('price', 8, 2)->nullable();

@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/events', [DashboardController::class, 'getEvents']);
     Route::get('/reservations/data', [ReservationController::class, 'getReservations'])->name('reservations.data');
 
-    Route::get('/events', [ReservationController::class, 'getEvents']);
+    Route::get('/events', [ReservationController::class, 'getEvents'])->name('events.get');
     Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
 
 });
@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
 // Registration Routes (no middleware, accessible to everyone)
 Route::get('register', [StaffController::class, 'create'])->name('register');
 Route::post('register', [StaffController::class, 'store']);
-
+Route::post('register', [StaffController::class, 'store2'])->name('register2');
 // Login Routes (no middleware, accessible to everyone)
 Route::get('login', [StaffController::class, 'login'])->name('login');
 Route::post('login', [StaffController::class, 'authenticate'])->name('login.authenticate');

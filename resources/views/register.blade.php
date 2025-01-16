@@ -35,7 +35,7 @@
                     <p>{{ session('error') }}</p>
                 </div>
             @endif
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register2') }}">
                 @csrf
                 <div class="form-group">
                     <label for="name">Name</label>

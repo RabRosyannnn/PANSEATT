@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">  
 </head>
@@ -80,6 +79,7 @@
             
     
 <!-- Modal for Adding Reservation -->
+<!-- Modal for Adding Reservation -->
 <div class="modal fade" id="addReservationModal" tabindex="-1" role="dialog" aria-labelledby="addReservationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -113,9 +113,15 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="time">Time</label>
-                                <input type="time" class="form-control" id="time" name="time" required>
-                            </div>
+    <label for="start_time">Start Time</label>
+    <input type="time" name="start_time" id="start_time" class="form-control" value="{{ old('start_time', $reservation->start_time ?? '') }}" required>
+</div>
+
+<div class="form-group">
+    <label for="end_time">End Time</label>
+    <input type="time" name="end_time" id="end_time" class="form-control" value="{{ old('end_time', $reservation->end_time ?? '') }}" required>
+</div>
+
                             <div class="form-group">
                                 <label for="booking_confirmation">Booking Confirmation</label>
                                 <select class="form-control" id="booking_confirmation" name="booking_confirmation" required>
@@ -133,7 +139,17 @@
                             </div>
                             <div class="form-group">
                                 <label for="bundle">Bundle</label>
-                                <input type="text" class="form-control" id="bundle" name="bundle" required>
+                                <select class="form-control" id="bundle" name="bundle" required>
+                                <option value="">Select a Bundle</option>
+                                @foreach($activeBundles as $bundle)
+                                <option value="{{ $bundle->id }}">{{ $bundle->name }}</option>
+                                @endforeach
+                                </select>
+                            </div>
+                            <!-- Note Input -->
+                            <div class="form-group">
+                                <label for="note">Note</label>
+                                <textarea class="form-control" id="note" name="note" rows="3" placeholder="Enter additional notes here..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -146,6 +162,7 @@
         </div>
     </div>
 </div>
+
         </div>
 
         <div class="section" id="bundles-section">
@@ -471,33 +488,32 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('reservationCalendar');
+    var calendarEl = document.getElementById('reservationCalendar');
 
-        if (!calendarEl) {
-            console.error('Element with id "reservationCalendar" not found.');
-            return;
+    if (!calendarEl) {
+        console.error('Element with id "reservationCalendar" not found.');
+        return;
+    }
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: '{{ route('events.get') }}', // Correctly reference the route
+        eventClick: function (info) {
+            // Prevent default browser behavior
+            info.jsEvent.preventDefault();
+
+            // Redirect to the reservation details page
+            const reservationId = info.event.id;
+            window.location.href = `/reservations/${reservationId}`;
         }
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            events: '{{ route('reservations.index') }}', // URL to fetch events (JSON endpoint)
-            eventClick: function (info) {
-                // Prevent default browser behavior
-                info.jsEvent.preventDefault();
-
-                // Redirect to the reservation details page
-                const reservationId = info.event.id;
-                window.location.href = `/reservations/${reservationId}`;
-            }
-
-        });
-        calendar.render();
     });
+    calendar.render();
+});
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

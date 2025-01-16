@@ -32,38 +32,48 @@ class ReservationController extends Controller
     }
 
     // Store a newly created reservation in storage
-    public function store(Request $request)
+    // Store a newly created reservation in storage
+public function store(Request $request)
 {
     try {
         // Validate the request
         $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'contact_information' => 'required|string|max:255',
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
-            'number_of_guests' => 'required|integer|min:1',
-            'booking_confirmation' => 'boolean',
-            'deposit' => 'required|numeric',
-            'occasion' => 'required|string|max:255',
-            'bundle' => 'required|string|max:255',
-            'note' => 'nullable|string|max:255',
-        ]);
+    'customer_name' => 'required|string|max:255',
+    'contact_information' => 'required|string|max:255',
+    'date' => 'required|date',
+    'start_time' => 'required|date_format:H:i',
+    'end_time' => 'required|date_format:H:i|after:start_time', // Ensure end time is after start time
+    'number_of_guests' => 'required|integer|min:1',
+    'booking_confirmation' => 'boolean',
+    'deposit' => 'required|numeric',
+    'occasion' => 'required|string|max:255',
+    'bundle' => 'required|string|max:255',
+    'note' => 'nullable|string|max:255',
+]);
 
-        // Create a new reservation
-        $reservation = Reservation::create($request->all());
+
+        // Generate a 5-digit random tracking ID
+        $trackingId = random_int(10000, 99999);
+
+        // Create a new reservation with the tracking ID
+        $reservation = Reservation::create(array_merge(
+            $request->all(),
+            ['tracking_id' => $trackingId]
+        ));
 
         // Log the action
-        $this->logAction('create', "Created a new reservation for {$reservation->customer_name}");
+        $this->logAction('create', "Created a new reservation for {$reservation->customer_name} with Tracking ID: {$trackingId}");
 
-        return redirect()->route('dashboard')->with('success', 'Reservation created successfully.');
+        return redirect()->route('dashboard')->with('success', "Reservation created successfully.");
     } catch (\Exception $e) {
         // Log the error message
         \Log::error('Error creating reservation: ' . $e->getMessage());
 
         // Redirect back with an error message
-        return redirect()->back()->withErrors(['error' => 'An error occurred while creating the reservation. Please try again.']);
+        return redirect()->back()->withErrors(['error' => $e->getMessage()]);
     }
 }
+
 
     // Display the specified reservation
     public function show($id)
@@ -126,17 +136,20 @@ class ReservationController extends Controller
     }
 
     public function getEvents()
-    {
-        $events = Reservation::all()->map(function ($reservation) {
-            return [
-                'title' => $reservation->occasion . ' (' . $reservation->number_of_guests . ' guests)',
-                'start' => $reservation->date . 'T' . $reservation->time,
-                'allDay' => false,
-            ];
-        });
+{
+    $events = Reservation::all()->map(function ($reservation) {
+        return [
+            'id' => $reservation->id, // Include the ID for event identification
+            'title' => 'From: ' . $reservation->start_time . ' To: ' . $reservation->end_time, // Display start and end time
+            'start' => $reservation->date . 'T' . $reservation->start_time, // Use start_time instead of time
+            'end' => $reservation->date . 'T' . $reservation->end_time, // Include end time
+            'allDay' => false,
+        ];
+    });
 
-        return response()->json($events);
-    }
+    return response()->json($events);
+}
+
     private function logAction($action, $description)
 {
     StaffLog::create([

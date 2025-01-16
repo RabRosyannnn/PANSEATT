@@ -18,24 +18,24 @@ class DashboardController extends Controller
         $activeBundles = Bundle::where('is_archived', false)->get();
         $archivedBundles = Bundle::where('is_archived', true)->get();
         $staffLogs = StaffLog::latest()->take(10)->get();
+        $reservations = Reservation::all();
 
-        return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 'archivedStaff', 'staffLogs'));
+        return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 'archivedStaff', 'staffLogs', 'reservations'));
     }
 
     public function getEvents()
-    {
-        // Fetch reservations from the database
-        $reservations = Reservation::all();
+{
+    $reservations = Reservation::all();
+    
+    $events = $reservations->map(function ($reservation) {
+        return [
+            'title' => $reservation->customer_name . ' (' . $reservation->number_of_guests . ' guests)',
+            'start' => $reservation->date . 'T' . $reservation->start_time,
+            'end' => $reservation->date . 'T' . $reservation->end_time,
+            'allDay' => false,
+        ];
+    });
 
-        // Transform the data into the format FullCalendar expects
-        $events = $reservations->map(function ($reservation) {
-            return [
-                'title' => $reservation->customer_name . ' (' . $reservation->number_of_guests . ' guests)',
-                'start' => $reservation->date . 'T' . $reservation->time, // Combine date and time
-                'allDay' => false,
-            ];
-        });
-
-        return response()->json($events);
-    }
+    return response()->json($events);
+}
 }

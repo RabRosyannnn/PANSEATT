@@ -12,63 +12,86 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title text-center mb-4">Edit Reservation</h2>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="{{ route('reservations.update', $reservation->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
                     <div class="form-section">
-                        <!-- Left Column -->
                         <div class="form-column">
                             <div class="form-group">
                                 <label for="customer_name">Customer Name</label>
-                                <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ $reservation->customer_name }}" required>
+                                <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ old('customer_name', $reservation->customer_name) }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="contact_information">Contact Information</label>
-                                <input type="text" class="form-control" id="contact_information" name="contact_information" value="{{ $reservation->contact_information }}" required>
+                                <input type="text" class="form-control" id="contact_information" name="contact_information" value="{{ old('contact_information', $reservation->contact_information) }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="date">Date</label>
-                                <input type="date" class="form-control" id="date" name="date" value="{{ $reservation->date }}" required>
+                                <input type="date" class="form-control" id="date" name="date" value="{{ old('date', $reservation->date) }}" required>
                             </div>
                             <div class="form-group">
-                                <label for="time">Time</label>
-                                <input type="time" class="form-control" id="time" name="time" value="{{ $reservation->time }}" required>
+                                <label for="number_of_guests">Number of Guests</label>
+                                <input type="number" class="form-control" id="number_of_guests" name="number_of_guests" value="{{ old('number_of_guests', $reservation->number_of_guests) }}" required min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="start_time">Start Time</label>
+                                <input type="time" name="start_time" id="start_time" class="form-control" value="{{ old('start_time', $reservation->start_time) }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_time">End Time</label>
+                                <input type="time" name="end_time" id="end_time" class="form-control" value="{{ old('end_time', $reservation->end_time) }}" required>
                             </div>
                         </div>
 
-                        <!-- Right Column -->
                         <div class="form-column">
                             <div class="form-group">
-                                <label for="number_of_guests">Number of Guests</label>
-                                <input type="number" class="form-control" id="number_of_guests" name="number_of_guests" value="{{ $reservation->number_of_guests }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="booking_confirmation">Booking Confirmation</label>
-                                <select class="form-control" id="booking_confirmation" name="booking_confirmation" required>
-                                    <option value="1" {{ $reservation->booking_confirmation ? 'selected' : '' }}>Yes</option>
-                                    <option value="0" {{ !$reservation->booking_confirmation ? 'selected' : '' }}>No</option>
+                                <label for="booking_confirmation">Booking Status</label>
+                                <select name="booking_confirmation" id="booking_confirmation" class="form-control">
+                                    <option value="processing" {{ old('booking_confirmation', $reservation->booking_confirmation) == 'processing' ? 'selected' : '' }}>Processing</option>
+                                    <option value="confirmed" {{ old('booking_confirmation', $reservation->booking_confirmation) == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                                    <option value="canceled" {{ old('booking_confirmation', $reservation->booking_confirmation) == 'canceled' ? 'selected' : '' }}>Canceled</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="deposit">Deposit (optional)</label>
-                                <input type="number" class="form-control" id="deposit" name="deposit" step="0.01" value="{{ $reservation->deposit }}">
+ <div class="form-group">
+                                <label for="deposit">Deposit</label>
+                                <input type="number" class="form-control" id="deposit" name="deposit" step="0.01" min="0" value="{{ old('deposit', $reservation->deposit) }}">
                             </div>
                             <div class="form-group">
                                 <label for="occasion">Occasion</label>
-                                <input type="text" class="form-control" id="occasion" name="occasion" value="{{ $reservation->occasion }}">
+                                <input type="text" class="form-control" id="occasion" name="occasion" value="{{ old('occasion', $reservation->occasion) }}">
                             </div>
                             <div class="form-group">
-                                <label for="bundle">Bundle</label>
-                                <input type="text" class="form-control" id="bundle" name="bundle" value="{{ $reservation->bundle }}">
+                                <label for="bundles">Select Bundles</label>
+                                <div>
+                                    @foreach($activeBundles as $bundle)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="bundle_{{ $bundle->id }}" name="bundles[]" value="{{ $bundle->id }}" {{ $reservation->bundles->contains($bundle->id) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="bundle_{{ $bundle->id }}">
+                                                {{ $bundle->name }} - ${{ number_format($bundle->price, 2) }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="note">Note</label>
+                                <textarea class="form-control" id="note" name="note" rows="3" placeholder="Enter additional notes here...">{{ old('note', $reservation->note) }}</textarea>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Buttons -->
-                    <div class="d-flex justify-content-between mt-4">
-                        <button type="submit" class="btn btn-success">Save Changes</button>
-                        <a href="{{ route('reservations.show', $reservation->id) }}" class="btn btn-secondary">Cancel</a>
+                    <div class="modal-footer">
+                    <a href="{{ route('reservations.show', $reservation->id) }}" class="btn btn-secondary">Close</a>    
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                 </form>
             </div>

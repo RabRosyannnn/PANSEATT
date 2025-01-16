@@ -483,23 +483,6 @@
     });
 </script>
 <script>
-    document.getElementById('toggleArchivedStaffBtn').addEventListener('click', function() {
-        const activeStaff = document.getElementById('activeStaff');
-        const archivedStaff = document.getElementById('archivedStaff');
-        const toggleBtn = this;
-
-        if (archivedStaff.style.display === 'none') {
-            archivedStaff.style.display = 'block';
-            activeStaff.style.display = 'none';
-            toggleBtn.textContent = 'Show Active Staff';
-        } else {
-            archivedStaff.style.display = 'none';
-            activeStaff.style.display = 'block';
-            toggleBtn.textContent = 'Show Archived Staff';
-        }
-    });
-</script>
-<script>
     document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('reservationCalendar');
 
@@ -515,14 +498,15 @@
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        events: '{{ route('events.get') }}', // Correctly reference the route
-        eventClick: function (info) {
-            // Prevent default browser behavior
-            info.jsEvent.preventDefault();
-
-            // Redirect to the reservation details page
-            const reservationId = info.event.id;
-            window.location.href = `/reservations/${reservationId}`;
+        events: '{{ route('events.get') }}', // Ensure this route returns the correct JSON format
+        eventTimeFormat: { // Customize the time format
+            hour: '2-digit',
+            minute: '2-digit',
+            meridiem: 'short' // Use 'short' for AM/PM
+        },
+        eventRender: function(info) {
+            // Customize the display to show only the end time
+            info.el.innerHTML = `End Time: ${info.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
         }
     });
     calendar.render();

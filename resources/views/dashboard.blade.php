@@ -504,9 +504,13 @@
             minute: '2-digit',
             meridiem: 'short' // Use 'short' for AM/PM
         },
-        eventRender: function(info) {
-            // Customize the display to show only the end time
-            info.el.innerHTML = `End Time: ${info.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        eventClick: function (info) {
+            // Prevent default browser behavior
+            info.jsEvent.preventDefault();
+
+            // Redirect to the reservation details page
+            const reservationId = info.event.id;
+            window.location.href = `/reservations/${reservationId}`;
         }
     });
     calendar.render();

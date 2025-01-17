@@ -230,17 +230,44 @@
 
 
 <div class="section" id="request-section">
-            <div class="bundle-header">
-                <h4>Requests</h4>
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Search">
-                    <button type="submit" class="search-button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            
-            </div>
-        </div>
+    <div class="bundle-header">
+        <h4>Requests</h4>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tracking ID</th>
+                <th>Action</th>
+                <th>Message</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($modelRequests as $request)
+                <tr>
+                    <td>{{ $request->tracking_id }}</td>
+                    <td>{{ $request->action }}</td>
+                    <td>{{ $request->message }}</td>
+                    <td>
+                        <form action="" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-success">Approve</button>
+                        </form>
+                        
+                        <form action="" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-danger">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
 
         @if(Auth::user()->position === 'admin') <!-- Show staff section only for admin -->
         <div class="section" id="staff-section">
@@ -551,6 +578,15 @@
 
         changeActiveLink();
         window.addEventListener('scroll', changeActiveLink);
+    });
+</script>
+<script>
+    document.querySelectorAll('.btn-success, .btn-danger').forEach(button => {
+        button.addEventListener('click', function(event) {
+            if (!confirm('Are you sure you want to perform this action?')) {
+                event.preventDefault();
+            }
+        });
     });
 </script>
 

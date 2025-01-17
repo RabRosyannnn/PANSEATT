@@ -8,6 +8,7 @@ use App\Models\Reservation; // Import the Reservation model
 use Illuminate\Http\Request;
 use App\Models\StaffLog;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Request as ModelsRequest;
 
 class DashboardController extends Controller
 {
@@ -19,8 +20,8 @@ class DashboardController extends Controller
         $archivedBundles = Bundle::where('is_archived', true)->get();
         $staffLogs = StaffLog::latest()->paginate(10);
         $reservations = Reservation::all();
-
-        return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 'archivedStaff', 'staffLogs', 'reservations'));
+        $modelRequests = ModelsRequest::all();
+        return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 'archivedStaff', 'staffLogs', 'reservations', 'modelRequests'));
     }
 
     public function getEvents()

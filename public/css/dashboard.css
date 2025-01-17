@@ -575,7 +575,7 @@ aside ul li a {
 
 .custom-event-content div {
     display: inline-block; /* Ensures the content scrolls as one block */
-    animation: marquee 10s linear infinite; /* 10 seconds animation loop */
+    /* 10 seconds animation loop */
 }
 
 @keyframes marquee {

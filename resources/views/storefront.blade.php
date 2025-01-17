@@ -241,11 +241,15 @@
 <div class="calendar-section">
     <h1 class="Reservation-title">Reservation Details</h1>
     
-    <!-- Buttons -->
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#bundlesModal">View Bundles</button>
-    <button class="btn btn-secondary mb-3" data-toggle="modal" data-target="#trackModal">Track</button>
-    
+    <div class="button-borders">
+    <button class="primary-button" data-toggle="modal" data-target="#bundlesModal">View Bundles</button>
+    <button class="primary-button" data-toggle="modal" data-target="#trackModal">Track</button>
+    </div>
+
     <div id="reservationCalendar"></div>
+    <p class="calendar-info">
+        To make a reservation, please contact us directly at <strong>09817396111</strong> or visit our store. Our team will assist you with booking a slot.
+    </p>
 </div>
 
 <!-- Modal for displaying bundles -->

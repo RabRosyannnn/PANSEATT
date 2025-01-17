@@ -14,8 +14,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-
-
 </head>
 <body>
     <header>
@@ -32,57 +30,55 @@
 
     <main>
         <h1 class="main-title">Welcome to PansEat Tagapo</h1>
-        <h2 class="quote">Your Second Home for Delicious Lutong Bahay </h2>
+        <h2 class="quote">Your Second Home for Delicious Lutong Bahay</h2>
+        
         <div class="section">
-        <div class="info-section">
-    <div id="restaurantCarousel" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#restaurantCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#restaurantCarousel" data-slide-to="1"></li>
-            <li data-target="#restaurantCarousel" data-slide-to="2"></li>
-            <li data-target="#restaurantCarousel" data-slide-to="3"></li>
-            <li data-target="#restaurantCarousel" data-slide-to="4"></li>
-            <li data-target="#restaurantCarousel" data-slide-to="5"></li>
-        </ol>
+            <div class="info-section">
+                <div id="restaurantCarousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#restaurantCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#restaurantCarousel" data-slide-to="1"></li>
+                        <li data-target="#restaurantCarousel" data-slide-to="2"></li>
+                        <li data-target="#restaurantCarousel" data-slide-to="3"></li>
+                        <li data-target="#restaurantCarousel" data-slide-to="4"></li>
+                        <li data-target="#restaurantCarousel" data-slide-to="5"></li>
+                    </ol>
 
-        <!-- Carousel Inner -->
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{{ asset('images/pt1.jpg') }}" class="d-block w-100" alt="Part 1">
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/pt2.jpg') }}" class="d-block w-100" alt="Part 2">
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/pt3.jpg') }}" class="d-block w-100" alt="Part 3">
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/pt4.jpg') }}" class="d-block w-100" alt="Part 4">
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/pt5.jpg') }}" class="d-block w-100" alt="Part 5">
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/pt6.jpg') }}" class="d-block w-100" alt="Part 6">
-            </div>
-        </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{ asset('images/pt1.jpg') }}" class="d-block w-100" alt="Part 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('images/pt2.jpg') }}" class="d-block w-100" alt="Part 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('images/pt3.jpg') }}" class="d-block w-100" alt="Part 3">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('images/pt4.jpg') }}" class="d-block w-100" alt="Part 4">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('images/pt5.jpg') }}" class="d-block w-100" alt="Part 5">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('images/pt6.jpg') }}" class="d-block w-100" alt="Part 6">
+                        </div>
+                    </div>
 
-        <!-- Controls -->
-        <a class="carousel-control-prev" href="#restaurantCarousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#restaurantCarousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-    <div class="info-content">
-        <h3>Our Restaurant</h3>
-        <p>Experience the finest Filipino cuisine in Tagapo. Our restaurant offers a wide variety of traditional dishes made with the freshest ingredients.</p>
-    </div>
-</div>
+                    <a class="carousel-control-prev" href="#restaurantCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#restaurantCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                <div class="info-content">
+                    <h3>Our Restaurant</h3>
+                    <p>Experience the finest Filipino cuisine in Tagapo. Our restaurant offers a wide variety of traditional dishes made with the freshest ingredients.</p>
+                </div>
+            </div>
 
             <div class="info-section">
             <div id="specialtiesCarousel" class="carousel slide" data-ride="carousel">
@@ -159,12 +155,90 @@
                 </div>
             </div>
             </div>
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3865.889848272707!2d121.10210607577037!3d14.317830483935841!2m3!1f0! 2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d9b8db80dd7d%3A0x463744aee1730445!2slmc%20original%20pancit%20tagapo!5e0!3m2!1sen!2sph!4v1736986204983!5m2!1sen!2sph" width="600" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>        
-        
 
-            <div class="calendar-section">
+        <div class="location-section">
+    <h2 class="location-title">Where to Find Us?</h2>
+    <div class="location-content">
+        <div class="location-info">
+            <div class="address-details">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>LMCT Building, E Paguio Street, Tagapo, Santa Rosa, Laguna</p>
+            </div>
+            <div class="operating-hours">
+    <i class="far fa-clock"></i>
+    <h4>Operating Hours:</h4>
+    <div class="hours-grid">
+        <div class="day-hours">
+            <span class="day">Monday:</span>
+            <span class="hours closed">Closed</span>
+        </div>
+        <div class="day-hours">
+            <span class="day">Tuesday:</span>
+            <span class="hours">9 AM – 10 PM</span>
+        </div>
+        <div class="day-hours">
+            <span class="day">Wednesday:</span>
+            <span class="hours">9 AM – 10 PM</span>
+        </div>
+        <div class="day-hours">
+            <span class="day">Thursday:</span>
+            <span class="hours">9 AM – 10 PM</span>
+        </div>
+        <div class="day-hours">
+            <span class="day">Friday:</span>
+            <span class="hours">9 AM – 10 PM</span>
+        </div>
+        <div class="day-hours">
+            <span class="day">Saturday:</span>
+            <span class="hours">9 AM – 10 PM</span>
+        </div>
+        <div class="day-hours">
+            <span class="day">Sunday:</span>
+            <span class="hours">9 AM – 10 PM</span>
+        </div>
+    </div>
+</div>
+            <div class="contact-info">
+                <i class="fas fa-phone"></i>
+                <p>09817396111</p>
+            </div>
+        </div>
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3865.889848272707!2d121.10210607577037!3d14.317830483935841!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d9b8db80dd7d%3A0x463744aee1730445!2slmc%20original%20pancit%20tagapo!5e0!3m2!1sen!2sph!4v1736986204983!5m2!1sen!2sph" width="600" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</div>
+        <!-- Modals remain the same -->
+         <!-- Modal for tracking -->
+<div class="modal fade" id="trackModal" tabindex="-1" role="dialog" aria-labelledby="trackModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="trackModalLabel">Track Reservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+                
+                <form action="{{ route('reservations.track') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="trackingId">Tracking ID</label>
+                        <input type="text" id="trackingId" name="trackingId" class="form-control" placeholder="Enter your tracking ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Track</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="calendar-section">
     <h1 class="Reservation-title">Reservation Details</h1>
     
     <!-- Buttons -->
@@ -239,28 +313,50 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('reservationCalendar');
+    document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('reservationCalendar');
 
-            if (!calendarEl) {
-                console.error('Element with id "reservationCalendar" not found.');
-                return;
-            }
+    if (!calendarEl) {
+        console.error('Element with id "reservationCalendar" not found.');
+        return;
+    }
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                events: '{{ route('events.get') }}',
-                eventClick: function (info) {
-                    info.jsEvent.preventDefault();
-                }
+    console.log('Initializing calendar...'); // Debugging output
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: '{{ route('events.get') }}', // Fetch events from the server
+        eventTimeFormat: false, // Prevent FullCalendar from displaying the default time
+        eventContent: function (info) {
+            // Custom rendering of event content
+            const startTime = new Date(info.event.start).toLocaleTimeString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
             });
-            calendar.render();
-        });
-    </script>
+            const endTime = new Date(info.event.end).toLocaleTimeString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            // Create custom content
+            const customContent = document.createElement('div');
+            customContent.className = 'custom-event-content'; // Add class for styling
+            customContent.innerHTML = `<span>${startTime} - ${endTime}</span>`;
+            return { domNodes: [customContent] };
+        },
+    });
+
+    calendar.render();
+    console.log('Calendar rendered.'); // Debugging output
+});
+
+</script>
 </body>
 </html>

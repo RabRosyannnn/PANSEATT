@@ -561,4 +561,29 @@ aside ul li a {
 .btn-secondary:hover {
     background-color: #e0b652;
 }
+.custom-event-content {
+    overflow: hidden; /* Ensure content doesn't spill out */
+    white-space: nowrap; /* Prevent text wrapping */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 12px; /* Optional: Adjust font size */
+}
+
+.custom-event-content div {
+    display: inline-block; /* Ensures the content scrolls as one block */
+    animation: marquee 10s linear infinite; /* 10 seconds animation loop */
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%); /* Start off-screen to the right */
+    }
+    100% {
+        transform: translateX(-100%); /* End off-screen to the left */
+    }
+}
 

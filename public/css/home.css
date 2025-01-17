@@ -1,6 +1,5 @@
 /* Reset and base styles */
 * {
-    
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -10,8 +9,9 @@
 body {
     background-color: #FAF3DD;
 }
-main{
-    background-color: #FAF3DD   ;
+
+main {
+    background-color: #FAF3DD;
     padding-top: 20px;
 }
 
@@ -33,20 +33,22 @@ main{
     color: #FFD166;
     font-size: 1.5rem;
 }
+
 .quote {
-    font-family: 'Dancing Script', cursive; /* Example calligraphy font */
-    font-size: 2.5em; /* Adjust the size as needed */
-    color: #4A4A4A; /* Set the desired text color */
-    text-align: center; /* Center-align the text */
-    margin: 20px 0; /* Add some vertical spacing */
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5em;
+    color: #4A4A4A;
+    text-align: center;
+    margin: 20px 0;
 }
+
 .Reservation-title {
-    font-family: 'Poppins', sans-serif; /* Use Poppins font */
-    font-size: 2em; /* Adjust the size to your preference */
-    font-weight: 600; /* Set a bold weight for emphasis */
-    color: #333; /* Choose a color for the text */
-    text-align: left; /* Align text to the left */
-    margin: 20px 0; /* Add spacing around the heading */
+    font-family: 'Poppins', sans-serif;
+    font-size: 2em;
+    font-weight: 600;
+    color: #333;
+    text-align: left;
+    margin: 20px 0;
 }
 
 .nav-item {
@@ -109,6 +111,126 @@ main{
     color: #333;
 }
 
+/* Location section styles */
+.location-section {
+    padding: 3rem 5%;
+    background-color: #FAF3DD;
+}
+
+.location-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2em;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.location-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Add these styles to your existing CSS file */
+
+/* Operating hours styles */
+.operating-hours {
+    margin: 2rem 0;
+    padding-left: 0;
+}
+
+.operating-hours h4 {
+    color: #4A7C59;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.hours-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.day-hours {
+    display: grid;
+    grid-template-columns: 120px auto;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.day {
+    color: #333;
+    font-weight: 500;
+}
+
+.hours {
+    color: #4A7C59;
+}
+
+.hours.closed {
+    color: #FF6B6B;
+    font-weight: 400;
+}
+
+/* Remove any previous margins or paddings that might affect alignment */
+.day-hours > * {
+    margin: 0;
+    padding: 0;
+}
+
+/* Specific spacing for the icon and heading */
+.operating-hours i {
+    margin-right: 0.75rem;
+    color: #4A7C59;
+}
+
+.operating-hours i + h4 {
+    display: inline-block;
+    margin: 0;
+}
+/* Update the existing location-info class */
+.location-info {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 300px; /* Ensure minimum width for the info panel */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .day-hours {
+        padding-right: 1rem;
+    }
+    
+    .hours-grid {
+        margin-left: 1.5rem;
+    }
+}
+
+.address-details, .business-hours, .contact-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.location-info i {
+    color: #4A7C59;
+    font-size: 1.5rem;
+    width: 30px;
+}
+
+.location-info p {
+    margin: 0;
+    color: #333;
+    font-size: 1.1rem;
+}
+
 /* Calendar section styles */
 .calendar-section {
     background: #FFD166;
@@ -117,22 +239,25 @@ main{
     color: white;
 }
 
-/* Footer styles */
-footer {
-    background: #4A7C59;
-    color: #FFD166;
-    padding: 2rem 5%;
-    text-align: center;
-    display: flex;
+/* Map container styles */
+.map-container {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: auto;
 }
 
-.contacts {
-    margin: 0.5rem 0;
+.map-container iframe {
+    border-radius: 4px;
+    width: 100%;
+    height: 450px;
 }
+
 /* Calendar Styling */
 #reservationCalendar {
     max-width: 1500px;
-    width:100%;
+    width: 100%;
     height: 750px;
     margin: 0 auto;
     padding: 20px;
@@ -194,49 +319,59 @@ footer {
 .fc-event:hover {
     background-color: #E07A5F;
 }
+
+/* Modal styles */
 .bundle-image {
-    width: 500px !important; /* Set your desired width */
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 10px; /* Space between image and text */
+    width: 500px !important;
+    height: auto;
+    margin-right: 10px;
 }
+
 .custom-modal {
-    max-width: 800px !important; /* Set your desired max width */
-    width: 100% !important; /* Make it responsive */
+    max-width: 800px !important;
+    width: 100% !important;
 }
 
 .custom-modal .modal-content {
-    height: auto; /* Adjust height as needed */
-    max-height: 80vh; /* Set a maximum height for the modal */
-    overflow-y: auto; /* Enable scrolling if content exceeds max height */
-}
-.map-container {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    margin: 20px auto; /* Center the container horizontally */
-    height: 450px; /* Set a fixed height for the container */
-    max-width: 700px; /* Set a maximum width for the container */
-    background-color: #FAF3DD; /* Optional: Background color */
-    border-radius: 8px; /* Optional: Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+    height: auto;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
-.map-container iframe {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    width: 100%; /* Make the iframe responsive */
-    height: 100%; /* Fill the height of the container */
-    border: 0; /* Remove border */
-}
 .modal-body {
-    max-height: 400px; /* Set a maximum height for the modal body */
-    overflow-y: auto; /* Enable vertical scrolling */
-}
-.carousel-inner img {
-    height: 400px; /* Set a fixed height */
-    object-fit: cover; /* Ensure images are cropped nicely */
+    max-height: 400px;
+    overflow-y: auto;
 }
 
+/* Carousel styles */
+.carousel-inner img {
+    height: 400px;
+    object-fit: cover;
+}
+
+.custom-event-content {
+    padding-left: 12px;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Footer styles */
+footer {
+    background: #4A7C59;
+    color: #FFD166;
+    padding: 2rem 5%;
+    text-align: center;
+    display: flex;
+}
+
+.contacts {
+    margin: 0.5rem 0;
+}
 
 /* Responsive design */
 @media (min-width: 768px) {
@@ -244,5 +379,17 @@ footer {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
+    }
+    
+    .location-content {
+        flex-direction: row;
+    }
+    
+    .location-info {
+        flex: 1;
+    }
+    
+    .map-container {
+        flex: 2;
     }
 }

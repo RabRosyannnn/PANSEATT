@@ -6,7 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BundleController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\StorefrontController;
-
+use App\Http\Controllers\RequestController;
+use Illuminate\Support\Facades\Auth;
 
 // Staff routes
 Route::prefix('staff')->middleware('auth')->group(function () {
@@ -56,11 +57,20 @@ Route::middleware(['auth'])->group(function () {
 // Registration Routes (no middleware, accessible to everyone)
 Route::get('register', [StaffController::class, 'create'])->name('register');
 Route::post('register', [StaffController::class, 'store']);
-Route::post('register', [StaffController::class, 'store2'])->name('register2');
+Route::post('register', [StaffController::class, 'store2'])->name('register2') ->middleware('guest');
 // Login Routes (no middleware, accessible to everyone)
-Route::get('login', [StaffController::class, 'login'])->name('login');
-Route::post('login', [StaffController::class, 'authenticate'])->name('login.authenticate');
+Route::get('login', [StaffController::class, 'login'])
+    ->name('login')
+    ->middleware('guest'); // Redirects authenticated users
+
+Route::post('login', [StaffController::class, 'authenticate'])
+    ->name('login.authenticate')
+    ->middleware('guest');
 Route::get('/track-reservation/{id}', [ReservationController::class, 'customerShow'])
      ->name('reservations.customerShow');
 Route::post('/reservations/track', [ReservationController::class, 'trackReservation'])
      ->name('reservations.track');
+Route::post('/requests', [RequestController::class, 'store'])->name('requests.store');
+
+// Route to update an existing request
+Route::put('/requests/{id}', [RequestController::class, 'update'])->name('requests.update');

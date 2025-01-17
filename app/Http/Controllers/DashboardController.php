@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $archivedStaff = User::where('is_archived', true)->get();
         $activeBundles = Bundle::where('is_archived', false)->get();
         $archivedBundles = Bundle::where('is_archived', true)->get();
-        $staffLogs = StaffLog::latest()->take(10)->get();
+        $staffLogs = StaffLog::latest()->paginate(10);
         $reservations = Reservation::all();
 
         return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 'archivedStaff', 'staffLogs', 'reservations'));

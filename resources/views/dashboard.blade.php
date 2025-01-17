@@ -277,6 +277,7 @@
                 </tbody>
             </table>
         </div>
+        {{ $staffLogs->links() }}
     </div>
 
     <div class="staff-list">
@@ -499,11 +500,6 @@
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         events: '{{ route('events.get') }}', // Ensure this route returns the correct JSON format
-        eventTimeFormat: { // Customize the time format
-            hour: '2-digit',
-            minute: '2-digit',
-            meridiem: 'short' // Use 'short' for AM/PM
-        },
         eventClick: function (info) {
             // Prevent default browser behavior
             info.jsEvent.preventDefault();
@@ -511,10 +507,33 @@
             // Redirect to the reservation details page
             const reservationId = info.event.id;
             window.location.href = `/reservations/${reservationId}`;
+        },
+        eventContent: function (info) {
+            const startTime = new Date(info.event.start).toLocaleTimeString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+            const endTime = new Date(info.event.end).toLocaleTimeString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            // Create custom content with event name and time range
+            const customContent = document.createElement('div');
+            customContent.className = 'custom-event-content'; // Add class for styling
+            customContent.innerHTML = `
+                <div>${info.event.title}
+                ${startTime} - ${endTime}</div>
+            `;
+            return { domNodes: [customContent] };
         }
     });
+
     calendar.render();
 });
+
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

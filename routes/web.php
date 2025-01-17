@@ -60,3 +60,7 @@ Route::post('register', [StaffController::class, 'store2'])->name('register2');
 // Login Routes (no middleware, accessible to everyone)
 Route::get('login', [StaffController::class, 'login'])->name('login');
 Route::post('login', [StaffController::class, 'authenticate'])->name('login.authenticate');
+Route::get('/track-reservation/{id}', [ReservationController::class, 'customerShow'])
+     ->name('reservations.customerShow');
+Route::post('/reservations/track', [ReservationController::class, 'trackReservation'])
+     ->name('reservations.track');

@@ -17,15 +17,16 @@ class Reservation extends Model
         'end_time',
         'number_of_guests',
         'booking_confirmation',
+        'price',
         'deposit',
         'occasion',
-        'bundle',
         'note',
+        'bundle',
         'tracking_id',
-        'price',
     ];
     public function bundles()
-    {
-        return $this->belongsToMany(Bundle::class);
-    }
+{
+    return $this->belongsToMany(Bundle::class, 'reservation_bundle');
+}
+
 }

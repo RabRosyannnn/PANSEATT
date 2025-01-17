@@ -12,5 +12,10 @@ class Bundle extends Model
     protected $fillable = [
         'name', 'desc','price', 'image','is_archived',
     ];
+    public function reservations()
+{
+    return $this->belongsToMany(Reservation::class, 'reservation_bundle');
+}
+
 }
 

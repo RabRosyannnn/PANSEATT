@@ -44,7 +44,7 @@ class ReservationController extends Controller
                 'start_time' => 'required|date_format:H:i',
                 'end_time' => 'required|date_format:H:i|after:start_time', // Ensure end time is after start time
                 'number_of_guests' => 'required|integer|min:1',
-                'booking_confirmation' => 'boolean',
+                'booking_confirmation' => 'required|string|in:processing,confirmed,cancelled', // Ensure the value is one of the specified options
                 'deposit' => 'required|numeric',
                 'occasion' => 'required|string|max:255',
                 'bundles' => 'required|array', // Change 'bundle' to 'bundles'
@@ -79,10 +79,13 @@ class ReservationController extends Controller
 
     // Display the specified reservation
     public function show($id)
-    {
-        $reservation = Reservation::findOrFail($id);
-        return view('reservations.show', compact('reservation'));
-    }
+{
+    // Load the reservation along with its bundles
+    $reservation = Reservation::with('bundles')->findOrFail($id);
+    
+    return view('reservations.show', compact('reservation'));
+}
+
 
     // Show the form for editing the specified reservation
     public function edit($id)
@@ -161,4 +164,27 @@ class ReservationController extends Controller
         'description' => $description,
     ]);
 }
+
+
+public function customerShow($id)
+{
+    $reservation = Reservation::with('bundles')->findOrFail($id);
+    return view('reservations.customer-show', compact('reservation'));
+}
+
+public function trackReservation(Request $request)
+{
+    $trackingId = $request->input('trackingId');
+    
+    // Find the reservation by the tracking ID
+    $reservation = Reservation::where('tracking_id', $trackingId)->first();
+    
+    if (!$reservation) {
+        return redirect()->back()->with('error', 'Reservation not found with the provided tracking ID.');
+    }
+    
+    // Redirect to the customer view instead of the admin view
+    return redirect()->route('reservations.customerShow', $reservation->id);
+}
+
 }

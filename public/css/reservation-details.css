@@ -1,0 +1,175 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #FFD166 !important;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ensure the body takes up full viewport height */
+    text-align: center;
+}
+.title {
+    margin: 20px;
+    font-size: 60px;
+    font-weight: 600;
+    color: #4a7c59;
+    top: 0;
+    left: 0;
+    align-items: center;
+    position: absolute;
+}
+.back {
+    margin-right: 80px;
+    margin-top: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #FFD166;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: #4A7C59;
+    border-radius: 16px;
+    min-width: 166px;
+    text-align: center;
+    min-height: 52px;
+
+}
+
+.back:hover {
+    background-color: #E97451;
+    color: white;
+}
+
+.cards{
+    background-color: #FAF3DD;
+    border-radius: 28px;
+    box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
+    padding-bottom: 20px;
+}
+.details-container {
+    background-color: #FAF3DD;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.card-container {
+    background-color: #FAF3DD;
+    border-radius: 28px 28px 0 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+.cardheader {
+    background-color: #E97451;
+    color: white;
+    padding:25px;
+    border-radius: 28px 28px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cardheader h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    background-color: #EAE4D0;
+    border-radius: 8px;
+}
+
+.details-card {
+    background-color: #FAF3DD;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.customer-info h3 {
+    color: #4a7c59;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.customer-info p {
+    margin: 8px 0;
+    color: #333;
+}
+
+.confirmation-status h3 {
+    color: #4a7c59;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.status-display {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.status-display.approved {
+    color: #4a7c59;
+}
+
+.status-display.processing {
+    color: #ffa500;
+}
+
+.status-display.cancelled {
+    color: #ff0000;
+}
+.button-container {
+    display: flex;
+    justify-content: center; /* Centers buttons horizontally */
+    gap: 20px; /* Optional: Add space between buttons */
+    margin-bottom: 30px;
+}
+footer {
+    background: #4A7C59;
+    color: #FFD166;
+    padding: 2rem 5%;
+    text-align: center;
+    display: flex;
+    bottom: 0;
+    width: 100%;
+    position: absolute;
+}
+
+.contacts {
+    
+    margin: 0.5rem 0;
+    font-size: 20px;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+}

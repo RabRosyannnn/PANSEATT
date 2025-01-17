@@ -211,7 +211,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST">
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+                
+                <form action="{{ route('reservations.track') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="trackingId">Tracking ID</label>
@@ -223,6 +229,7 @@
         </div>
     </div>
 </div>
+
 
     </main>
 

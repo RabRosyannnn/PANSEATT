@@ -124,13 +124,15 @@
 
                         <!-- Right Column -->
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="booking_confirmation">Booking Confirmation</label>
-                                <select class="form-control" id="booking_confirmation" name="booking_confirmation" required>
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
-                                </select>
-                            </div>
+                        <div class="form-group">
+    <label for="booking_confirmation">Booking Status</label>
+    <select name="booking_confirmation" id="booking_confirmation" class="form-control">
+        <option value="processing" {{ old('booking_confirmation', 'processing') == 'processing' ? 'selected' : '' }}>Processing</option>
+        <option value="confirmed" {{ old('booking_confirmation') == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+        <option value="canceled" {{ old('booking_confirmation') == 'canceled' ? 'selected' : '' }}>Canceled</option>
+    </select>
+</div>
+
                             <div class="form-group">
                                 <label for="deposit">Deposit</label>
                                 <input type="number" class="form-control" id="deposit" name="deposit" step="0.01" min="0" required>

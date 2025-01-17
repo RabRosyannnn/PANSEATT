@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +15,7 @@ class CreateReservationsTable extends Migration
             $table->time('start_time');
             $table->time('end_time');
             $table->integer('number_of_guests');
-            $table->boolean('booking_confirmation')->default(false);
+            $table->string('booking_confirmation')->default('processing'); // Updated column
             $table->decimal('price', 8, 2)->nullable();
             $table->decimal('deposit', 8, 2)->nullable();
             $table->string('occasion')->nullable();

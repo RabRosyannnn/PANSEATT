@@ -60,6 +60,7 @@
                                     <option value="processing" {{ old('booking_confirmation', $reservation->booking_confirmation) == 'processing' ? 'selected' : '' }}>Processing</option>
                                     <option value="confirmed" {{ old('booking_confirmation', $reservation->booking_confirmation) == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
                                     <option value="canceled" {{ old('booking_confirmation', $reservation->booking_confirmation) == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                                    <option value="complete" {{ old('booking_confirmation', $reservation->booking_confirmation) == 'complete' ? 'selected' : '' }}>Complete</option>
                                 </select>
                             </div>
  <div class="form-group">

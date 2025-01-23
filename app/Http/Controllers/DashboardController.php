@@ -13,16 +13,37 @@ use App\Models\Request as ModelsRequest;
 class DashboardController extends Controller
 {
     public function index()
-    {
-        $activeStaff = User::where('is_archived', false)->get();
-        $archivedStaff = User::where('is_archived', true)->get();
-        $activeBundles = Bundle::where('is_archived', false)->get();
-        $archivedBundles = Bundle::where('is_archived', true)->get();
-        $staffLogs = StaffLog::latest()->paginate(10);
-        $reservations = Reservation::all();
-        $modelRequests = ModelsRequest::all();
-        return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 'archivedStaff', 'staffLogs', 'reservations', 'modelRequests'));
+{
+    $activeStaff = User::where('is_archived', false)->get();
+    $archivedStaff = User::where('is_archived', true)->get();
+    $activeBundles = Bundle::where('is_archived', false)->get();
+    $archivedBundles = Bundle::where('is_archived', true)->get();
+    $staffLogs = StaffLog::latest()->paginate(10);
+    $reservations = Reservation::all();
+    $completedReservations = Reservation::where('booking_confirmation', 'complete')->count();
+    $modelRequests = ModelsRequest::all();
+    
+    // Using MONTHNAME instead of MONTH
+    $monthlyData = Reservation::selectRaw('MONTHNAME(created_at) as month, COUNT(*) as count')
+        ->groupBy('month')
+        ->orderByRaw('MONTH(created_at)')
+        ->pluck('count', 'month')
+        ->toArray();
+
+    // Initialize array with month names
+    $months = ['January', 'February', 'March', 'April', 'May', 'June', 
+               'July', 'August', 'September', 'October', 'November', 'December'];
+    $monthlyCounts = array_fill_keys($months, 0);
+    
+    // Fill in actual counts
+    foreach ($monthlyData as $month => $count) {
+        $monthlyCounts[$month] = $count;
     }
+
+    return view('dashboard', compact('activeBundles', 'archivedBundles', 'activeStaff', 
+                'archivedStaff', 'staffLogs', 'reservations', 'modelRequests',
+                'completedReservations', 'monthlyCounts'));
+}
 
     public function getEvents()
 {

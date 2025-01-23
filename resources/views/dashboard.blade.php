@@ -11,6 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <aside>
@@ -71,10 +72,36 @@
                 {{ session('success') }}
             </div>
         @endif
-    <div class="section" id="calendar-section">
-            
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addReservationModal">+ Add Reservation</button>
-            <div id="reservationCalendar"></div>
+        
+        <div class="section" id="completed-reservations-section">
+        
+    <div class="completed-reservations-card text-center mb-4" style="background-color: #E07A5F; color: #FFD166;">
+        <div class="generate-report text-center mb-4">
+        <form method="POST" action="{{ route('generate.report') }}">
+    @csrf
+    <input type="hidden" name="chartImage" id="chartImage">
+    <button type="submit" class="btn btn-primary">Generate Report</button>
+</form>
+    </div>
+        <div class="completed-reservations-card-body d-flex">
+            <!-- Left Section (30%) -->
+            <div class="completed-count-section" style="flex: 0 0 30%; background-color: #FAF3DD; padding: 20px; border-radius: 10px; margin-right: 10px;">
+                <h5 class="completed-card-title">Completed Reservations</h5>
+                <h2 class="completed-card-text">{{ $completedReservations }}</h2>
+            </div>
+            <!-- Right Section (70%) -->
+            <div class="completed-graph-section" style="flex: 0 0 70%; background-color: #FAF3DD; padding: 20px; border-radius: 10px;">
+                <canvas id="completedReservationsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section" id="calendar-section">
+    <button class="btn btn-primary" data-toggle="modal" data-target="#addReservationModal">Add Reservation</button>
+    <div id="reservationCalendar"></div>
+</div>
+    
 
             
     
@@ -172,13 +199,13 @@
 </div>
 
 
-        </div>
+        
 
         <div class="section" id="bundles-section">
             <div class ="bundle-header">
     <h4>Bundles</h4>
     <button class="btn btn-secondary mb-3" id="toggleArchivedBtn">Show Archived Bundles</button>
-    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addBundleModal">+ Add Bundle</button></div>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#addBundleModal">+ Add Bundle</button></div>
 
     <div id="activeBundles" class="row">
         @foreach ($activeBundles as $bundle)
@@ -230,42 +257,53 @@
 
 
 <div class="section" id="request-section">
-    <div class="bundle-header">
-        <h4>Requests</h4>
-    </div>
+    <div class="request-log">
+        <div class="log-header">
+            <h4>Requests</h4>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search">
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Tracking ID</th>
-                <th>Action</th>
-                <th>Message</th>
-                <th>Manage</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($modelRequests as $request)
-                <tr>
-                    <td>{{ $request->tracking_id }}</td>
-                    <td>{{ $request->action }}</td>
-                    <td>{{ $request->message }}</td>
-                    <td>
-                        <form action="" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit" class="btn btn-success">Approve</button>
-                        </form>
-                        
-                        <form action="" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit" class="btn btn-danger">Reject</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        <div class="log-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tracking ID</th>
+                        <th>Action</th>
+                        <th>Message</th>
+                        <th>Manage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($modelRequests as $request)
+                        <tr>
+                            <td>{{ $request->tracking_id }}</td>
+                            <td>{{ $request->action }}</td>
+                            <td>{{ $request->message }}</td>
+                            <td>
+                                <form action="{{ route('requests.approve', $request->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-success">Approve</button>
+                                </form>
+                                
+                                <form action="{{ route('requests.reject', $request->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-danger">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
 </div>
 
 
@@ -384,7 +422,7 @@
     
 </div>
 @endif
-
+</div>
 
 <!-- Modal for Adding Bundle -->
 <div class="modal fade" id="addBundleModal" tabindex="-1" role="dialog" aria-labelledby="addBundleModalLabel" aria-hidden="true">
@@ -590,7 +628,71 @@
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('completedReservationsChart').getContext('2d');
+    const monthlyCounts = @json($monthlyCounts);
 
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 
+                    'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: [{
+                label: 'Completed Reservations',
+                data: monthlyCounts,
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                borderColor: '#FFD166',
+                borderWidth: 1,
+                barPercentage: 0.8
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    ticks: {
+                        color: '#FFD166',
+                        font: {
+                            size: 11
+                        }
+                    },
+                    grid: {
+                        display: false
+                    },
+                    border: {
+                        display: false
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#FFD166'
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // Function to export chart to image
+    function exportChartToImage() {
+        const chartImage = chart.toBase64Image(); // Get the chart image as a base64 string
+        document.getElementById('chartImage').value = chartImage; // Set the hidden input value
+    }
+
+    // Call the export function after the chart is rendered
+    chart.render();
+    exportChartToImage();
+});
+</script>
 
 </body>
 </html>

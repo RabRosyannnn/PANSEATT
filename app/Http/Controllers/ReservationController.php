@@ -113,7 +113,7 @@ class ReservationController extends Controller
         'start_time' => 'required|date_format:H:i',
         'end_time' => 'required|date_format:H:i|after:start_time', // Ensure end time is after start time
         'number_of_guests' => 'required|integer|min:1',
-        'booking_confirmation' => 'required|string|in:processing,confirmed,canceled', // Ensure the value is one of the specified options
+        'booking_confirmation' => 'required|string|in:processing,confirmed,canceled,complete', // Ensure the value is one of the specified options
         'deposit' => 'required|numeric',
         'occasion' => 'required|string|max:255',
         'bundles' => 'required|array', // Change 'bundle' to 'bundles'
@@ -159,7 +159,7 @@ class ReservationController extends Controller
 
     public function getEvents()
 {
-    $reservations = Reservation::all();
+    $reservations = Reservation::where('booking_confirmation', '!=', 'complete')->get();
 
     $events = $reservations->map(function ($reservation) {
         return [

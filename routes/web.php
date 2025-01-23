@@ -8,6 +8,8 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\StorefrontController;
 use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ReportController;
+
 
 // Staff routes
 Route::prefix('staff')->middleware('auth')->group(function () {
@@ -27,6 +29,7 @@ Route::get('/panseat-tagapo', [StorefrontController::class, 'index'])->name('hom
 // Grouping routes with 'auth' middleware
 Route::middleware(['auth'])->group(function () {
     // Dashboard Route
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Logout Route
@@ -51,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/events', [ReservationController::class, 'getEvents'])->name('events.get');
     Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
+    Route::post('/generate-report', [ReportController::class, 'generate'])->name('generate.report');
 
 });
 
@@ -74,3 +78,4 @@ Route::post('/requests', [RequestController::class, 'store'])->name('requests.st
 
 // Route to update an existing request
 Route::put('/requests/{id}', [RequestController::class, 'update'])->name('requests.update');
+

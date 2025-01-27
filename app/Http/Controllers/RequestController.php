@@ -10,23 +10,23 @@ class RequestController extends Controller
 {
     // Method to create a new request
     public function store(HttpRequest $request)
-    {
-        // Validate the incoming request
-        $validatedData = $request->validate([
-            'tracking_id' => 'required|exists:reservations,id',
-            'message' => 'required|string',
-            'action' => 'required|in:change,cancel', // Validate action field
-        ]);
+{
+    $validatedData = $request->validate([
+        'tracking_id' => 'required|exists:reservations,id', // Changed from 'tracking_id'
+        'message' => 'required|string',
+        'action' => 'required|in:change,cancel',
+    ]);
 
-        // Create a new request
-        $newRequest = Request::create($validatedData);
+    $newRequest = new Request(); 
+    $newRequest->tracking_id = $validatedData['tracking_id'];
+    $newRequest->message = $validatedData['message'];
+    $newRequest->action = $validatedData['action'];
+    $newRequest->save();
 
-        // Flash success message to the session
-        session()->flash('success', 'Your request has been submitted successfully!');
+    session()->flash('success', 'Your request has been submitted successfully!');
 
-        return response()->json($newRequest, 201);
-    }
-
+    return redirect()->back();
+}
 
     public function update(HttpRequest $request, $id)
     {

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StaffController;
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BundleController;
 use App\Http\Controllers\ReservationController;
@@ -10,6 +11,11 @@ use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ReportController;
 
+
+use App\Http\Controllers\SmsController;
+
+// routes/web.php
+Route::post('/sms-endpoint', [SmsController::class, 'sendSms'])->withoutMiddleware('web');
 
 // Staff routes
 Route::prefix('staff')->middleware('auth')->group(function () {
@@ -78,4 +84,5 @@ Route::post('/requests', [RequestController::class, 'store'])->name('requests.st
 
 // Route to update an existing request
 Route::put('/requests/{id}', [RequestController::class, 'update'])->name('requests.update');
+
 

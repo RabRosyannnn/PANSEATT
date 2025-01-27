@@ -12,7 +12,7 @@ class SmsController extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'd1f02324-c1fa-4490-9059-c2860ac5df6d'
         ])->post('http://192.168.1.7:8082/sms-endpoint', [
-            'phone' => '1234567890',
+            'to' => '+639817396111',
             'message' => 'Test message'
         ]);
         // Respond or process as needed

@@ -77,11 +77,61 @@
         
     <div class="completed-reservations-card text-center mb-4" style="background-color: #E07A5F; color: #FFD166;">
         <div class="generate-report text-center mb-4">
-        <form method="POST" action="{{ route('generate.report') }}">
+        <form method="POST" action="{{ route('generate.report') }}" class="report-form">
     @csrf
-    <input type="hidden" name="chartImage" id="chartImage">
-    <button type="submit" class="btn btn-primary">Generate Report</button>
-</form>
+    <!-- Trigger button for the modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filtersModal">
+    Generate Report
+</button>
+
+<!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('generate.report') }}">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filtersModalLabel">Select Month and Year</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Month Filter -->
+                    <div class="form-group">
+                        <label for="month" class="form-label">Select Month:</label>
+                        <select name="month" id="month" class="form-control">
+                            <option value="">All Months</option>
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}">{{ date("F", mktime(0, 0, 0, $i, 1)) }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    
+                    <!-- Year Filter -->
+                    <div class="form-group">
+                        <label for="year" class="form-label">Select Year:</label>
+                        <select name="year" id="year" class="form-control">
+                            <option value="">All Years</option>
+                            @for ($i = now()->year; $i >= now()->year - 10; $i--)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Generate Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
     </div>
         <div class="completed-reservations-card-body d-flex">
             <!-- Left Section (30%) -->
@@ -355,7 +405,7 @@
         {{ $staffLogs->links('pagination::simple-bootstrap-4') }}
     </div>
 
-    <div class="staff-list">
+    <div class="staff-list" id="staff-section">
         <div class="list-header">
             <h4>Staff List</h4>
             <div class="search-container">

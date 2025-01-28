@@ -4,26 +4,51 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\Reservation; 
+use App\Models\Reservation;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReportMail;
+use Illuminate\Support\Facades\Auth;
+
 class ReportController extends Controller
 {
     public function generate(Request $request)
-    {
-        // Fetch data
-        $completedReservations = Reservation::where('booking_confirmation', 'complete')->get();
+{
+    // Fetch reservations based on filters (month/year)
+    $month = $request->input('month');
+    $year = $request->input('year');
 
-        // Retrieve the Base64 chart image
-        $chartImage = $request->input('chartImage');
+    $query = Reservation::where('booking_confirmation', 'complete');
 
-        // Pass data and the chart image to the view
-        $data = [
-            'completedReservations' => $completedReservations,
-            'chartImage' => $chartImage,
-        ];
-
-        // Generate the PDF
-        $pdf = Pdf::loadView('reports.completed-reservations', $data);
-
-        return $pdf->download('completed_reservations_report.pdf');
+    if ($month) {
+        $query->whereMonth('created_at', $month);
     }
+
+    if ($year) {
+        $query->whereYear('created_at', $year);
+    }
+
+    $completedReservations = $query->get();
+
+    // Retrieve the Base64 chart image
+    $chartImage = $request->input('chartImage');
+
+    // Prepare data for the PDF
+    $data = [
+        'completedReservations' => $completedReservations,
+        'chartImage' => $chartImage,
+    ];
+
+    // Generate the PDF
+    $pdf = Pdf::loadView('reports.completed-reservations', $data)->output();
+
+    // Get the authenticated user's email
+    $userEmail = Auth::user()->email;
+
+    // Send the email with the generated PDF attached
+    Mail::to($userEmail)->send(new ReportMail($data, $pdf));
+
+    // Return success message with the user's email
+    return back()->with('success', 'Report sent successfully to ' . $userEmail);
+}
+
 }

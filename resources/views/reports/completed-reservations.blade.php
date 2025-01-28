@@ -67,12 +67,6 @@
         </table>
     </div>
 
-    <div class="chart">
-        @if($chartImage)
-            <img src="{{ $chartImage }}" alt="Completed Reservations Chart" style="width: 100%; max-width: 600px;">
-        @else
-            <p>Chart not available</p>
-        @endif
-    </div>
+    
 </body>
 </html>

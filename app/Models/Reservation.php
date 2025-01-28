@@ -24,6 +24,10 @@ class Reservation extends Model
         'bundle',
         'tracking_id',
     ];
+    public function getEndDateTimeAttribute()
+    {
+        return "{$this->date} {$this->end_time}";
+    }
     public function bundles()
 {
     return $this->belongsToMany(Bundle::class, 'reservation_bundle');

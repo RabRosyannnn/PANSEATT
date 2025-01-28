@@ -212,25 +212,60 @@ class StaffController extends Controller
     }
 
     public function authenticate(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+{
+    // Validate incoming login data
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    // Check if the user has been locked out due to too many attempts
+    if (\Illuminate\Support\Facades\RateLimiter::tooManyAttempts($request->ip(), 3)) {
+        $seconds = \Illuminate\Support\Facades\RateLimiter::availableIn($request->ip());
+        return back()->withErrors([
+            'email' => "Too many login attempts. Please try again in {$seconds} seconds."
+        ]);
+    }
+
+    // First check if the user exists and is archived
+    $user = User::where('email', $request->email)->first();
+    
+    if ($user && $user->is_archived) {
+        // Log the attempted login by an archived account
+        StaffLog::create([
+            'user_id' => $user->id,
+            'action' => 'login_attempt',
+            'description' => "Archived account {$user->name} attempted to login",
+        ]);
+        
+        return back()->withErrors([
+            'email' => 'This account has been locked. Please contact your administrator.',
+        ])->withInput();
+    }
+
+    // Attempt to log in the user
+    if (Auth::attempt($request->only('email', 'password'))) {
+        // Log successful login
+        StaffLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'login',
+            'description' => Auth::user()->name . ' logged in',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            // Create staff log entry for login
-            StaffLog::create([
-                'user_id' => Auth::id(),
-                'action' => 'login',
-                'description' => Auth::user()->name . ' logged in',
-            ]);
-            
-            return redirect()->route('dashboard')->with('success', 'Welcome back!');
-        }
+        // Clear any rate limit attempts for this IP
+        \Illuminate\Support\Facades\RateLimiter::clear($request->ip());
 
-        return back()->with('error', 'Invalid email or password.')->withInput();
+        return redirect()->route('dashboard')->with('success', 'Welcome back!');
     }
+
+    // Increment rate limiter for failed login
+    \Illuminate\Support\Facades\RateLimiter::hit($request->ip(), 60);
+
+    return back()->withErrors([
+        'email' => 'Invalid email or password.',
+    ])->withInput();
+}
+
 
     public function logout()
     {

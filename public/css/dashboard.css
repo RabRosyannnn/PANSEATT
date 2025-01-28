@@ -746,3 +746,12 @@ aside ul li a {
         font-size: 1rem; /* Adjust font size for staff card titles */
     }
 }
+.bundle-image {
+    min-height: 200px; /* Set a minimum height */
+    min-width: 200px; /* Set a minimum width */
+    max-width: 100%; /* Prevent the image from exceeding the container */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure the image fills the dimensions without distortion */
+    border-radius: 8px; /* Optional for rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional for subtle shadow */
+}

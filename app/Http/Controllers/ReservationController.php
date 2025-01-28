@@ -35,48 +35,74 @@ class ReservationController extends Controller
     // Store a newly created reservation in storage
     // Store a newly created reservation in storage
     public function store(Request $request)
-    {
-        try {
-            // Validate the request
-            $request->validate([
-                'customer_name' => 'required|string|max:255',
-                'contact_information' => 'required|string|max:255',
-                'date' => 'required|date',
-                'start_time' => 'required|date_format:H:i',
-                'end_time' => 'required|date_format:H:i|after:start_time', // Ensure end time is after start time
-                'number_of_guests' => 'required|integer|min:1',
-                'booking_confirmation' => 'required|string|in:processing,confirmed,cancelled', // Ensure the value is one of the specified options
-                'deposit' => 'required|numeric',
-                'occasion' => 'required|string|max:255',
-                'bundles' => 'required|array', // Change 'bundle' to 'bundles'
-                'bundles.*' => 'required|integer|exists:bundles,id', // Ensure each selected bundle ID exists in the bundles table
-                'note' => 'nullable|string|max:255',
-            ]);
-    
-            // Generate a 5-digit random tracking ID
-            $trackingId = random_int(10000, 99999);
-    
-            // Create a new reservation with the tracking ID
-            $reservation = Reservation::create(array_merge(
-                $request->all(),
-                ['tracking_id' => $trackingId]
-            ));
-    
-            // Attach the selected bundles to the reservation
-            $reservation->bundles()->attach($request->bundles); // Assuming you have a many-to-many relationship
-    
-            // Log the action
-            $this->logAction('create', "Created a new reservation for {$reservation->customer_name} with Tracking ID: {$trackingId}");
-    
-            return redirect()->route('dashboard')->with('success', "Reservation created successfully.");
-        } catch (\Exception $e) {
-            // Log the error message
-            \Log::error('Error creating reservation: ' . $e->getMessage());
-    
-            // Redirect back with an error message
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+{
+    try {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'contact_information' => 'required|string|size:11|regex:/^09\d{9}$/',
+            'customer_name' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'number_of_guests' => 'required|integer|min:1',
+            'booking_confirmation' => 'required|string|in:processing,confirmed,cancelled',
+            'deposit' => 'required|numeric|min:0',
+            'occasion' => 'required|string|max:255',
+            'bundles' => 'required|array|min:1',
+            'bundles.*' => 'integer|exists:bundles,id',
+            'note' => 'nullable|string|max:255',
+        ]);
+
+        // Check if there is an existing reservation at the same time
+        $existingReservation = Reservation::where('date', $validatedData['date'])
+            ->where(function ($query) use ($validatedData) {
+                $query->whereBetween('start_time', [$validatedData['start_time'], $validatedData['end_time']])
+                      ->orWhereBetween('end_time', [$validatedData['start_time'], $validatedData['end_time']])
+                      ->orWhere(function ($query) use ($validatedData) {
+                          $query->where('start_time', '<=', $validatedData['start_time'])
+                                ->where('end_time', '>=', $validatedData['end_time']);
+                      });
+            })
+            ->exists();
+
+        if ($existingReservation) {
+            return response()->json([
+                'success' => false,
+                'message' => 'A reservation already exists with the same date and overlapping time range.',
+            ], 400);
         }
+
+        // Generate tracking ID
+        $trackingId = random_int(10000, 99999);
+
+        // Create the reservation
+        $reservation = Reservation::create(array_merge(
+            $validatedData,
+            ['tracking_id' => $trackingId]
+        ));
+
+        // Attach selected bundles
+        $reservation->bundles()->attach($validatedData['bundles']);
+
+        // Log action
+        $this->logAction('create', "Created a reservation with ID: {$trackingId}");
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reservation created successfully.',
+            'reservation' => $reservation,
+        ]);
+    } catch (\Exception $e) {
+        \Log::error('Error creating reservation: ' . $e->getMessage());
+
+        return response()->json([
+            'success' => false,
+            'message' => 'There was an error while creating the reservation. Please try again later.',
+        ], 500);
     }
+}
+
+
 
     // Display the specified reservation
     public function show($id)
@@ -164,7 +190,7 @@ class ReservationController extends Controller
     $events = $reservations->map(function ($reservation) {
         return [
             'id' => $reservation->id,
-            'title' => $reservation->customer_name,
+            'title' => $reservation->tracking_id ,
             'start' => $reservation->date . 'T' . $reservation->start_time, // Format: YYYY-MM-DDTHH:MM
             'end' => $reservation->date . 'T' . $reservation->end_time, // Format: YYYY-MM-DDTHH:MM
             'allDay' => false, // Set to false for time-based events

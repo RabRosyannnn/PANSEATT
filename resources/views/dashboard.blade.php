@@ -72,7 +72,7 @@
                 {{ session('success') }}
             </div>
         @endif
-        
+        @if(Auth::user()->position === 'admin') <!-- Show staff section only for admin -->
         <div class="section" id="completed-reservations-section">
         
     <div class="completed-reservations-card text-center mb-4" style="background-color: #E07A5F; color: #FFD166;">
@@ -96,7 +96,7 @@
         </div>
     </div>
 </div>
-
+@endif
 <div class="section" id="calendar-section">
     <button class="btn btn-primary" data-toggle="modal" data-target="#addReservationModal">Add Reservation</button>
     <div id="reservationCalendar"></div>
@@ -117,9 +117,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('reservations.store') }}" method="POST">
-                @csrf
+            <form id="reservationForm" method="POST">
+    @csrf
                 <div class="modal-body">
+                <div id="errorMessages"></div>
                     <div class="row">
                         <!-- Left Column -->
                         <div class="col-md-6">
@@ -128,13 +129,22 @@
                                 <input type="text" class="form-control" id="customer_name" name="customer_name" required>
                             </div>
                             <div class="form-group">
-                                <label for="contact_information">Contact Information</label>
-                                <input type="text" class="form-control" id="contact_information" name="contact_information" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="date">Date</label>
-                                <input type="date" class="form-control" id="date" name="date" required>
-                            </div>
+    <label for="contact_number">Contact Number</label>
+    <input 
+        type="text" 
+        class="form-control" 
+        id="contact_information" 
+        name="contact_information" 
+        required 
+        maxlength="11" 
+        pattern="^09\d{9}$" 
+        title="Contact number must start with '09' and be exactly 11 digits."
+        placeholder="(e.g., 09123456789)">
+</div>
+<div class="form-group">
+    <label for="date">Date</label>
+    <input type="date" class="form-control" id="date" name="date" required>
+</div>
                             <div class="form-group">
                                 <label for="number_of_guests">Number of Guests</label>
                                 <input type="number" class="form-control" id="number_of_guests" name="number_of_guests" required min="1">
@@ -342,7 +352,7 @@
                 </tbody>
             </table>
         </div>
-        {{ $staffLogs->links() }}
+        {{ $staffLogs->links('pagination::simple-bootstrap-4') }}
     </div>
 
     <div class="staff-list">
@@ -434,31 +444,32 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('bundles.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Bundle Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="desc">Description</label>
-                        <textarea class="form-control" id="desc" name="desc" rows="4" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="image">Bundle Image</label>
-                        <input type="file" class="form-control-file" id="image" name="image">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save Bundle</button>
-                </div>
-            </form>
+            <form id="addBundleForm" enctype="multipart/form-data">
+    @csrf
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="name">Bundle Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="desc">Description</label>
+            <textarea class="form-control" id="desc" name="desc" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Bundle Image</label>
+            <input type="file" class="form-control-file" id="image" name="image">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save Bundle</button>
+    </div>
+</form>
+
         </div>
     </div>
 </div>
@@ -692,6 +703,202 @@
     chart.render();
     exportChartToImage();
 });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const reservationForm = document.getElementById('reservationForm');
+    const errorMessagesContainer = document.getElementById('errorMessages'); // To show validation errors
+
+    reservationForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Clear previous error messages
+        errorMessagesContainer.innerHTML = '';
+
+        // Trim spaces from all text inputs
+        const inputs = reservationForm.querySelectorAll('input[type="text"], textarea');
+        inputs.forEach(input => {
+            input.value = input.value.trim(); // Remove leading and trailing spaces
+        });
+
+        const formData = new FormData(reservationForm);
+
+        fetch("{{ route('reservations.store') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle success
+            if (data.success) {
+                alert('Reservation saved successfully!');
+                $('#addReservationModal').modal('hide'); // Close modal
+                reservationForm.reset(); // Reset form fields
+            } else {
+                // If there are validation errors returned by the server
+                if (data.errors) {
+                    displayErrors(data.errors); // Server validation errors (like field errors)
+                } else if (data.message) {
+                    // If the server returned a message (like time conflict or general errors)
+                    displayErrorMessage(data.message);
+                }
+            }
+        })
+        .catch(error => {
+            // Handle network or other errors
+            console.error('There was an error:', error);
+            alert('An error occurred while saving the reservation.');
+        });
+    });
+
+    // Function to display field-specific error messages
+    function displayErrors(errors) {
+        // Display each error message in the modal
+        for (const field in errors) {
+            if (errors.hasOwnProperty(field)) {
+                const errorMessage = errors[field];
+                const errorElement = document.createElement('div');
+                errorElement.classList.add('alert', 'alert-danger');
+                errorElement.textContent = errorMessage;
+                errorMessagesContainer.appendChild(errorElement);
+            }
+        }
+    }
+
+    // Function to display general error message (like time conflict or general failure)
+    function displayErrorMessage(message) {
+        const errorElement = document.createElement('div');
+        errorElement.classList.add('alert', 'alert-danger');
+        errorElement.textContent = message;
+        errorMessagesContainer.appendChild(errorElement);
+    }
+});
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const addBundleForm = document.getElementById('addBundleForm');
+
+    addBundleForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Prepare form data
+        const formData = new FormData(addBundleForm);
+
+        // Send AJAX request
+        fetch("{{ route('bundles.store') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+            },
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Bundle added successfully!');
+                $('#addBundleModal').modal('hide'); // Hide modal
+                addBundleForm.reset(); // Reset form fields
+                // Optionally reload or update the bundles list dynamically
+            } else {
+                alert('Failed to add bundle: ' + (data.message || 'Unknown error occurred.'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An unexpected error occurred. Please try again.');
+        });
+    });
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const contactInformationInput = document.getElementById('contact_information');
+
+    contactInformationInput.addEventListener('input', function (e) {
+        let value = this.value;
+
+        // If the first character isn't 0, reset the input
+        if (value.length === 1 && value !== '0') {
+            this.value = ''; // Reset the input if the first character isn't '0'
+        }
+
+        // If the second character isn't 9, reset the input to '09'
+        if (value.length === 2 && value !== '09') {
+            this.value = '0'; // Reset to '09' if it's not '09'
+        }
+
+        // Allow only numeric characters after the first two digits
+        if (value.length > 2) {
+            this.value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+        }
+    });
+});
+document.addEventListener("DOMContentLoaded", function() {
+    // Get the current date
+    var today = new Date();
+    
+    // Format the date in yyyy-mm-dd format (for input type="date")
+    var year = today.getFullYear();
+    var month = ("0" + (today.getMonth() + 1)).slice(-2); // Add leading zero for single-digit months
+    var day = ("0" + today.getDate()).slice(-2); // Add leading zero for single-digit days
+    var formattedDate = year + "-" + month + "-" + day;
+
+    // Set the min attribute of the date input to today's date
+    var dateInput = document.getElementById("date");
+    dateInput.setAttribute("min", formattedDate);
+});
+document.addEventListener("DOMContentLoaded", function() {
+    // Get the current date and time
+    var now = new Date();
+    
+    // Format the current time in HH:mm format (24-hour format for input type="time")
+    var hours = ("0" + now.getHours()).slice(-2);
+    var minutes = ("0" + now.getMinutes()).slice(-2);
+    var currentTime = hours + ":" + minutes;
+
+    // Get the date input and time inputs
+    var dateInput = document.getElementById("date");
+    var startTimeInput = document.getElementById("start_time");
+    var endTimeInput = document.getElementById("end_time");
+
+    // Initially disable the time inputs
+    startTimeInput.disabled = true;
+    endTimeInput.disabled = true;
+
+    // Event listener for when the date is changed
+    dateInput.addEventListener("change", function() {
+        var selectedDate = new Date(dateInput.value);
+
+        // Enable time inputs only if a valid date is selected
+        if (dateInput.value) {
+            startTimeInput.disabled = false;
+            endTimeInput.disabled = false;
+            
+            // Set the minimum time for both start and end time inputs based on the selected date
+            if (selectedDate.toDateString() === now.toDateString()) {
+                // If the selected date is today, set min time to current time
+                startTimeInput.setAttribute("min", currentTime);
+                endTimeInput.setAttribute("min", currentTime);
+            } else {
+                // Otherwise, set min time to 00:00 (midnight) for future dates
+                startTimeInput.setAttribute("min", "00:00");
+                endTimeInput.setAttribute("min", "00:00");
+            }
+        } else {
+            // Disable the time inputs if no date is selected
+            startTimeInput.disabled = true;
+            endTimeInput.disabled = true;
+        }
+    });
+});
+
 </script>
 
 </body>

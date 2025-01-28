@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\StaffLog;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class BundleController extends Controller
 {
@@ -24,22 +25,21 @@ class BundleController extends Controller
     public function store(Request $request)
 {
     try {
-        // Validate the request
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'desc' => 'required|string',
             'price' => 'required|numeric',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for the image
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle the file upload and store it in the public directory
+        // Handle the file upload
         $imagePath = null;
         if ($request->hasFile('image')) {
-            // Save to the public folder (e.g., public/images/bundles)
-            $imagePath = $request->file('image')->storeAs('images/bundles', $request->file('image')->getClientOriginalName(), 'public');
+            $uniqueName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $imagePath = $request->file('image')->storeAs('images/bundles', $uniqueName, 'public');
         }
 
-        // Create new bundle
+        // Save the bundle
         $bundle = new Bundle();
         $bundle->name = $validated['name'];
         $bundle->desc = $validated['desc'];
@@ -47,18 +47,26 @@ class BundleController extends Controller
         $bundle->image = $imagePath;
         $bundle->save();
 
-        // Log the action
         $this->logAction('create', "Created a new bundle: {$bundle->name}");
 
-        return redirect()->route('dashboard')->with('success', 'Bundle created successfully.');
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        // Catch validation errors and return them to the view
-        return redirect()->back()->withErrors($e->errors())->withInput();
+        return response()->json([
+            'success' => true,
+            'message' => 'Bundle added successfully.',
+            'bundle' => array_merge($bundle->toArray(), [
+                'image_url' => asset('storage/' . $bundle->image),
+            ]),
+        ]);
+    } catch (ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->errors(),
+        ], 422);
     } catch (\Exception $e) {
-        // Catch general errors
-        \Log::error('Error creating bundle: ' . $e->getMessage());
-
-        return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+        \Log::error('Error adding bundle: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'An error occurred while adding the bundle.',
+        ], 500);
     }
 }
 

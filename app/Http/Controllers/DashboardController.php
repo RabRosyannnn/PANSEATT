@@ -8,6 +8,7 @@ use App\Models\Reservation; // Import the Reservation model
 use Illuminate\Http\Request;
 use App\Models\StaffLog;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ReservationRequest;
 use App\Models\Request as ModelsRequest;
 
 class DashboardController extends Controller
@@ -21,7 +22,7 @@ class DashboardController extends Controller
     $staffLogs = StaffLog::latest()->paginate(10);
     $reservations = Reservation::all();
     $completedReservations = Reservation::where('booking_confirmation', 'complete')->count();
-    $modelRequests = ModelsRequest::all();
+    $modelRequests = ReservationRequest::all();
     
     // Using MONTHNAME instead of MONTH
     $monthlyData = Reservation::selectRaw('MONTHNAME(created_at) as month, COUNT(*) as count')
@@ -51,7 +52,7 @@ class DashboardController extends Controller
     
     $events = $reservations->map(function ($reservation) {
         return [
-            'title' => $reservation->customer_name . ' (' . $reservation->number_of_guests . ' guests)',
+            'title' => $reservation->tracking_id . ' (' . $reservation->number_of_guests . ' guests)',
             'start' => $reservation->date . 'T' . $reservation->start_time,
             'end' => $reservation->date . 'T' . $reservation->end_time,
             'allDay' => false,

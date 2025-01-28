@@ -10,10 +10,12 @@ use App\Http\Controllers\StorefrontController;
 use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ReportController;
-
+use App\Http\Controllers\ReservationRequestController;
 
 use App\Http\Controllers\SmsController;
-
+Route::post('/requests', [ReservationRequestController::class, 'store'])->name('requests.store');
+Route::get('/admin/requests', [ReservationRequestController::class, 'index'])->name('admin.requests.index');
+Route::patch('/admin/requests/{reservationRequest}', [ReservationRequestController::class, 'update'])->name('admin.requests.update');
 // routes/web.php
 Route::post('/sms-endpoint', [SmsController::class, 'sendSms'])->withoutMiddleware('web');
 
@@ -80,9 +82,13 @@ Route::get('/track-reservation/{id}', [ReservationController::class, 'customerSh
      ->name('reservations.customerShow');
 Route::post('/reservations/track', [ReservationController::class, 'trackReservation'])
      ->name('reservations.track');
-Route::post('/requests', [RequestController::class, 'store'])->name('requests.store');
+
 
 // Route to update an existing request
 Route::put('/requests/{id}', [RequestController::class, 'update'])->name('requests.update');
+Route::patch('/requests/{request}/approve', [ReservationRequestController::class, 'approve'])->name('requests.approve');
+Route::patch('/requests/{request}/reject', [ReservationRequestController::class, 'reject'])->name('requests.reject');
+Route::post('/reservations/checkConflict', [ReservationController::class, 'checkConflict'])->name('reservations.checkConflict');
+
 
 

@@ -86,8 +86,8 @@ Route::post('/reservations/track', [ReservationController::class, 'trackReservat
 
 // Route to update an existing request
 Route::put('/requests/{id}', [RequestController::class, 'update'])->name('requests.update');
-Route::patch('/requests/{request}/approve', [ReservationRequestController::class, 'approve'])->name('requests.approve');
-Route::patch('/requests/{request}/reject', [ReservationRequestController::class, 'reject'])->name('requests.reject');
+Route::patch('/requests/{id}/approve', [ReservationRequestController::class, 'approve'])->name('requests.approve');
+Route::patch('/requests/{id}/reject', [ReservationRequestController::class, 'reject'])->name('requests.reject');
 Route::post('/reservations/checkConflict', [ReservationController::class, 'checkConflict'])->name('reservations.checkConflict');
 
 

@@ -20,6 +20,6 @@ class ReservationRequest extends Model
     public function reservation()
     {
         // Assuming you have a Reservation model
-        return $this->belongsTo(Reservation::class, 'tracking_id', 'tracking_id');
+        return $this->belongsTo(Reservation::class);
     }
 }

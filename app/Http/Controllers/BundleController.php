@@ -79,53 +79,35 @@ class BundleController extends Controller
 
     public function update(Request $request, Bundle $bundle)
 {
-    try {
-        // Validate the incoming request
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'desc' => 'required|string',
-            'price' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Make image nullable
-        ]);
+    $request->validate([
+        'image' => 'nullable|image|max:1024', // Validation for the image
+        'name' => 'required|string',
+        'desc' => 'required|string',
+        'price' => 'required|numeric',
+    ]);
 
-        // Handle the image upload
-        if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($bundle->image) {
-                Storage::delete($bundle->image);
-            }
-
-            // Store the new image
-            $imagePath = $request->file('image')->store('images');
-        } else {
-            // Keep the existing image if no new image is uploaded
-            $imagePath = $bundle->image;
+    if ($request->hasFile('image')) {
+        // Delete the old image if it exists
+        if ($bundle->image) {
+            Storage::delete($bundle->image);
         }
 
-        // Update the bundle
-        $bundle->update([
-            'name' => $request->name,
-            'desc' => $request->desc,
-            'price' => $request->price,
-            'image' => $imagePath
-        ]);
-
-        // Log the action
-        $this->logAction('update', "Updated the bundle: {$bundle->name}");
-
-        // Redirect back to the dashboard with a success message
-        return redirect()->route('dashboard')->with('success', 'Bundle updated successfully.');
-
-    } catch (\Exception $e) {
-        // Log the exact error message
-        \Log::error('Error updating bundle: ' . $e->getMessage());
-
-        // Redirect back to the edit form with the error message and old input
-        return redirect()->route('bundle.edit', $bundle->id)
-                         ->with('error', 'An error occurred while updating the bundle: ' . $e->getMessage())
-                         ->withInput();  // Retain the old input in the form
+        // Store the new image and get the path
+        $imagePath = $request->file('image')->store('bundles', 'public');
+        $bundle->image = $imagePath;
     }
+
+    // Update other fields
+    $bundle->name = $request->input('name');
+    $bundle->desc = $request->input('desc');
+    $bundle->price = $request->input('price');
+    $bundle->save();
+
+    // Redirect back to the dashboard with a success message
+    return redirect()->route('dashboard')->with('success', 'Bundle updated successfully!');
 }
+
+
 
     public function destroy(Bundle $bundle)
     {

@@ -608,7 +608,7 @@
     });
 
     calendar.render();
-});
+}); 
 
 </script>
 <script>
@@ -707,79 +707,36 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const reservationForm = document.getElementById('reservationForm');
-    const errorMessagesContainer = document.getElementById('errorMessages'); // To show validation errors
 
     reservationForm.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
 
-        // Clear previous error messages
-        errorMessagesContainer.innerHTML = '';
-
-        // Trim spaces from all text inputs
-        const inputs = reservationForm.querySelectorAll('input[type="text"], textarea');
-        inputs.forEach(input => {
-            input.value = input.value.trim(); // Remove leading and trailing spaces
-        });
-
+        // Create FormData object
         const formData = new FormData(reservationForm);
 
+        // Send the form data to the server
         fetch("{{ route('reservations.store') }}", {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value, // Ensure CSRF token is sent
             },
             body: formData
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+        .then(response => response.json()) // Parse the JSON response
         .then(data => {
-            // Handle success
             if (data.success) {
                 alert('Reservation saved successfully!');
                 $('#addReservationModal').modal('hide'); // Close modal
                 reservationForm.reset(); // Reset form fields
             } else {
-                // If there are validation errors returned by the server
-                if (data.errors) {
-                    displayErrors(data.errors); // Server validation errors (like field errors)
-                } else if (data.message) {
-                    // If the server returned a message (like time conflict or general errors)
-                    displayErrorMessage(data.message);
-                }
+                alert(data.message || 'Failed to save reservation');
             }
         })
         .catch(error => {
-            // Handle network or other errors
             console.error('There was an error:', error);
             alert('An error occurred while saving the reservation.');
         });
     });
-
-    // Function to display field-specific error messages
-    function displayErrors(errors) {
-        // Display each error message in the modal
-        for (const field in errors) {
-            if (errors.hasOwnProperty(field)) {
-                const errorMessage = errors[field];
-                const errorElement = document.createElement('div');
-                errorElement.classList.add('alert', 'alert-danger');
-                errorElement.textContent = errorMessage;
-                errorMessagesContainer.appendChild(errorElement);
-            }
-        }
-    }
-
-    // Function to display general error message (like time conflict or general failure)
-    function displayErrorMessage(message) {
-        const errorElement = document.createElement('div');
-        errorElement.classList.add('alert', 'alert-danger');
-        errorElement.textContent = message;
-        errorMessagesContainer.appendChild(errorElement);
-    }
 });
 
 

@@ -41,7 +41,7 @@ class ReservationController extends Controller
         $validatedData = $request->validate([
             'contact_information' => 'required|string|size:11|regex:/^09\d{9}$/',
             'customer_name' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
-            'date' => 'required|date|after_or_equal:today',
+            'date' => 'required|date',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
             'number_of_guests' => 'required|integer|min:1',
@@ -75,11 +75,20 @@ class ReservationController extends Controller
         // Generate tracking ID
         $trackingId = random_int(10000, 99999);
 
-        // Create the reservation
-        $reservation = Reservation::create(array_merge(
-            $validatedData,
-            ['tracking_id' => $trackingId]
-        ));
+        // Create the reservation with the tracking ID
+        $reservation = Reservation::create([
+            'contact_information' => $validatedData['contact_information'],
+            'customer_name' => $validatedData['customer_name'],
+            'date' => $validatedData['date'],
+            'start_time' => $validatedData['start_time'],
+            'end_time' => $validatedData['end_time'],
+            'number_of_guests' => $validatedData['number_of_guests'],
+            'booking_confirmation' => $validatedData['booking_confirmation'],
+            'deposit' => $validatedData['deposit'],
+            'occasion' => $validatedData['occasion'],
+            'note' => $validatedData['note'] ?? null,  // Handle optional field 'note'
+            'tracking_id' => $trackingId,  // Add the generated tracking ID
+        ]);
 
         // Attach selected bundles
         $reservation->bundles()->attach($validatedData['bundles']);

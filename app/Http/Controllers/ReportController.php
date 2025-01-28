@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use App\Models\Reservation; 
 class ReportController extends Controller
 {
     public function generate(Request $request)
     {
         // Fetch data
-        $completedReservations = 123; // Example data
+        $completedReservations = Reservation::where('booking_confirmation', 'complete')->get();
 
         // Retrieve the Base64 chart image
         $chartImage = $request->input('chartImage');

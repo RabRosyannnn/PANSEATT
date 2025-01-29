@@ -21,7 +21,6 @@ class Reservation extends Model
         'deposit',
         'occasion',
         'note',
-        'bundle',
         'tracking_id',
     ];
     public function getEndDateTimeAttribute()
@@ -30,7 +29,7 @@ class Reservation extends Model
     }
     public function bundles()
 {
-    return $this->belongsToMany(Bundle::class, 'reservation_bundle');
+    return $this->belongsToMany(Bundle::class, 'reservation_bundle')->withPivot('quantity');
 }
 
 }

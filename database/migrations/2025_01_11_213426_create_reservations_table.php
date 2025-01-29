@@ -16,7 +16,7 @@ class CreateReservationsTable extends Migration
             $table->time('end_time');
             $table->integer('number_of_guests');
             $table->string('booking_confirmation')->default('processing'); // Updated column
-            $table->decimal('price', 8, 2)->nullable();
+            $table->decimal('price', 8, 2);
             $table->decimal('deposit', 8, 2)->nullable();
             $table->string('occasion')->nullable();
             $table->string('note')->nullable();

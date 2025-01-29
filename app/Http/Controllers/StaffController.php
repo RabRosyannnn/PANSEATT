@@ -102,56 +102,34 @@ class StaffController extends Controller
     }
 
     // Update staff member
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
 {
-    // Log the incoming request data for debugging
-    \Log::info('Update request data:', $request->all());
-
     // Validate the incoming request
-    $request->validate([
-        'name' => 'required|string|max:255|regex:/^[A-Za-z]+$/',
-        'email' => [
-            'required',
-            'string',
-            'email',
-            'max:255',
-            'regex:/\S/', // Check for any whitespaces in the email
-            Rule::unique('users')->ignore($id), // Allow current email to be skipped
-        ],
-        'password' => 'nullable|string|min:8|regex:/\S/', // Optional for password update
-        'position' => 'required|string|max:255',
-    ], [
-        'name.regex' => 'The name must only contain letters (no spaces, numbers, or special characters).',
-        'name.required' => 'The name field is required.',
-        'email.regex' => 'The email must not contain only spaces.',
-        'password.regex' => 'The password must not contain only spaces.',
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'position' => 'required|in:Admin,Staff',
+        'password' => 'nullable|string|min:8|confirmed', // Password is optional but must be confirmed if provided
     ]);
 
-    // Find the user by ID
-    $user = User::findOrFail($id);
+    // Update the user's name and email
+    $user->name = $validatedData['name'];
+    $user->email = $validatedData['email'];
 
-    // Check if password is provided and hash it if so
-    $password = $request->password ? bcrypt($request->password) : $user->password;
+    // Only update the position if it has changed
+    if ($request->input('position') !== $user->position) {
+        $user->position = $request->input('position');
+    }
 
-    // Update the user
-    $user->update([
-        'name' => $request->name,
-        'email' => $request->email,
-        'position' => $request->position,
-        'password' => $password,
-    ]);
+    // Update the password if provided
+    if ($request->filled('password')) {
+        $user->password = bcrypt($validatedData['password']); // Hash the new password
+    }
 
-    // Create staff log entry for the update
-    StaffLog::create([
-        'user_id' => Auth::id(),
-        'action' => 'update',
-        'description' => "Updated staff member: {$user->name}",
-    ]);
+    // Save the user
+    $user->save();
 
-    // Log success message for debugging
-    \Log::info('Staff member updated successfully: ', ['user_id' => $user->id]);
-
-    return redirect()->route('dashboard')->with('success', 'Staff member updated successfully!');
+    return redirect()->route('dashboard')->with('success', 'Staff member updated successfully.');
 }
 
     // Archive staff member

@@ -82,15 +82,19 @@ body {
 }
 
 .logo-center {
-    width: 232px; /* Adjust width to be smaller */
-    height: 232px; /* Adjust height to be smaller */
-    background-color: #4A7C59; /* Background color */
-    border-radius: 10px; /* Rounded corners */
-    padding-left: 70px; /* Adjust padding for inner logo */
-    padding-right: 70px; /* Adjust padding for inner logo */
-    padding-top: 60px; /* Adjust padding for inner logo */
-    padding-bottom: 60px; /* Adjust padding for inner logo */
-    box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
+  width: 232px; /* Adjust width to be smaller */
+  height: 232px; /* Adjust height to be smaller */
+  background-color: #4A7C59; /* Background color */
+  border-radius: 10px; /* Rounded corners */
+  padding-left: 70px; /* Adjust padding for inner logo */
+  padding-right: 70px; /* Adjust padding for inner logo */
+  padding-top: 60px; /* Adjust padding for inner logo */
+  padding-bottom: 60px; /* Adjust padding for inner logo */
+  box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
+  background-image: url('/images/panseat_logo.png');
+  background-size: contain; /* Ensure the logo fits within the container */
+  background-repeat: no-repeat; /* Prevent the logo from repeating */
+  background-position: center; /* Center the logo */
 }
   
   .login-form-container {

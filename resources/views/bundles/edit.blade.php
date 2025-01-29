@@ -7,34 +7,33 @@
     <link rel="stylesheet" href="{{ asset('css/Bedit.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-      $(document).ready(function() {
-    // Listen for file input change
-    $('#image').change(function() {
-        var formData = new FormData();
-        formData.append('image', this.files[0]);  // Append the selected file
-        formData.append('_token', '{{ csrf_token() }}'); // CSRF token
+        $(document).ready(function() {
+            // Listen for file input change
+            $('#image').change(function() {
+                var formData = new FormData();
+                formData.append('image', this.files[0]);  // Append the selected file
+                formData.append('_token', '{{ csrf_token() }}'); // CSRF token
 
-        // AJAX request to update image
-        $.ajax({
-            url: '{{ route('bundles.update', $bundle) }}',
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                // Update the image preview without reloading
-                if(response.success) {
-                    var newImageUrl = response.imageUrl + '?timestamp=' + new Date().getTime(); // Add timestamp to avoid caching
-                    $('.image-box img').attr('src', newImageUrl); // Update the image source
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error uploading image:", error);
-            }
+                // AJAX request to update image
+                $.ajax({
+                    url: '{{ route('bundles.update', $bundle) }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Update the image preview without reloading
+                        if(response.success) {
+                            var newImageUrl = response.imageUrl + '?timestamp=' + new Date().getTime(); // Add timestamp to avoid caching
+                            $('.image-box img').attr('src', newImageUrl); // Update the image source
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error uploading image:", error);
+                    }
+                });
+            });
         });
-    });
-});
-
     </script>
 </head>
 <body>
@@ -77,6 +76,23 @@
                             <div class="form-group">
                                 <label for="price">Price</label>
                                 <input type="text" id="price" name="price" value="{{ old('price', $bundle->price) }}" placeholder="Enter price" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select class="form-control" id="category" name="category" required>
+                                    <option value="" disabled>Select a category</option>
+                                    <option value="Bilao" {{ $bundle->category == 'Bilao' ? 'selected' : '' }}>Bilao</option>
+                                    <option value="Noodles" {{ $bundle->category == 'Noodles' ? 'selected' : '' }}>Noodles</option>
+                                    <option value="Chicken" {{ $bundle->category == 'Chicken' ? 'selected' : '' }}>Chicken</option>
+                                    <option value="Pork" {{ $bundle->category == 'Pork' ? 'selected' : '' }}>Pork</option>
+                                    <option value="Chicharon" {{ $bundle->category == 'Chicharon' ? 'selected' : '' }}>Chicharon</option>
+                                    <option value="Fish" {{ $bundle->category == 'Fish' ? 'selected' : '' }}>Fish</option>
+                                    <option value="Vegetable" {{ $bundle->category == 'Vegetable' ? 'selected' : '' }}>Vegetable</option>
+                                    <option value="SeaFood" {{ $bundle->category == 'SeaFood' ? 'selected' : '' }}>SeaFood</option>
+                                    <option value="Baka" {{ $bundle->category == 'Baka' ? 'selected' : '' }}>Baka</option>
+                                    <option value="Soup" {{ $bundle->category == 'Soup' ? 'selected' : '' }}>Soup</option>
+                                    <option value="Rice" {{ $bundle->category == 'Rice' ? 'selected' : '' }}>Rice</option>
+                                </select>
                             </div>
 
                             <div class="button-group">

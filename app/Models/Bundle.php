@@ -10,7 +10,7 @@ class Bundle extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'desc','price', 'image','is_archived',
+        'name','category','desc','price', 'image','is_archived',
     ];
     public function reservations()
 {

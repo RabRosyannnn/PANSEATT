@@ -27,9 +27,20 @@ class BundleController extends Controller
     try {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'category' => 'required|string',
             'desc' => 'required|string',
             'price' => 'required|numeric',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'name.required' => 'The bundle name is required.',
+            'category.required' => 'The bundle category is required.',
+            'desc.required' => 'The description is required.',
+            'price.required' => 'The price is required.',
+            'price.numeric' => 'The price must be a number.',
+            'image.required' => 'An image is required.',
+            'image.image' => 'The file must be an image.',
+            'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif.',
+            'image.max' => 'The image may not be greater than 2MB.',
         ]);
 
         // Handle the file upload
@@ -44,6 +55,7 @@ class BundleController extends Controller
         $bundle->name = $validated['name'];
         $bundle->desc = $validated['desc'];
         $bundle->price = $validated['price'];
+        $bundle->category = $validated['category'];
         $bundle->image = $imagePath;
         $bundle->save();
 
@@ -57,19 +69,20 @@ class BundleController extends Controller
             ]),
         ]);
     } catch (ValidationException $e) {
+        // Return structured validation errors
         return response()->json([
             'success' => false,
-            'message' => $e->errors(),
+            'message' => 'Make sure input fields are correct and image is JPG, PNG, JPEG .',
+            'errors' => $e->errors(), // Return the validation errors
         ], 422);
     } catch (\Exception $e) {
         \Log::error('Error adding bundle: ' . $e->getMessage());
         return response()->json([
             'success' => false,
-            'message' => 'An error occurred while adding the bundle.',
+            'message' => 'An error occurred while adding the bundle. Please try again later.',
         ], 500);
     }
 }
-
     
 
     public function edit(Bundle $bundle)
@@ -79,30 +92,39 @@ class BundleController extends Controller
 
     public function update(Request $request, Bundle $bundle)
 {
-    $request->validate([
-        'image' => 'nullable|image|max:1024', // Validation for the image
-        'name' => 'required|string',
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'category' => 'required|string',
         'desc' => 'required|string',
         'price' => 'required|numeric',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ], [
+        'name.required' => 'The bundle name is required.',
+        'category.required' => 'The bundle category is required.',
+        'desc.required' => 'The description is required.',
+        'price.required' => 'The price is required.',
+        'price.numeric' => 'The price must be a number.',
+        'image.required' => 'An image is required.',
+        'image.image' => 'The file must be an image.',
+        'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif.',
+        'image.max' => 'The image may not be greater than 2MB.',
     ]);
 
+    // Handle the file upload
+    $imagePath = null;
     if ($request->hasFile('image')) {
-        // Delete the old image if it exists
-        if ($bundle->image) {
-            Storage::delete($bundle->image);
-        }
-
-        // Store the new image and get the path
-        $imagePath = $request->file('image')->store('bundles', 'public');
-        $bundle->image = $imagePath;
+        $uniqueName = time() . '_' . $request->file('image')->getClientOriginalName();
+        $imagePath = $request->file('image')->storeAs('images/bundles', $uniqueName, 'public');
     }
 
-    // Update other fields
-    $bundle->name = $request->input('name');
-    $bundle->desc = $request->input('desc');
-    $bundle->price = $request->input('price');
+    // Save the bundle
+    $bundle = new Bundle();
+    $bundle->name = $validated['name'];
+    $bundle->desc = $validated['desc'];
+    $bundle->price = $validated['price'];
+    $bundle->category = $validated['category'];
+    $bundle->image = $imagePath;
     $bundle->save();
-
     // Redirect back to the dashboard with a success message
     return redirect()->route('dashboard')->with('success', 'Bundle updated successfully!');
 }

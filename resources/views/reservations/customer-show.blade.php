@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/reservation-details.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('images/panseat_logo.png') }}">
 </head>
 <body>
 <h1 class="title">TRACK</h1>
@@ -42,13 +43,25 @@
                     @if($reservation->note)
                         <p><strong>Notes:</strong> {{ $reservation->note }}</p>
                     @endif
+                    <p><strong>Price:</strong> {{ $reservation->price }} php</p>
                 </div>
-
+                 
                 <div class="details-card confirmation-status">
                     <h3>Booking Confirmation Status</h3>
                     <div class="status-display {{ strtolower($reservation->booking_confirmation) }}">
                         {{ strtoupper($reservation->booking_confirmation) }}
                     </div>
+                </div>
+                <!-- New Section for Bundles and Quantities -->
+                <div class="details-card bundles-info">
+                    <h3>Selected Bundles</h3>
+                    <ul>
+                        @foreach($reservation->bundles as $bundle)
+                            <li>
+                                {{ $bundle->name }} - Quantity: {{ $bundle->pivot->quantity }}
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>

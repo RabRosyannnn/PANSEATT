@@ -90,5 +90,8 @@ Route::patch('/requests/{id}/approve', [ReservationRequestController::class, 'ap
 Route::patch('/requests/{id}/reject', [ReservationRequestController::class, 'reject'])->name('requests.reject');
 Route::post('/reservations/checkConflict', [ReservationController::class, 'checkConflict'])->name('reservations.checkConflict');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
 
 

@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="{{ asset('css/edit.css') }}">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="{{ asset('images/panseat_logo.png') }}">
 <div class="container">
     <div class="card">
         <!-- Header -->
@@ -10,9 +11,9 @@
 
         <!-- Body -->
         <div class="card-body">
-        <form action="{{ route('staff.update', ['user' => $user->id]) }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
+            <form action="{{ route('staff.update', ['user' => $user->id]) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
                 <!-- Input Group -->
                 <div class="input-group">
@@ -65,6 +66,23 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Enter new password (leave blank to keep current password)">
+                            @error('password')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Confirm Password -->
+                       
                     </div>
                 </div>
 

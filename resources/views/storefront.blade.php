@@ -14,6 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('images/panseat_logo.png') }}">
 </head>
 <body>
     <header>
@@ -22,8 +23,8 @@
                 <h2 class="header-title">PansEat Tagapo</h2> 
             </div>
             <div class="nav-item">
-                <a href="#" class="nav-link">Home</a>
-                <a href="#" class="nav-link">About</a>
+            <a href="{{ route('home') }}" class="nav-link">Home</a>
+            <a href="{{ route('about') }}" class="nav-link">About</a>
             </div>
         </div>
     </header>

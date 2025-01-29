@@ -67,21 +67,25 @@ class ReservationRequestController extends Controller
         $contactInformation = $this->transformContactNumber($contactInformation);
 
         Log::info('Transformed Contact Information: ' . $contactInformation);
+
+        // Step 6: Get the message from the request
+        $adminMessage = $request->input('message');
+        $defaultMessage = " \nYour reservation request has been approved. Thank you!";
+        $message = $adminMessage . $defaultMessage;
+
         // Send SMS
-        $message = "Your reservation request has been approved. Thank you!";
         $response = Http::withHeaders([
             'Authorization' => 'd1f02324-c1fa-4490-9059-c2860ac5df6d'
-        ])->post('http://192.168.1.7:8082/sms-endpoint', [
-            'to' => $contactInformation, // Send to the transformed contact information
+        ])->post('http://192.168.1.17:8082/sms-endpoint', [
+            'to' => $contactInformation,
             'message' => $message
         ]);
 
-        // Step 6: Delete the request after sending SMS
+        // Step 7: Delete the request after sending SMS
         $reservationRequest->delete();
 
         return redirect()->route('dashboard')->with('success', 'Request approved, user notified, and request deleted!');
     } else {
-        // Handle case where no reservation is found for the given tracking_id
         return redirect()->route('dashboard')->with('error', 'No reservation found for this request!');
     }
 }
@@ -109,21 +113,25 @@ public function reject(Request $request, $id)
         $contactInformation = $this->transformContactNumber($contactInformation);
 
         Log::info('Transformed Contact Information: ' . $contactInformation);
+
+        // Step 6: Get the message from the request
+        $adminMessage = $request->input('message');
+        $defaultMessage = "\n Your reservation request has been rejected. Please contact support for more details.";
+        $message = $adminMessage . $defaultMessage;
+
         // Send SMS
-        $message = "Your reservation request has been rejected. Please contact support for more details.";
         $response = Http::withHeaders([
             'Authorization' => 'd1f02324-c1fa-4490-9059-c2860ac5df6d'
-        ])->post('http://192.168.1.7:8082/sms-endpoint', [
-            'to' => $contactInformation, // Send to the transformed contact information
+        ])->post('http://192.168.1.17:8082/sms-endpoint', [
+            'to' => $contactInformation,
             'message' => $message
         ]);
 
-        // Step 6: Delete the request after sending SMS
+        // Step 7: Delete the request after sending SMS
         $reservationRequest->delete();
 
         return redirect()->route('dashboard')->with('error', 'Request rejected, user notified, and request deleted!');
     } else {
-        // Handle case where no reservation is found for the given tracking_id
         return redirect()->route('dashboard')->with('error', 'No reservation found for this request!');
     }
 }

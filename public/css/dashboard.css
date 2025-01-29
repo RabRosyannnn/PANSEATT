@@ -155,6 +155,7 @@ aside ul li a {
 }
 
 /* Card Styling */
+/* Card Styling */
 .card {
     border-radius: 15px;
     overflow: hidden;
@@ -164,18 +165,26 @@ aside ul li a {
     flex-direction: column;
     justify-content: space-between;
     text-align: center;
-    margin: 0 auto;
-    width: 100%;
+    margin: 10px; /* Add margin for spacing */
+    width: 100%; /* Full width of the parent */
+    max-width: 350px; /* Set a maximum width for cards */
 }
 
+/* Ensure the card container is responsive */
+#activeBundles {
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap */
+    justify-content: center; /* Center cards */
+    gap: 20px; /* Add spacing between cards */
+}
+
+/* Card image styling */
 .card-img-top {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    width: 80%;
-    height: auto;
-    margin: 20px auto;
-    border-radius: 10px;
-    object-fit: cover;
+    width: 100%; /* Full width */
+    height: 200px; /* Fixed height */
+    object-fit: cover; /* Cover the area without distortion */
 }
 
 .card-title {
@@ -747,12 +756,10 @@ aside ul li a {
     }
 }
 .bundle-image {
-    min-height: 200px; /* Set a minimum height */
-    min-width: 200px; /* Set a minimum width */
-    max-width: 100%; /* Prevent the image from exceeding the container */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: cover; /* Ensure the image fills the dimensions without distortion */
-    border-radius: 8px; /* Optional for rounded corners */
+    width: 100%; /* Set width to 100% of the parent container */
+    height: 80px; /* Set a fixed height */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional for subtle shadow */
 }
 /* General form styling */
@@ -814,3 +821,19 @@ aside ul li a {
 .report-button:hover {
     background-color: #0056b3;
 }
+.quantity-control {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+}
+
+.quantity-control .form-control {
+    width: 20px; /* Set a fixed width for the input */
+    height: 30px; /* Set a fixed height */
+    padding: 0; /* Remove padding for a more compact look */
+    text-align: center; /* Center text in the input */
+    font-size: 0.9rem; /* Smaller font size */
+    border-radius: 5px; /* Optional: add slight rounding */
+    border: 1px solid #ced4da; /* Keep the border for visibility */
+}
+
+

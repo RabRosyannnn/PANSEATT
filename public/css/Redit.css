@@ -18,7 +18,10 @@ body {
     flex-wrap: wrap; /* Allow wrapping of columns */
     gap: 20px; /* Space between columns */
 }
-
+.btn-primary {
+    background-color: #4A7C59;
+    color: #FFD166;
+}
 /* Equal width for each column */
 .form-column {
     flex: 1;

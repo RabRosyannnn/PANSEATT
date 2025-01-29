@@ -35,81 +35,90 @@ class ReservationController extends Controller
     // Store a newly created reservation in storage
     // Store a newly created reservation in storage
     public function store(Request $request)
-{
-    try {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'contact_information' => 'required|string|size:11|regex:/^09\d{9}$/',
-            'customer_name' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
-            'date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-            'number_of_guests' => 'required|integer|min:1',
-            'booking_confirmation' => 'required|string|in:processing,confirmed,cancelled',
-            'deposit' => 'required|numeric|min:0',
-            'occasion' => 'required|string|max:255',
-            'bundles' => 'required|array|min:1',
-            'bundles.*' => 'integer|exists:bundles,id',
-            'note' => 'nullable|string|max:255',
-        ]);
-
-        // Check if there is an existing reservation at the same time
-        $existingReservation = Reservation::where('date', $validatedData['date'])
-            ->where(function ($query) use ($validatedData) {
-                $query->whereBetween('start_time', [$validatedData['start_time'], $validatedData['end_time']])
-                      ->orWhereBetween('end_time', [$validatedData['start_time'], $validatedData['end_time']])
-                      ->orWhere(function ($query) use ($validatedData) {
-                          $query->where('start_time', '<=', $validatedData['start_time'])
-                                ->where('end_time', '>=', $validatedData['end_time']);
-                      });
-            })
-            ->exists();
-
-        if ($existingReservation) {
+    {
+        try {
+            $validatedData = $request->validate([
+                'contact_information' => 'required|string|size:11|regex:/^09\d{9}$/',
+                'customer_name' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
+                'date' => 'required|date',
+                'start_time' => 'required|date_format:H:i',
+                'end_time' => 'required|date_format:H:i|after:start_time',
+                'number_of_guests' => 'required|integer|min:1',
+                'booking_confirmation' => 'required|string|in:processing,confirmed,canceled',
+                'deposit' => 'required|numeric|min:0',
+                'occasion' => 'required|string|max:255',
+                'bundles' => 'required|array|min:1',
+                'bundles.*' => 'integer|exists:bundles,id',
+                'note' => 'nullable|string|max:255',
+                'total_price' => 'required|numeric|min:0', // Add validation for total_price
+            ]);
+    
+            // Prevent duplicate reservations
+            $existingReservation = Reservation::where('date', $validatedData['date'])
+                ->where(function ($query) use ($validatedData) {
+                    $query->whereBetween('start_time', [$validatedData['start_time'], $validatedData['end_time']])
+                          ->orWhereBetween('end_time', [$validatedData['start_time'], $validatedData['end_time']])
+                          ->orWhere(function ($query) use ($validatedData) {
+                              $query->where('start_time', '<=', $validatedData['start_time'])
+                                    ->where('end_time', '>=', $validatedData['end_time']);
+                          });
+                })
+                ->exists();
+    
+            if ($existingReservation) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'A reservation already exists with the same date and overlapping time range.',
+                ], 400);
+            }
+    
+            // Validate that the deposit does not exceed the total price
+            if ($validatedData['deposit'] > $validatedData['total_price']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The deposit cannot be greater than the total price of the reservation.',
+                ], 400);
+            }
+    
+            // Generate tracking ID
+            $trackingId = random_int(10000, 99999);
+    
+            // Create reservation with total price from request
+            $reservation = Reservation::create([
+                'contact_information' => $validatedData['contact_information'],
+                'customer_name' => $validatedData['customer_name'],
+                'date' => $validatedData['date'],
+                'start_time' => $validatedData['start_time'],
+                'end_time' => $validatedData['end_time'],
+                'number_of_guests' => $validatedData['number_of_guests'],
+                'booking_confirmation' => $validatedData['booking_confirmation'],
+                'deposit' => $validatedData['deposit'],
+                'occasion' => $validatedData['occasion'],
+                'note' => $validatedData['note'] ?? null,
+                'tracking_id' => $trackingId,
+                'price' => $validatedData['total_price'], // Use the total price from the request
+            ]);
+    
+            // Attach selected bundles
+            $reservation->bundles()->attach($validatedData['bundles']);
+    
+            // Log action
+            $this->logAction('create', "Created a reservation with ID: {$trackingId}");
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Reservation created successfully.',
+                'reservation' => $reservation,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error creating reservation: ' . $e->getMessage());
+    
             return response()->json([
                 'success' => false,
-                'message' => 'A reservation already exists with the same date and overlapping time range.',
-            ], 400);
+                'message' => 'There was an error while creating the reservation. Please try again later.',
+            ], 500);
         }
-
-        // Generate tracking ID
-        $trackingId = random_int(10000, 99999);
-
-        // Create the reservation with the tracking ID
-        $reservation = Reservation::create([
-            'contact_information' => $validatedData['contact_information'],
-            'customer_name' => $validatedData['customer_name'],
-            'date' => $validatedData['date'],
-            'start_time' => $validatedData['start_time'],
-            'end_time' => $validatedData['end_time'],
-            'number_of_guests' => $validatedData['number_of_guests'],
-            'booking_confirmation' => $validatedData['booking_confirmation'],
-            'deposit' => $validatedData['deposit'],
-            'occasion' => $validatedData['occasion'],
-            'note' => $validatedData['note'] ?? null,  // Handle optional field 'note'
-            'tracking_id' => $trackingId,  // Add the generated tracking ID
-        ]);
-
-        // Attach selected bundles
-        $reservation->bundles()->attach($validatedData['bundles']);
-
-        // Log action
-        $this->logAction('create', "Created a reservation with ID: {$trackingId}");
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Reservation created successfully.',
-            'reservation' => $reservation,
-        ]);
-    } catch (\Exception $e) {
-        \Log::error('Error creating reservation: ' . $e->getMessage());
-
-        return response()->json([
-            'success' => false,
-            'message' => 'There was an error while creating the reservation. Please try again later.',
-        ], 500);
     }
-}
 
 
 
@@ -140,35 +149,42 @@ class ReservationController extends Controller
     // Update the specified reservation in storage
     public function update(Request $request, $id)
 {
-    // Validate the request
-    $request->validate([
+    $validatedData = $request->validate([
         'customer_name' => 'required|string|max:255',
         'contact_information' => 'required|string|max:255',
         'date' => 'required|date',
         'start_time' => 'required|date_format:H:i',
-        'end_time' => 'required|date_format:H:i|after:start_time', // Ensure end time is after start time
+        'end_time' => 'required|date_format:H:i|after:start_time',
         'number_of_guests' => 'required|integer|min:1',
-        'booking_confirmation' => 'required|string|in:processing,confirmed,canceled,complete', // Ensure the value is one of the specified options
+        'booking_confirmation' => 'required|string|in:processing,confirmed,canceled,complete',
         'deposit' => 'required|numeric',
         'occasion' => 'required|string|max:255',
-        'bundles' => 'required|array', // Change 'bundle' to 'bundles'
-        'bundles.*' => 'required|integer|exists:bundles,id', // Ensure each selected bundle ID exists in the bundles table
+        'bundles' => 'required|array',
+        'bundles.*' => 'required|integer|exists:bundles,id',
         'note' => 'nullable|string|max:255',
     ]);
 
     // Find the reservation by ID
     $reservation = Reservation::findOrFail($id);
 
-    // Update the reservation with the validated data
-    $reservation->update($request->all());
+    // Recalculate the price
+    $basePrice = 500;
+    $bundleTotal = Bundle::whereIn('id', $validatedData['bundles'])->sum('price');
+    $totalPrice = $basePrice + $bundleTotal;
+
+    // Update the reservation
+    $reservation->update(array_merge($validatedData, ['price' => $totalPrice]));
+
+    // Update bundle associations
+    $reservation->bundles()->sync($validatedData['bundles']);
 
     // Log the action
     $this->logAction('update', "Updated the reservation for {$reservation->customer_name}");
 
-    // Redirect with success message
     return redirect()->route('reservations.show', $id)
                      ->with('success', 'Reservation updated successfully.');
 }
+
 
     // Remove the specified reservation from storage
     public function destroy($id)

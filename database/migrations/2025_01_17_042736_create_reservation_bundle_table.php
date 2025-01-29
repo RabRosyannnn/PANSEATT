@@ -15,6 +15,7 @@ return new class extends Migration
         $table->id();
         $table->foreignId('reservation_id')->constrained()->onDelete('cascade');
         $table->foreignId('bundle_id')->constrained()->onDelete('cascade');
+        $table->integer('quantity')->default(1); // Add quantity column with a default value of 1
         $table->timestamps();
     });
 }

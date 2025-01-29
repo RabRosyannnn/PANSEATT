@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}"> <!-- Link to the external CSS file -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Include Font Awesome -->
+    <link rel="icon" type="image/png" href="{{ asset('images/panseat_logo.png') }}">
 </head>
 <body>
 <h1 class="title">PansEat Tagapo</h1>
@@ -14,7 +15,9 @@
         <div class="login-logo">
             <div class="logo-outer">
                 <div class="logo-inner">
-                    <div class="logo-center"></div>
+                    <div class="logo-center">
+                        
+                    </div>
                 </div>
             </div>
         </div>

@@ -37,7 +37,7 @@
                         {{ \Carbon\Carbon::parse($reservation->end_time)->format('g:i A') }}</p>
                     <p><strong>Number of Guests:</strong> {{ $reservation->number_of_guests }}</p>
                     @if($reservation->deposit)
-                        <p><strong>Deposit:</strong> Paid</p>
+                        <p><strong>Deposit:</strong>  {{ $reservation->deposit }}</p>
                     @endif
                     <p><strong>Occasion:</strong> {{ $reservation->occasion }}</p>
                     @if($reservation->note)

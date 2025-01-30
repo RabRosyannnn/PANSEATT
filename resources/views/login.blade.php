@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="{{ asset('images/panseat_logo.png') }}">
 </head>
 <body>
-<h1 class="title">PansEat Tagapo</h1>
+
     <div class="login-container">
         <div class="login-logo">
             <div class="logo-outer">

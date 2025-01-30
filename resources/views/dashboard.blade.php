@@ -76,15 +76,13 @@
         @endif
         @if(Auth::user()->position === 'admin') <!-- Show staff section only for admin -->
         <div class="section" id="completed-reservations-section">
-        
-    <div class="completed-reservations-card text-center mb-4" style="background-color: #E07A5F; color: #FFD166;">
-        <div class="generate-report text-center mb-4">
-        <form method="POST" action="{{ route('generate.report') }}" class="report-form">
-    @csrf
-    <!-- Trigger button for the modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filtersModal">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filtersModal">
     Generate Report
 </button>
+    <div class="completed-reservations-card text-center mb-4" style="background-color: #E07A5F; color: #FFD166;">
+        <div class="generate-report text-center mb-4">
+        
+
 
 <!-- Modal -->
 <!-- Modal -->
@@ -216,17 +214,8 @@
                                 <select name="booking_confirmation" id="booking_confirmation" class="form-control">
                                     <option value="processing" {{ old('booking_confirmation', 'processing') == 'processing' ? 'selected' : '' }}>Processing</option>
                                     <option value="confirmed" {{ old('booking_confirmation') == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                                    <option value="canceled" {{ old('booking_confirmation') == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                                    <option value="cancelled" {{ old('booking_confirmation') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                                 </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="deposit">Deposit</label>
-                                <input type="number" class="form-control" id="deposit" name="deposit" step="0.01" min="0" required max="99999.99" oninput="validateDeposit(this)">
-                            </div>
-                            <div class="form-group">
-                                <label for="occasion">Occasion</label>
-                                <input type="text" class="form-control" id="occasion" name="occasion" required maxlength="25">
                             </div>
                             <div class="form-group">
     <label for="bundles">Select Bundles</label>
@@ -244,10 +233,19 @@
         @endforeach
     </div>
 </div>             <!-- Total Price Display -->
+<div class="form-group">
+    <label for="total_price">Total Price</label>
+    <input type="text" class="form-control" id="total_price" name="total_price" readonly>
+</div>
+<div class="form-group">
+    <label for="deposit">Deposit</label>
+    <input type="number" class="form-control" id="deposit" name="deposit" step="0.01" min="0" required max="99999.99" oninput="validateDeposit(this)">
+</div>
                             <div class="form-group">
-                                <label for="total_price">Total Price</label>
-                                <input type="text" class="form-control" id="total_price" name="total_price" readonly>
+                                <label for="occasion">Occasion</label>
+                                <input type="text" class="form-control" id="occasion" name="occasion" required maxlength="25">
                             </div>
+                            
                             <!-- Note Input -->
                             <div class="form-group">
                                 <label for="note">Note</label>
@@ -448,10 +446,12 @@
                 <h5>{{ $staff->name }}</h5>
                 <div class="staff-actions">
                     <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-edit">EDIT</a>
-                    <form action="{{ route('staff.archive', $staff->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-archive">ARCHIVE</button>
-                    </form>
+                    @if(Auth::id() !== $staff->id) <!-- Check if the logged-in user is not the staff member -->
+                        <form action="{{ route('staff.archive', $staff->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-archive">ARCHIVE</button>
+                        </form>
+                    @endif
                 </div>
             </div>
         @endforeach
@@ -527,7 +527,7 @@
                             <option value="Fish">Fish</option>
                             <option value="Vegetable">Vegetable</option>
                             <option value="SeaFood">SeaFood</option>
-                            <option value="Baka">Baka</option>
+                            <option value="Baka">Beef</option>
                             <option value="Soup">Soup</option>
                             <option value="Rice">Rice</option>
                         </select>
@@ -794,15 +794,10 @@
         }
     });
 
-    // Function to export chart to image
-    function exportChartToImage() {
-        const chartImage = chart.toBase64Image(); // Get the chart image as a base64 string
-        document.getElementById('chartImage').value = chartImage; // Set the hidden input value
-    }
-
+    
     // Call the export function after the chart is rendered
     chart.render();
-    exportChartToImage();
+    
 });
 </script>
 <script>
@@ -1018,7 +1013,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 }
 function updateTotalPrice() {
-    let totalPrice = 0; // Initialize total price
+    let totalPrice = 500; // Initialize total price
     const checkboxes = document.querySelectorAll('input[name="bundles[]"]:checked');
 
     checkboxes.forEach((checkbox) => {
@@ -1096,6 +1091,17 @@ function setRequestId(requestId, action) {
     // Optionally, you can clear the message field or set a default message
     document.getElementById('message').value = ''; // Clear the message field
 }
+function validateDeposit(input) {
+        const totalPrice = parseFloat(document.getElementById('total_price').value) || 0; // Get the total price
+        const depositValue = parseFloat(input.value) || 0; // Get the deposit value
+
+        // Check if the deposit is greater than the total price
+        if (depositValue > totalPrice) {
+            // Display an error message
+            alert("Deposit cannot be greater than the total price.");
+            input.value = ''; // Reset the deposit input
+        }
+    }
 </script>
 
 </body>

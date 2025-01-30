@@ -1,222 +1,141 @@
+/* Base Layout */
 body {
-    margin: 0; /* Remove default margin */
-    height: 100vh; /* Full height of the viewport */
-    display: flex; /* Use Flexbox */
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    background-color: #FAF3DD; /* Optional: Set a background color */
-    font-family: 'Poppins', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FAF3DD;
+  font-family: 'Poppins', sans-serif;
+  padding: 20px; /* Add padding to prevent container touching edges */
 }
 
+/* Title Styles */
 .title {
-    position: absolute; /* Use absolute positioning */
-    top: 20px; /* Distance from the top of the viewport */
-    left: 20px; /* Distance from the left of the viewport */
-    color: #4A7C59; /* Optional: Set the text color */
-    font-size: 48px; /* Optional: Set the font size */
-    font-weight: bold; /* Optional: Set the font weight */
-    z-index: 10; /* Optional: Ensure it appears above other elements */
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #4A7C59;
+  font-size: 48px;
+  font-weight: bold;
+  z-index: 10;
 }
+
+/* Container Layout */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%; /* Use percentage to make it responsive */
-  max-width: 1300px; /* Restrict the maximum width */
-  height: auto; /* Adjust height dynamically */
-  padding: 2rem; /* Add some padding for spacing */
-  background: #4A7C59; /* Maintain your desired background color */
+  width: 90%; /* Use percentage instead of fixed width */
+  max-width: 1300px;
+  min-height: 600px; /* Set minimum height */
+  padding: 2rem;
+  background: #4A7C59;
   border-radius: 28px;
   box-shadow: 0px 35px 20px rgba(0, 0, 0, 0.3);
+  gap: 2rem; /* Add space between logo and form */
 }
-  
-  .login-card {
-    width: 40%;
-    max-width: 500px;
-    background:#432083;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .login-logo {
-    background-color: #4A7C59;
-    width: auto;
-    height: auto;
-    flex-shrink: 0;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .logo-outer {
-    width: 320px; /* Outer logo width */
-    height: 320px; /* Outer logo height */
-    position: relative;
-    background-color: #e17055; /* Background color */
-    border-radius: 10px; /* Rounded corners */
-    display: flex; /* Use flexbox for centering */
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    padding-left: 140px; /* Adjust padding for inner logo */
-    padding-right: 140px; /* Adjust padding for inner logo */
-    padding-top: 140px; /* Adjust padding for inner logo */
-    padding-bottom: 140px; /* Adjust padding for inner logo */
-    box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
+/* Card Styles */
+.login-card {
+  width: 40%;
+  max-width: 500px;
+  background: #432083;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Section */
+.login-logo {
+  background-color: #4A7C59;
+  width: auto;
+  height: auto;
+  flex-shrink: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Nested Logo Components */
+.logo-outer {
+  width: 320px;
+  height: 320px;
+  position: relative;
+  background-color: #e17055;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 140px;
+  box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
 }
 
 .logo-inner {
-    width: 300px; /* Set a specific width for the inner logo */
-    height: 300px; /* Set a specific height for the inner logo */
-    background-color: #ffd32a; /* Background color */
-    border-radius: 10px; /* Rounded corners */
-    display: flex; /* Use flexbox for centering */
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    padding-left: 100px; /* Adjust padding for inner logo */
-    padding-right: 100px; /* Adjust padding for inner logo */
-    padding-top: 100px; /* Adjust padding for inner logo */
-    padding-bottom: 100px; /* Adjust padding for inner logo */
-    box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
+  width: 300px;
+  height: 300px;
+  background-color: #ffd32a;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px;
+  box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
 }
 
 .logo-center {
-  width: 232px; /* Adjust width to be smaller */
-  height: 232px; /* Adjust height to be smaller */
-  background-color: #4A7C59; /* Background color */
-  border-radius: 10px; /* Rounded corners */
-  padding-left: 70px; /* Adjust padding for inner logo */
-  padding-right: 70px; /* Adjust padding for inner logo */
-  padding-top: 60px; /* Adjust padding for inner logo */
-  padding-bottom: 60px; /* Adjust padding for inner logo */
+  width: 232px;
+  height: 232px;
+  background-color: #4A7C59;
+  border-radius: 10px;
+  padding: 60px 70px;
   box-shadow: 0px 25px 20px rgba(0, 0, 0, 0.3);
   background-image: url('/images/panseat_logo.png');
-  background-size: contain; /* Ensure the logo fits within the container */
-  background-repeat: no-repeat; /* Prevent the logo from repeating */
-  background-position: center; /* Center the logo */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
-  
-  .login-form-container {
-    padding: 2rem;
-    width: 700px;
-  }
-  
-  .login-title {
-    font-size: 40px;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #FFD166;
-  }
-  .input-icon {
-    position: relative; /* Position relative for absolute positioning of the icon */
+
+/* Form Container */
+.login-form-container {
+  padding: 2rem;
+  width: 700px;
 }
-  .login-input {
-    width: 100%;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 2px solid #e6e6e6;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-  }
-  .icon {
-    position: absolute; /* Position the icon absolutely */
-    right: 10px; /* Position it on the right */
-    top: 50%; /* Center vertically */
-    transform: translateY(-50%); /* Adjust for vertical centering */
-    pointer-events: none; /* Prevent mouse events on the icon */
-    font-size: 16px; /* Adjust icon size */
-    color: #FFD166; /* Optional: Change icon color */
+
+/* Form Elements */
+.login-title {
+  font-size: 40px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #FFD166;
 }
-  .login-input:focus {
-    border-color: #4A7C59;
-    outline: none;
-  }
-  
-  .login-button {
-    width: 100%;
-    padding: 1rem;
-    background-color: #FFD166;
-    color: #4A7C59;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .login-button:hover {
-    background-color: #ffc107;
-  }
-  
-  .login-message {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #666;
-  }
-  
-  .login-message a {
-    color: #4A7C59;
-    text-decoration: none;
-  }
-  
-  .login-message a:hover {
-    text-decoration: underline;
-  }
-  
-  .alert {
-    background-color: #ff4040;
-    color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-  }
-  
-  /* Animation classes */
-  .animated {
-    animation-duration: 0.3s;
-    animation-fill-mode: both;
-  }
-  
-  .fadeInDown {
-    animation-name: fadeInDown;
-  }
-  
-  @keyframes fadeInDown {
-    0% {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
- /* General styles for form labels */
+
+/* Form Inputs */
 form label {
   display: block;
   font-size: 25px;
   font-weight: bold;
-  color: #FFD166; /* Matches the title color */
-  margin-bottom: 8px; /* Space between label and input/select */
-  transition: color 0.3s ease; /* Smooth transition for hover effect */
+  color: #FFD166;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
 }
 
 form label:hover {
-  color: #ffc107; /* Slightly lighter color on hover */
+  color: #ffc107;
 }
 
+.input-icon {
+  position: relative;
+}
 
-/* Styles for input fields */
+.login-input,
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
 form select {
   width: 100%;
-  max-width: 600px; /* Set a maximum width */
+  max-width: 600px;
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
@@ -224,209 +143,183 @@ form select {
   font-size: 25px;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
-  overflow: hidden; /* Hide overflow content */
-  white-space: nowrap; /* Prevent text from wrapping */
-  text-overflow: ellipsis; /* Show ellipsis (...) for overflow text */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-/* Input focus effect */
-form input[type="text"]:focus,
-form input[type="email"]:focus,
-form input[type="password"]:focus,
-form select:focus {
-  border-color: #4A7C59;
-  outline: none;
+.icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+  color: #FFD166;
 }
 
-/* Styles for select dropdown */
-form select {
-  background-color: #fff;
-  cursor: pointer;
-}
-
-/* Button styling */
-form button {
-  width: 100%;
-  padding: 10px;
+/* Button Styles */
+.login-button {
+  width: auto;
+  padding: 1rem;
   background-color: #FFD166;
   color: #4A7C59;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-form button:hover {
+.login-button:hover {
   background-color: #ffc107;
 }
 
-/* Link styling in form */
-form p a {
-  color: #4A7C59;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-form p a:hover {
-  text-decoration: underline;
-}
-
-/* Error messages styling */
-/* Error messages styling */
+/* Error Messages */
 .error-messages, .error-message {
-  background-color: #f8d7da; /* Light red background */
-  color: #721c24; /* Dark red text */
-  border: 1px solid #f5c6cb; /* Light red border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 10px; /* Padding inside the box */
-  margin-top: 10px; /* Space above the error message */
-  margin-bottom: 10px; /* Space below the error message */
-  width: 100%; /* Full width of the parent container */
-  max-width: 400px; /* Match the maximum width of the input fields */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
 }
 
-/* Error messages list */
-.error-messages ul {
-  list-style-type: none; /* Remove bullet points */
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margin */
-}
-.login-button{
-  border-radius: 20px;
-  width: auto;
-}
-/* Base styles (already defined above) */
-
-/* Responsive styles */
+/* Responsive Breakpoints */
 @media (max-width: 1200px) {
   .login-container {
-    flex-direction: column; /* Stack elements vertically */
+    width: 95%;
+    min-height: 500px;
+    flex-direction: column;
     padding: 1.5rem;
-  }
+}
 
-  .login-card {
-    width: 60%;
-    max-width: 450px;
-  }
+.login-card {
+    width: 80%;
+    max-width: 400px;
+}
 
-  .login-form-container {
-    width: 90%; /* Adjust form width */
-  }
-
-  .login-title {
-    font-size: 32px; /* Smaller font size for titles */
-  }
+.login-form-container {
+    width: 80%;
+}
 }
 
 @media (max-width: 992px) {
-  .logo-outer {
-    width: 280px;
-    height: 280px;
-  }
+  .login-container {
+    width: 90%;
+    min-height: 450px;
+}
 
-  .logo-inner {
-    width: 250px;
-    height: 250px;
-  }
+.logo-outer {
+    width: 220px;
+    height: 220px;
+    padding: 20px;
+}
 
-  .logo-center {
-    width: 200px;
-    height: 200px;
-  }
+.logo-inner {
+    width: 180px;
+    height: 180px;
+    padding: 20px;
+}
 
+.logo-center {
+    width: 140px;
+    height: 140px;
+    padding: 15px;
+}
+  
   .login-card {
-    width: 80%;
-    max-width: 400px;
+      width: 80%;
+      max-width: 400px;
   }
-
+  
   .login-title {
-    font-size: 28px;
+      font-size: 28px;
   }
-
+  
   .login-input,
   form input[type="text"],
   form input[type="email"],
   form input[type="password"],
   form select {
-    max-width: 100%; /* Adjust input width */
-    font-size: 14px; /* Smaller text size */
-  }
-
-  .login-button {
-    padding: 0.8rem; /* Adjust padding */
+      max-width: 100%;
+      font-size: 14px;
   }
 }
 
 @media (max-width: 768px) {
   .title {
-    font-size: 24px; /* Smaller font size for title */
-    top: 10px;
-    left: 10px;
+      font-size: 24px;
+      top: 10px;
+      left: 10px;
   }
-
+  
   .login-card {
-    width: 90%;
-    max-width: 350px;
+      width: 90%;
+      max-width: 350px;
   }
+  
+  .login-container {
+    width: 95%;
+    min-height: 400px;
+    padding: 1rem;
+}
 
-  .logo-outer {
-    width: 240px;
-    height: 240px;
-  }
-
-  .logo-inner {
-    width: 220px;
-    height: 220px;
-  }
-
-  .logo-center {
+.logo-outer {
     width: 180px;
     height: 180px;
-  }
+}
+
+.logo-inner {
+    width: 140px;
+    height: 140px;
+}
+
+.logo-center {
+    width: 100px;
+    height: 100px;
+}
 }
 
 @media (max-width: 576px) {
-  .title {
-    font-size: 20px;
+  body {
+      padding: 10px;
   }
-
-  .login-card {
-    width: 95%;
-    max-width: 300px;
+  
+  .login-container {
+      width: 98%;
+      min-height: 350px;
   }
-
-  .login-title {
-    font-size: 24px;
-  }
-
+  
   .logo-outer {
-    width: 200px;
-    height: 200px;
+      width: 150px;
+      height: 150px;
   }
-
+  
   .logo-inner {
-    width: 180px;
-    height: 180px;
+      width: 120px;
+      height: 120px;
   }
-
+  
   .logo-center {
-    width: 150px;
-    height: 150px;
+      width: 90px;
+      height: 90px;
   }
-
+  
+  .login-form-container {
+      width: 90%;
+      padding: 1rem;
+  }
+  
   .login-input,
   form input[type="text"],
   form input[type="email"],
-  form input[type="password"],
-  form select {
-    font-size: 12px;
-    padding: 0.8rem;
-  }
-
-  .login-button {
-    font-size: 14px;
+  form input[type="password"] {
+      padding: 8px;
+      font-size: 14px;
   }
 }

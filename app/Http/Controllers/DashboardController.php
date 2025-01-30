@@ -26,6 +26,7 @@ class DashboardController extends Controller
     
     // Using MONTHNAME instead of MONTH
     $monthlyData = Reservation::selectRaw('MONTHNAME(created_at) as month, COUNT(*) as count')
+        ->where('booking_confirmation', 'complete')
         ->groupBy('month')
         ->orderByRaw('MONTH(created_at)')
         ->pluck('count', 'month')
@@ -46,9 +47,11 @@ class DashboardController extends Controller
                 'completedReservations', 'monthlyCounts'));
 }
 
-    public function getEvents()
+public function getEvents()
 {
-    $reservations = Reservation::all();
+    // Fetch reservations that are not canceled
+    $reservations = Reservation::whereIn('booking_confirmation', ['processing', 'confirmed'])
+        ->get();
     
     $events = $reservations->map(function ($reservation) {
         return [

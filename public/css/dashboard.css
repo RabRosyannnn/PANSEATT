@@ -1,9 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
 body {
     display: flex;
     flex-direction: column;
     height: 100vh;
     background-color: #FFD166;
-    font-family: 'Poppins', sans-serif;
 }
 
 label {
@@ -155,7 +161,6 @@ aside ul li a {
 }
 
 /* Card Styling */
-/* Card Styling */
 .card {
     border-radius: 15px;
     overflow: hidden;
@@ -305,7 +310,7 @@ aside ul li a {
     .modal-footer .btn {
         padding: 8px 10px; /* Adjust button size */
         font-size: 0.85rem;
-    }
+ }
 }
 
 @media (max-width: 576px) {
@@ -344,7 +349,7 @@ aside ul li a {
 /* Calendar Styling */
 #reservationCalendar {
     max-width: 1500px;
- width: 100%;
+    width: 100%;
     height: 750px;
     margin: 0 auto;
     padding: 20px;
@@ -484,7 +489,7 @@ aside ul li a {
     display: flex; /* Use Flexbox */
     flex-wrap: wrap; /* Allow cards to wrap to the next line */
     justify-content: center; /* Center cards horizontally */
-    align-items: center; /* Center cards vertically (if needed) */
+    align-items: center; /* Center cards vertically ( if needed) */
 }
 
 .staff-card {
@@ -620,10 +625,13 @@ aside ul li a {
 }
 
 .btn {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+    padding: 10px 20px; /* Base padding */
+    font-size: 1rem; /* Base font size */
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    width: auto; /* Default width */
+    min-width: 100px; /* Minimum width for buttons */
+    text-align: center; /* Center text */
 }
 
 .btn-primary {
@@ -638,10 +646,12 @@ aside ul li a {
 
 .btn-primary:hover {
     background-color: #355e43;
+    transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 .btn-secondary:hover {
     background-color: #e0b652;
+    transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 .custom-event-content {
@@ -658,7 +668,7 @@ aside ul li a {
 
 .custom-event-content div {
     display: inline-block; /* Ensures the content scrolls as one block */
-    /* 10 seconds animation loop */
+    
 }
 
 @keyframes marquee {
@@ -674,8 +684,9 @@ aside ul li a {
 @media (max-width: 768px) {
     .header {
         flex-direction: column; /* Stack header items vertically */
-        align-items: flex-start }
-    
+        align-items: flex-start; /* Align items to the start */
+    }
+
     .header-title {
         font-size: 24px; /* Adjust title size for smaller screens */
     }
@@ -725,7 +736,9 @@ aside ul li a {
     }
 
     .btn {
-        padding: 8px 16px; /* Adjust button padding */
+        width: 100%; /* Full width on smaller screens */
+        padding: 12px; /* Adjust padding for better touch targets */
+        font-size: 1.1rem; /* Slightly larger font size */
     }
 }
 
@@ -754,7 +767,12 @@ aside ul li a {
     .staff-card h5 {
         font-size: 1rem; /* Adjust font size for staff card titles */
     }
+    .btn {
+        font-size: 0.9rem; /* Smaller font size for very small screens */
+        padding: 10px; /* Adjust padding */
+    }
 }
+
 .bundle-image {
     width: 100%; /* Set width to 100% of the parent container */
     height: 80px; /* Set a fixed height */
@@ -762,13 +780,13 @@ aside ul li a {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional for subtle shadow */
 }
+
 /* General form styling */
 /* Form container */
 .report-form {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    
 }
 
 /* Filters container: Flexbox layout */
@@ -777,7 +795,6 @@ aside ul li a {
     gap: 20px;
     align-items: center; /* Align items centrally */
     flex-wrap: wrap; /* Allow wrapping if screen size is smaller */
-    
 }
 
 /* Month and year filters: Equal widths */
@@ -821,6 +838,7 @@ aside ul li a {
 .report-button:hover {
     background-color: #0056b3;
 }
+
 .quantity-control {
     display: flex; /* Use flexbox for alignment */
     align-items: center; /* Center items vertically */
@@ -835,5 +853,3 @@ aside ul li a {
     border-radius: 5px; /* Optional: add slight rounding */
     border: 1px solid #ced4da; /* Keep the border for visibility */
 }
-
-

@@ -13,6 +13,7 @@ main {
     background-color: #FAF3DD; 
     padding-top: 20px;
 }
+
 /* Footer styles */
 footer {
     background: #4A7C59;
@@ -20,7 +21,9 @@ footer {
     padding: 2rem 5%;
     text-align: center;
     display: flex;
+    flex-direction: column; /* Stack items vertically */
 }
+
 .nav-item {
     display: flex;
     gap: 2rem;
@@ -35,9 +38,11 @@ footer {
 .nav-link:hover {
     color: #FFD166;
 }
+
 .contacts {
     margin: 0.5rem 0;
 }
+
 /* Header styles */
 .header {
     background: #4A7C59;
@@ -57,6 +62,7 @@ footer {
     color: #FFD166;
     font-size: 1.5rem;
 }
+
 /* About Page Styles */
 .about-container {
     max-width: 1200px;
@@ -216,5 +222,38 @@ footer {
 
     .card-overlay p {
         font-size: 0.9rem;
+    }
+
+    .header {
+        flex-direction: column; /* Stack header items on smaller screens */
+        align-items: flex-start; /* Align items to the start */
+        padding: 1rem 2%; /* Adjust padding */
+    }
+
+    .header-title {
+        font-size: 1.2rem; /* Smaller font size for mobile */
+    }
+
+    .nav-item {
+        flex-direction: column; /* Stack nav items vertically */
+        gap: 1rem; /* Adjust gap */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header {
+        font-size: 1.5vh; /* Smaller font size for very small screens */
+    }
+
+    .text-container p {
+        font-size: 14px; /* Smaller text for mobile */
+    }
+
+    .card-overlay h3 {
+        font-size: 1rem; /* Smaller title for mobile */
+    }
+
+    .card-overlay p {
+        font-size: 0.8rem; /* Smaller text for mobile */
     }
 }

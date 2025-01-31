@@ -264,17 +264,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <ul class="list-group">
-                    @foreach($activeBundles as $bundle)
-                        <li class="list-group-item d-flex align-items-center">
-                            @if($bundle->image)
-                                <img src="{{ asset('storage/' . $bundle->image) }}" alt="{{ $bundle->name }}" class="img-thumbnail mr-3" style="width: 100px; height: 100px;">
-                            @endif
-                            <span>{{ $bundle->name }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+    <ul class="list-group">
+        @foreach($activeBundles as $bundle)
+            <li class="list-group-item d-flex align-items-center">
+                @if($bundle->image)
+                    <img src="{{ asset('storage/' . $bundle->image) }}" alt="{{ $bundle->name }}" class="img-thumbnail mr-3" style="width: 100px; height: 100px;">
+                @endif
+                <div>
+                    <div>{{ $bundle->name }}</div>
+                    <div>{{ $bundle->desc }} </div>
+                    <div>{{ $bundle->price }} php</div>
+                </div>
+            </li>
+        @endforeach
+    </ul>
+</div>
         </div>
     </div>
 </div>

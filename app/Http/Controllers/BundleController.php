@@ -97,37 +97,36 @@ class BundleController extends Controller
         'category' => 'required|string',
         'desc' => 'required|string',
         'price' => 'required|numeric',
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image is now optional
     ], [
         'name.required' => 'The bundle name is required.',
         'category.required' => 'The bundle category is required.',
         'desc.required' => 'The description is required.',
         'price.required' => 'The price is required.',
         'price.numeric' => 'The price must be a number.',
-        'image.required' => 'An image is required.',
         'image.image' => 'The file must be an image.',
         'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif.',
         'image.max' => 'The image may not be greater than 2MB.',
     ]);
 
-    // Handle the file upload
-    $imagePath = null;
+    // Handle the file upload (only update if a new image is provided)
     if ($request->hasFile('image')) {
         $uniqueName = time() . '_' . $request->file('image')->getClientOriginalName();
         $imagePath = $request->file('image')->storeAs('images/bundles', $uniqueName, 'public');
+        $bundle->image = $imagePath; // Update image
     }
 
-    // Save the bundle
-    $bundle = new Bundle();
+    // Update the existing bundle
     $bundle->name = $validated['name'];
     $bundle->desc = $validated['desc'];
     $bundle->price = $validated['price'];
     $bundle->category = $validated['category'];
-    $bundle->image = $imagePath;
-    $bundle->save();
-    // Redirect back to the dashboard with a success message
+    $bundle->save(); // Save changes
+
+    // Redirect back with success message
     return redirect()->route('dashboard')->with('success', 'Bundle updated successfully!');
 }
+
 
 
 

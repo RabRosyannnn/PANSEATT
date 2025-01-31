@@ -40,6 +40,7 @@
 
     <div class="content">
         <p>Total Completed Reservations: {{ $completedReservations->count() }}</p>
+        <p>Total Revenue from Completed Reservations: ${{ number_format($totalPrice, 2) }}</p> <!-- Display total price -->
 
         <!-- Display Completed Reservations in a Table -->
         <table>
@@ -49,8 +50,7 @@
                     <th>Customer Name</th>
                     <th>Reservation Date</th>
                     <th>Time</th>
-                    
-                    
+                    <th>Price</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,15 +58,13 @@
                     <tr>
                         <td>{{ $reservation->id }}</td>
                         <td>{{ $reservation->customer_name }}</td>
-                        <td>{{ $reservation->date}}</td>
-                        <td>{{ $reservation->start_time}} - {{ $reservation->end_time}}</td> <!-- For End Time with Date -->
-                        
+                        <td>{{ $reservation->date }}</td>
+                        <td>{{ $reservation->start_time }} - {{ $reservation->end_time }}</td> <!-- For End Time with Date -->
+                        <td>{{ $reservation->price }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-
-    
 </body>
 </html>

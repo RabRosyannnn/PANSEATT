@@ -94,4 +94,9 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/busy-days', [BusyDayController::class, 'index']);
+    Route::post('/busy-days', [BusyDayController::class, 'store']);
+    Route::delete('/busy-days/{date}', [BusyDayController::class, 'destroy']);
+    Route::get('/busy-days/check', [BusyDayController::class, 'check']);
+});

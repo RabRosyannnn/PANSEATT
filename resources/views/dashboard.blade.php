@@ -346,12 +346,7 @@
     <div class="request-log">
         <div class="log-header">
             <h4>Requests</h4>
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search">
-                <button type="submit" class="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            
         </div>
 
         <div class="log-table">
@@ -389,12 +384,7 @@
     <div class="staff-log">
         <div class="log-header">
             <h4>Staff Logs</h4>
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search">
-                <button type="submit" class="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            
         </div>
 
         <div class="log-table">
@@ -801,9 +791,27 @@
 });
 </script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+ document.addEventListener('DOMContentLoaded', function () {
     const reservationForm = document.getElementById('reservationForm');
 
+    // Function to prevent leading spaces
+    function preventLeadingSpaces(input) {
+        // Check if the first character is a space
+        if (input.value.startsWith(' ')) {
+            // Remove the leading space
+            input.value = input.value.slice(1);
+        }
+    }
+
+    // Add event listeners to prevent leading spaces on input
+    const textInputs = reservationForm.querySelectorAll('input[type="text"], textarea');
+    textInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            preventLeadingSpaces(this); // Prevent leading spaces as the user types
+        });
+    });
+
+    // Add event listener to trim inputs on form submission
     reservationForm.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
 
@@ -835,8 +843,6 @@
         });
     });
 });
-
-
 
 document.addEventListener('DOMContentLoaded', function () {
     const addBundleForm = document.getElementById('addBundleForm');

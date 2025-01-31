@@ -112,7 +112,7 @@ class ReservationController extends Controller
             $contactInformation = $this->transformContactNumber($contactInformation);
 
             // Prepare the message for SMS
-            $defaultMessage = "Thank you for your reservation! Your tracking ID is {$trackingId}.";
+            $defaultMessage = "Thank you for your reservation! Your tracking ID is {$trackingId}. Visit our website for details of your reservation.";
             $message = $defaultMessage;
 
             // Send SMS

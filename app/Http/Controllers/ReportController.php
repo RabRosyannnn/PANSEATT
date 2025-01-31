@@ -29,12 +29,16 @@ class ReportController extends Controller
 
     $completedReservations = $query->get();
 
+    // Calculate total price of completed reservations
+    $totalPrice = $completedReservations->sum('price'); // Assuming 'total_price' is the column name
+
     // Retrieve the Base64 chart image
     $chartImage = $request->input('chartImage');
 
     // Prepare data for the PDF
     $data = [
         'completedReservations' => $completedReservations,
+        'totalPrice' => $totalPrice, // Include total price in the data
         'chartImage' => $chartImage,
     ];
 
